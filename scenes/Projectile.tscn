@@ -8,16 +8,16 @@ radius = 3.9887
 height = 7.99951
 
 [node name="Projectile" type="Area2D"]
-texture_filter = 1
 position = Vector2(17, 10)
 script = ExtResource("1_1ad1x")
+metadata/isProjectile = false
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
+[node name="ProjectileSprite" type="Sprite2D" parent="."]
+texture_repeat = 2
 position = Vector2(0, -0.25)
 texture = ExtResource("1_eqmcl")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-rotation = 1.55974
+[node name="ProjectileShape" type="CollisionShape2D" parent="."]
 shape = SubResource("CapsuleShape2D_mpsag")
 
 [connection signal="body_entered" from="." to="." method="OnCollisionDetected"]

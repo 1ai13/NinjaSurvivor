@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="Character" load_steps=5 format=3 uid="uid://qh7omqpi52eh"]
+
+[ext_resource type="Texture2D" uid="uid://uiqa86t6b86u" path="res://assets/textures/characters/NinjaRed/SpriteSheet.png" id="1_euag1"]
+[ext_resource type="Resource" uid="uid://cl4dkajyyx7uv" path="res://assets/resources/weapons/sword.tres" id="2_qwdoi"]
+[ext_resource type="Resource" uid="uid://cre8xwru3kh2f" path="res://assets/resources/weapons/shuriken.tres" id="3_etng2"]
+[ext_resource type="Script" path="res://scripts/resources/Character.cs" id="4_krkga"]
+
+[resource]
+script = ExtResource("4_krkga")
+name = "Ninja"
+body = ExtResource("1_euag1")
+meleeWeapon = ExtResource("2_qwdoi")
+rangedWeapon = ExtResource("3_etng2")

@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="Weapon" load_steps=3 format=3 uid="uid://q2xn1rw6cgce"]
+
+[ext_resource type="Script" path="res://scripts/resources/Weapon.cs" id="1_e1uvr"]
+[ext_resource type="Texture2D" uid="uid://dmwurw7dgswfq" path="res://assets/textures/weapons/Katana/SpriteInHand2.png" id="2_606ib"]
+
+[resource]
+script = ExtResource("1_e1uvr")
+name = "katana"
+damage = 5
+textures = Array[Texture2D]([ExtResource("2_606ib")])
+isProjectile = false

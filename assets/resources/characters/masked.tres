@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="Character" load_steps=5 format=3 uid="uid://ci4rfe38owy18"]
+
+[ext_resource type="Texture2D" uid="uid://ccci4a8wvm3jf" path="res://assets/textures/characters/NinjaMasked/SpriteSheet.png" id="1_i1sp5"]
+[ext_resource type="Resource" uid="uid://q2xn1rw6cgce" path="res://assets/resources/weapons/katana.tres" id="2_d336l"]
+[ext_resource type="Resource" uid="uid://dqg05nw7wi8th" path="res://assets/resources/weapons/bow.tres" id="3_r1s26"]
+[ext_resource type="Script" path="res://scripts/resources/Character.cs" id="4_cghgp"]
+
+[resource]
+script = ExtResource("4_cghgp")
+name = "Masked"
+body = ExtResource("1_i1sp5")
+meleeWeapon = ExtResource("2_d336l")
+rangedWeapon = ExtResource("3_r1s26")

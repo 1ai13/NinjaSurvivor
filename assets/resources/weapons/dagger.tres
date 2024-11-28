@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="Weapon" load_steps=3 format=3 uid="uid://bnjwgfqkdtsqb"]
+
+[ext_resource type="Script" path="res://scripts/resources/Weapon.cs" id="1_8fgcc"]
+[ext_resource type="Texture2D" uid="uid://bavymvwhslylp" path="res://assets/textures/weapons/Dagger/SpriteInHand.png" id="2_pkxv0"]
+
+[resource]
+script = ExtResource("1_8fgcc")
+name = "dagger"
+damage = 5
+textures = Array[Texture2D]([ExtResource("2_pkxv0")])
+isProjectile = false

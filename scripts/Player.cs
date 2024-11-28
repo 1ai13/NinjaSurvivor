@@ -2,20 +2,21 @@ using Enums;
 using Godot;
 using System;
 using static Enums.Direction;
+using static Enums.WeaponType;
 
 public partial class Player : CharacterBody2D
 {
 	[Export]
 	private float speed = 100f;
-	private const float rotation_factor = .4f;
+	[Export]
+	private float rotation_factor = .4f;
 	private AnimationPlayer animation;
 	private PackedScene projectileScene;
 	private Area2D meleeWeapon;
-	private Sprite2D rangedWeapon;
+	private Sprite2D rangedWeapon { get; set; }
 	private bool isAttacking = false;
 	private Vector2 mouseDirection;
-	[Export]
-	private Weapon[] weaponsData;
+	private Vector2 playerDamage;
 
 	public override void _Ready()
 	{
@@ -26,11 +27,8 @@ public partial class Player : CharacterBody2D
 	}
 	public override void _PhysicsProcess(double delta)
 	{
-		/*Need Player Global Position due to World Coordinates (Viewport mouse position would need a conversion)
-		 GetViewportTransform() * GlobalPosition */
+		//Mouse direction relative to the Player - Need Player Global Position due to World Coordinates (Viewport mouse position would need a conversion)
 		mouseDirection = (GetGlobalMousePosition() - GlobalPosition).Normalized();
-		// GD.Print($"Mouse direction offset from player: {mouseDirection}");
-
 		// Player movement logic
 		Vector2 velocity = Velocity;
 		Vector2 playerDirection = Input.GetVector("left", "right", "up", "down");
@@ -53,7 +51,7 @@ public partial class Player : CharacterBody2D
 		{
 			velocity /= 2;
 		}
-		else
+		else //Walking Animations
 		{
 			playAnimation("walk");
 		}
@@ -65,23 +63,15 @@ public partial class Player : CharacterBody2D
 	{
 		if (@event.IsActionPressed("melee_attack") && !isAttacking)
 		{
-			swapWeaponVisibility(true);
-
-			isAttacking = true;
-			playAnimation("attack");
+			doAttack(MELEE);
 		}
 		else if (@event.IsActionPressed("ranged_attack") && !isAttacking)
 		{
-			swapWeaponVisibility(false);
-			var projectile = (Projectile)projectileScene.Instantiate();
-			projectile.init(GlobalPosition, mouseDirection, mouseDirection.Angle());
-			isAttacking = true;
-			playAnimation("attack");
-			GetTree().CurrentScene.AddChild(projectile);
+			doAttack(RANGED);
 		}
 	}
 
-	private void OnAnimationFinished(StringName animationName)
+	private void onAnimationFinished(StringName animationName)
 	{
 		if (animationName.ToString().StartsWith("attack"))
 		{
@@ -89,9 +79,11 @@ public partial class Player : CharacterBody2D
 		}
 		if (Input.IsActionPressed("melee_attack"))
 		{
-			isAttacking = true;
-
-			playAnimation("attack");
+			doAttack(MELEE);
+		}
+		else if (Input.IsActionPressed("ranged_attack"))
+		{
+			doAttack(RANGED);
 		}
 	}
 
@@ -146,15 +138,61 @@ public partial class Player : CharacterBody2D
 				animation.Play($"{animationType}_left");
 				break;
 			default:
-				GD.PrintErr("Invalid Direction to Move");
+				GD.PrintErr("Invalid Direction to Move/Attack");
 				break;
 		}
 	}
 
-	private void swapWeaponVisibility(bool visibility)
+	private void swapWeaponVisibility(WeaponType type)
 	{
-		meleeWeapon.Monitoring = visibility;
-		meleeWeapon.Visible = visibility;
-		rangedWeapon.Visible = !visibility;
+		if (type == MELEE)
+		{
+			meleeWeapon.Monitoring = true;
+			meleeWeapon.Visible = true;
+			rangedWeapon.Visible = false;
+		}
+		else if (type == RANGED)
+		{
+			meleeWeapon.Monitoring = false;
+			meleeWeapon.Visible = false;
+			rangedWeapon.Visible = true;
+		}
+	}
+
+	public void loadCharacter(Character c, Vector2 position)
+	{
+		//Player Data
+		GetNode<Sprite2D>("Body").Texture = c.body;
+		Position = position;
+		//Weapon Data
+		var melee = c.meleeWeapon;
+		var ranged = c.rangedWeapon;
+		playerDamage = new Vector2(melee.damage, ranged.damage);
+		meleeWeapon.GetNode<Sprite2D>("MeleeWeapon").Texture = melee.textures[0];
+		rangedWeapon.Texture = c.rangedWeapon.textures[0];
+		//Projectile texture adjustment
+		var auxProjectile = projectileScene.Instantiate<Projectile>();
+		auxProjectile.isProjectile = ranged.isProjectile;
+		auxProjectile.GetNode<Sprite2D>("ProjectileSprite").Texture = ranged.textures[1];
+		var auxScene = new PackedScene();
+		auxScene.Pack(auxProjectile);
+		projectileScene = auxScene;
+	}
+
+	private void doAttack(WeaponType type)
+	{
+		if (type == MELEE)
+		{
+			swapWeaponVisibility(type);
+		}
+		else if (type == RANGED)
+		{
+			swapWeaponVisibility(type);
+			var projectile = projectileScene.Instantiate<Projectile>();
+			projectile.init(GlobalPosition, mouseDirection, mouseDirection.Angle());
+			GetTree().CurrentScene.AddChild(projectile);
+		}
+		isAttacking = true;
+		playAnimation("attack");
 	}
 }

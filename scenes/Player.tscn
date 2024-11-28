@@ -1,27 +1,10 @@
-[gd_scene load_steps=24 format=3 uid="uid://d27tgl25p8g58"]
+[gd_scene load_steps=20 format=3 uid="uid://d27tgl25p8g58"]
 
 [ext_resource type="Texture2D" uid="uid://uiqa86t6b86u" path="res://assets/textures/characters/NinjaRed/SpriteSheet.png" id="1_dlb78"]
 [ext_resource type="Script" path="res://scripts/Player.cs" id="1_t7pu8"]
 [ext_resource type="Texture2D" uid="uid://djy0oilt0s6ru" path="res://assets/textures/characters/Shadow.png" id="2_3a80c"]
-[ext_resource type="Script" path="res://scripts/Weapon.cs" id="3_e55ab"]
-[ext_resource type="Texture2D" uid="uid://b566t108c24u0" path="res://assets/textures/weapons/Sword2/SpriteInHand.png" id="4_2mbj4"]
-[ext_resource type="Texture2D" uid="uid://bndsrbo0t6wxi" path="res://assets/textures/weapons/Bow2/Projectile.png" id="5_2hbi3"]
+[ext_resource type="Texture2D" uid="uid://b566t108c24u0" path="res://assets/textures/weapons/Sword/SpriteInHand.png" id="4_2mbj4"]
 [ext_resource type="Texture2D" uid="uid://c17ltn1lri0do" path="res://assets/textures/weapons/Bow2/SpriteInHand.png" id="5_iqmla"]
-
-[sub_resource type="Resource" id="Resource_l6swr"]
-script = ExtResource("3_e55ab")
-name = "sword"
-damage = 10
-image = ExtResource("4_2mbj4")
-isRanged = false
-
-[sub_resource type="Resource" id="Resource_4egsr"]
-script = ExtResource("3_e55ab")
-name = "bow"
-damage = 0
-image = ExtResource("5_iqmla")
-isRanged = true
-projectile = ExtResource("5_2hbi3")
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_smbii"]
 blend_mode = 2
@@ -135,7 +118,7 @@ tracks/7/keys = {
 tracks/8/type = "value"
 tracks/8/imported = false
 tracks/8/enabled = true
-tracks/8/path = NodePath("Area2D/CollisionShape2D:position")
+tracks/8/path = NodePath("Area2D/WeaponShape:position")
 tracks/8/interp = 1
 tracks/8/loop_wrap = true
 tracks/8/keys = {
@@ -147,7 +130,7 @@ tracks/8/keys = {
 tracks/9/type = "value"
 tracks/9/imported = false
 tracks/9/enabled = true
-tracks/9/path = NodePath("Area2D/CollisionShape2D:rotation")
+tracks/9/path = NodePath("Area2D/WeaponShape:rotation")
 tracks/9/interp = 1
 tracks/9/loop_wrap = true
 tracks/9/keys = {
@@ -235,7 +218,7 @@ tracks/4/keys = {
 tracks/5/type = "value"
 tracks/5/imported = false
 tracks/5/enabled = true
-tracks/5/path = NodePath("Area2D/CollisionShape2D:position")
+tracks/5/path = NodePath("Area2D/WeaponShape:position")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/keys = {
@@ -247,7 +230,7 @@ tracks/5/keys = {
 tracks/6/type = "value"
 tracks/6/imported = false
 tracks/6/enabled = true
-tracks/6/path = NodePath("Area2D/CollisionShape2D:rotation")
+tracks/6/path = NodePath("Area2D/WeaponShape:rotation")
 tracks/6/interp = 1
 tracks/6/loop_wrap = true
 tracks/6/keys = {
@@ -371,7 +354,7 @@ tracks/4/keys = {
 tracks/5/type = "value"
 tracks/5/imported = false
 tracks/5/enabled = true
-tracks/5/path = NodePath("Area2D/CollisionShape2D:position")
+tracks/5/path = NodePath("Area2D/WeaponShape:position")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/keys = {
@@ -383,7 +366,7 @@ tracks/5/keys = {
 tracks/6/type = "value"
 tracks/6/imported = false
 tracks/6/enabled = true
-tracks/6/path = NodePath("Area2D/CollisionShape2D:rotation")
+tracks/6/path = NodePath("Area2D/WeaponShape:rotation")
 tracks/6/interp = 1
 tracks/6/loop_wrap = true
 tracks/6/keys = {
@@ -507,7 +490,7 @@ tracks/4/keys = {
 tracks/5/type = "value"
 tracks/5/imported = false
 tracks/5/enabled = true
-tracks/5/path = NodePath("Area2D/CollisionShape2D:position")
+tracks/5/path = NodePath("Area2D/WeaponShape:position")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/keys = {
@@ -519,7 +502,7 @@ tracks/5/keys = {
 tracks/6/type = "value"
 tracks/6/imported = false
 tracks/6/enabled = true
-tracks/6/path = NodePath("Area2D/CollisionShape2D:rotation")
+tracks/6/path = NodePath("Area2D/WeaponShape:rotation")
 tracks/6/interp = 1
 tracks/6/loop_wrap = true
 tracks/6/keys = {
@@ -619,7 +602,7 @@ tracks/2/keys = {
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("Area2D/CollisionShape2D:position")
+tracks/3/path = NodePath("Area2D/WeaponShape:position")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
@@ -631,7 +614,7 @@ tracks/3/keys = {
 tracks/4/type = "value"
 tracks/4/imported = false
 tracks/4/enabled = true
-tracks/4/path = NodePath("Area2D/CollisionShape2D:rotation")
+tracks/4/path = NodePath("Area2D/WeaponShape:rotation")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
@@ -1283,7 +1266,6 @@ _data = {
 [node name="Player" type="CharacterBody2D"]
 position = Vector2(67, 29)
 script = ExtResource("1_t7pu8")
-weaponsData = Array[Object]([SubResource("Resource_l6swr"), SubResource("Resource_4egsr")])
 
 [node name="Shadow" type="Sprite2D" parent="."]
 material = SubResource("CanvasItemMaterial_smbii")
@@ -1298,7 +1280,6 @@ vframes = 7
 frame = 3
 
 [node name="Area2D" type="Area2D" parent="."]
-visible = false
 
 [node name="MeleeWeapon" type="Sprite2D" parent="Area2D"]
 position = Vector2(-5.33333, 13.3333)
@@ -1306,17 +1287,18 @@ texture = ExtResource("4_2mbj4")
 flip_h = true
 flip_v = true
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+[node name="WeaponShape" type="CollisionShape2D" parent="Area2D"]
 position = Vector2(0, 12)
 rotation = -0.785397
 shape = SubResource("CapsuleShape2D_7qv7g")
 
 [node name="RangeWeapon" type="Sprite2D" parent="."]
+visible = false
 position = Vector2(-5.33333, 6)
 rotation = 0.523598
 texture = ExtResource("5_iqmla")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="PlayerShape" type="CollisionShape2D" parent="."]
 position = Vector2(0, 1)
 shape = SubResource("CapsuleShape2D_qdg2v")
 
@@ -1327,4 +1309,4 @@ libraries = {
 
 [node name="Camera2D" type="Camera2D" parent="."]
 
-[connection signal="animation_finished" from="AnimationPlayer" to="." method="OnAnimationFinished"]
+[connection signal="animation_finished" from="AnimationPlayer" to="." method="onAnimationFinished"]

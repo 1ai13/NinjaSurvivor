@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="Weapon" load_steps=4 format=3 uid="uid://cre8xwru3kh2f"]
+
+[ext_resource type="Texture2D" uid="uid://dq1prte7r0176" path="res://assets/textures/weapons/Shuriken/Projectile.png" id="1_kxsdk"]
+[ext_resource type="Script" path="res://scripts/resources/Weapon.cs" id="2_5dvri"]
+[ext_resource type="Texture2D" uid="uid://bw6tfjqqna16r" path="res://assets/textures/weapons/Shuriken/SpriteInHand.png" id="3_326f1"]
+
+[resource]
+script = ExtResource("2_5dvri")
+name = "shuriken"
+damage = 10
+textures = Array[Texture2D]([ExtResource("3_326f1"), ExtResource("1_kxsdk")])
+isProjectile = false
