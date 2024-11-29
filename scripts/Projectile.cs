@@ -17,18 +17,16 @@ public partial class Projectile : Area2D
 
 	public void init(Vector2 position, Vector2 vel, float rotation, int dmg)
 	{
-		initialPosition = position + velocity * offset;
-		initialRotation = rotation;
 		velocity = vel;
 		damage = dmg;
+		// Sets the bullet away from the player
+		Position = position + velocity * offset;
+		Rotation = rotation;
 	}
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
-		// Sets the bullet away from the player
-		Position = initialPosition;
-		Rotation = initialRotation;
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
