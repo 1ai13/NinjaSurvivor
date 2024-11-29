@@ -7,18 +7,20 @@ public partial class Projectile : Area2D
 	private float speed = 200f;
 	private float rotationSpeed = 500f;
 	private bool isAlive = true;
-	private const int offset = 25;
-	public Vector2 initialPosition { get; set; }
-	public float initialRotation { get; set; }
-	public Vector2 velocity { get; set; } = Vector2.Zero;
+	private int damage { get; set; }
+	private const int offset = 20;
+	private Vector2 initialPosition { get; set; }
+	private float initialRotation { get; set; }
+	private Vector2 velocity { get; set; } = Vector2.Zero;
 	[Export]
 	public bool isProjectile { get; set; }
 
-	public void init(Vector2 position, Vector2 velocity, float rotation)
+	public void init(Vector2 position, Vector2 vel, float rotation, int dmg)
 	{
 		initialPosition = position + velocity * offset;
-		this.velocity = velocity;
 		initialRotation = rotation;
+		velocity = vel;
+		damage = dmg;
 	}
 
 	// Called when the node enters the scene tree for the first time.
@@ -42,7 +44,16 @@ public partial class Projectile : Area2D
 		}
 	}
 
-	private void OnCollisionDetected(Node2D body)
+	private void onAreaDetected(Area2D area)
+	{
+		if (area.GetParent() is Enemy e)
+		{
+			e.takeDamage(damage);
+			QueueFree();
+		}
+	}
+
+	private void onBodyEntered(Node2D body)
 	{
 		isAlive = false;
 	}

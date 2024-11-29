@@ -1,15 +1,16 @@
-[gd_scene load_steps=6 format=3 uid="uid://b0w0mvnkhnene"]
+[gd_scene load_steps=7 format=3 uid="uid://b0w0mvnkhnene"]
 
 [ext_resource type="Script" path="res://scripts/Game.cs" id="1_fmhb6"]
 [ext_resource type="PackedScene" uid="uid://by6wissqun38m" path="res://scenes/Arena.tscn" id="1_vwonq"]
 [ext_resource type="Resource" uid="uid://qh7omqpi52eh" path="res://assets/resources/characters/ninja.tres" id="2_m37q8"]
 [ext_resource type="PackedScene" uid="uid://d27tgl25p8g58" path="res://scenes/Player.tscn" id="2_s2hus"]
 [ext_resource type="Resource" uid="uid://ci4rfe38owy18" path="res://assets/resources/characters/masked.tres" id="3_ugdps"]
+[ext_resource type="PackedScene" uid="uid://copbpawgnmm4p" path="res://scenes/Enemy.tscn" id="6_pbjp6"]
 
 [node name="Game" type="Node2D"]
 texture_filter = 1
 script = ExtResource("1_fmhb6")
-characterSelected = "Masked"
+characterSelected = "Ninja"
 characters = Array[Object]([ExtResource("2_m37q8"), ExtResource("3_ugdps")])
 
 [node name="Arena" parent="." instance=ExtResource("1_vwonq")]
@@ -17,3 +18,6 @@ characters = Array[Object]([ExtResource("2_m37q8"), ExtResource("3_ugdps")])
 [node name="Player" parent="." instance=ExtResource("2_s2hus")]
 position = Vector2(306, 219)
 speed = 200.0
+
+[node name="Enemy" parent="." instance=ExtResource("6_pbjp6")]
+position = Vector2(692, 458)

@@ -1,6 +1,6 @@
 namespace Enums
 {
-    enum Direction
+    public enum Direction
     {
         TOP,
         RIGHT,

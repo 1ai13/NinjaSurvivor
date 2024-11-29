@@ -1,6 +1,6 @@
 namespace Enums
 {
-    enum WeaponType
+    public enum WeaponType
     {
         MELEE,
         RANGED

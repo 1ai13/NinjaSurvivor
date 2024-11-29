@@ -6,17 +6,18 @@ using static Enums.WeaponType;
 
 public partial class Player : CharacterBody2D
 {
+
 	[Export]
 	private float speed = 100f;
 	[Export]
-	private float rotation_factor = .4f;
-	private AnimationPlayer animation;
+	private int health { get; set; } = 100;
+	public AnimationPlayer animation;
 	private PackedScene projectileScene;
 	private Area2D meleeWeapon;
 	private Sprite2D rangedWeapon { get; set; }
 	private bool isAttacking = false;
-	private Vector2 mouseDirection;
-	private Vector2 playerDamage;
+	public Vector2 mouseDirection { get; set; }
+	private Vector2I playerDamage { get; set; }
 
 	public override void _Ready()
 	{
@@ -53,7 +54,7 @@ public partial class Player : CharacterBody2D
 		}
 		else //Walking Animations
 		{
-			playAnimation("walk");
+			EntityHelper.playAnimation(this, "walk");
 		}
 		Velocity = velocity;
 		MoveAndSlide();
@@ -63,11 +64,11 @@ public partial class Player : CharacterBody2D
 	{
 		if (@event.IsActionPressed("melee_attack") && !isAttacking)
 		{
-			doAttack(MELEE);
+			makeAttack(MELEE);
 		}
 		else if (@event.IsActionPressed("ranged_attack") && !isAttacking)
 		{
-			doAttack(RANGED);
+			makeAttack(RANGED);
 		}
 	}
 
@@ -79,11 +80,11 @@ public partial class Player : CharacterBody2D
 		}
 		if (Input.IsActionPressed("melee_attack"))
 		{
-			doAttack(MELEE);
+			makeAttack(MELEE);
 		}
 		else if (Input.IsActionPressed("ranged_attack"))
 		{
-			doAttack(RANGED);
+			makeAttack(RANGED);
 		}
 	}
 
@@ -114,35 +115,6 @@ public partial class Player : CharacterBody2D
 		}
 	}
 
-	// Top-Right-Left-Bottom Movement/Attack Animation + ROTATION
-	// Need to negate some directions due to flipH property on Animations
-	private void playAnimation(string animationType)
-	{
-		var targetRotation = mouseDirection * rotation_factor;
-		switch (getMouseQuadrant())
-		{
-			case TOP:
-				Rotation = targetRotation.X;
-				animation.Play($"{animationType}_up");
-				break;
-			case RIGHT:
-				Rotation = targetRotation.Y;
-				animation.Play($"{animationType}_right");
-				break;
-			case DOWN:
-				Rotation = -targetRotation.X;
-				animation.Play($"{animationType}_down");
-				break;
-			case LEFT:
-				Rotation = -targetRotation.Y;
-				animation.Play($"{animationType}_left");
-				break;
-			default:
-				GD.PrintErr("Invalid Direction to Move/Attack");
-				break;
-		}
-	}
-
 	private void swapWeaponVisibility(WeaponType type)
 	{
 		if (type == MELEE)
@@ -167,7 +139,7 @@ public partial class Player : CharacterBody2D
 		//Weapon Data
 		var melee = c.meleeWeapon;
 		var ranged = c.rangedWeapon;
-		playerDamage = new Vector2(melee.damage, ranged.damage);
+		playerDamage = new Vector2I(melee.damage, ranged.damage);
 		meleeWeapon.GetNode<Sprite2D>("MeleeWeapon").Texture = melee.textures[0];
 		rangedWeapon.Texture = c.rangedWeapon.textures[0];
 		//Projectile texture adjustment
@@ -179,7 +151,7 @@ public partial class Player : CharacterBody2D
 		projectileScene = auxScene;
 	}
 
-	private void doAttack(WeaponType type)
+	private void makeAttack(WeaponType type)
 	{
 		if (type == MELEE)
 		{
@@ -189,10 +161,26 @@ public partial class Player : CharacterBody2D
 		{
 			swapWeaponVisibility(type);
 			var projectile = projectileScene.Instantiate<Projectile>();
-			projectile.init(GlobalPosition, mouseDirection, mouseDirection.Angle());
+			projectile.init(GlobalPosition, mouseDirection, mouseDirection.Angle(), playerDamage.Y);
 			GetTree().CurrentScene.AddChild(projectile);
 		}
 		isAttacking = true;
-		playAnimation("attack");
+		EntityHelper.playAnimation(this, "attack");
 	}
+
+	private void onMeleeHit(Area2D area)
+	{
+		if (area.GetParent() is Enemy e && isAttacking)
+		{
+			GD.Print("Enemy taking damage");
+			e.takeDamage(playerDamage.X);
+		}
+	}
+
+	public void takeDamage(int damage)
+	{
+		health -= damage;
+		animation.Play("hit");
+	}
+
 }
