@@ -17,7 +17,10 @@ public partial class Player : CharacterBody2D
 	private Sprite2D rangedWeapon { get; set; }
 	private bool isAttacking = false;
 	public Vector2 mouseDirection { get; set; }
-	private Vector2I playerDamage { get; set; }
+	private Vector2I damage { get; set; }
+	private Sprite2D playerSprite;
+	private Timer attackCooldown;
+	private bool canAttack = true;
 
 	public override void _Ready()
 	{
@@ -25,6 +28,9 @@ public partial class Player : CharacterBody2D
 		meleeWeapon = GetNode<Area2D>("Area2D");
 		rangedWeapon = GetNode<Sprite2D>("RangeWeapon");
 		projectileScene = GD.Load<PackedScene>("res://scenes/Projectile.tscn");
+		playerSprite = GetNode<Sprite2D>("Body");
+		attackCooldown = GetNode<Timer>("AttackCooldown");
+		attackCooldown.Timeout += onAttackCooldownTimeout;
 	}
 	public override void _PhysicsProcess(double delta)
 	{
@@ -47,7 +53,6 @@ public partial class Player : CharacterBody2D
 				animation.Stop();
 			}
 		}
-
 		if (isAttacking)
 		{
 			velocity /= 2;
@@ -62,11 +67,11 @@ public partial class Player : CharacterBody2D
 
 	public override void _Input(InputEvent @event)
 	{
-		if (@event.IsActionPressed("melee_attack") && !isAttacking)
+		if (@event.IsActionPressed("melee_attack") && canAttack)
 		{
 			makeAttack(MELEE);
 		}
-		else if (@event.IsActionPressed("ranged_attack") && !isAttacking)
+		else if (@event.IsActionPressed("ranged_attack") && canAttack)
 		{
 			makeAttack(RANGED);
 		}
@@ -77,14 +82,7 @@ public partial class Player : CharacterBody2D
 		if (animationName.ToString().StartsWith("attack"))
 		{
 			isAttacking = false;
-		}
-		if (Input.IsActionPressed("melee_attack"))
-		{
-			makeAttack(MELEE);
-		}
-		else if (Input.IsActionPressed("ranged_attack"))
-		{
-			makeAttack(RANGED);
+			meleeWeapon.Monitoring = false;
 		}
 	}
 
@@ -134,12 +132,12 @@ public partial class Player : CharacterBody2D
 	public void loadCharacter(Character c, Vector2 position)
 	{
 		//Player Data
-		GetNode<Sprite2D>("Body").Texture = c.body;
+		playerSprite.Texture = c.body;
 		Position = position;
 		//Weapon Data
 		var melee = c.meleeWeapon;
 		var ranged = c.rangedWeapon;
-		playerDamage = new Vector2I(melee.damage, ranged.damage);
+		damage = new Vector2I(melee.damage, ranged.damage);
 		meleeWeapon.GetNode<Sprite2D>("MeleeWeapon").Texture = melee.textures[0];
 		rangedWeapon.Texture = c.rangedWeapon.textures[0];
 		//Projectile texture adjustment
@@ -161,26 +159,43 @@ public partial class Player : CharacterBody2D
 		{
 			swapWeaponVisibility(type);
 			var projectile = projectileScene.Instantiate<Projectile>();
-			projectile.init(GlobalPosition, mouseDirection, mouseDirection.Angle(), playerDamage.Y);
+			projectile.init(GlobalPosition, mouseDirection, mouseDirection.Angle(), damage.Y);
 			GetTree().CurrentScene.AddChild(projectile);
 		}
-		isAttacking = true;
 		EntityHelper.playAnimation(this, "attack");
+		isAttacking = true;
+		canAttack = false;
+		attackCooldown.Start();
 	}
 
 	private void onMeleeHit(Area2D area)
 	{
 		if (area.GetParent() is Enemy e && isAttacking)
 		{
-			GD.Print("Enemy taking damage");
-			e.takeDamage(playerDamage.X);
+			GD.Print("Hitting enemy");
+			e.takeDamage(damage.X);
 		}
 	}
 
 	public void takeDamage(int damage)
 	{
 		health -= damage;
-		animation.Play("hit");
+		//Blink animation
+		var tween = CreateTween();
+		tween.TweenProperty(playerSprite, "self_modulate", Colors.DarkRed, .2f);
+		tween.TweenProperty(playerSprite, "self_modulate", Colors.White, 0f);
 	}
 
+	private void onAttackCooldownTimeout()
+	{
+		canAttack = true;
+		if (Input.IsActionPressed("melee_attack"))
+		{
+			makeAttack(MELEE);
+		}
+		else if (Input.IsActionPressed("ranged_attack"))
+		{
+			makeAttack(RANGED);
+		}
+	}
 }

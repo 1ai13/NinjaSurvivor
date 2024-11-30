@@ -17,7 +17,6 @@ characters = Array[Object]([ExtResource("2_m37q8"), ExtResource("3_ugdps")])
 
 [node name="Player" parent="." instance=ExtResource("2_s2hus")]
 position = Vector2(306, 219)
-speed = 200.0
 
 [node name="Enemy" parent="." instance=ExtResource("6_pbjp6")]
 position = Vector2(692, 458)

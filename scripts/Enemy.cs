@@ -3,7 +3,8 @@ using System;
 
 public partial class Enemy : Node2D
 {
-	private const float speed = 100f;
+	private const float speed = 90f;
+	private const float attackRange = 20f;
 	[Export]
 	private int health { get; set; } = 100;
 	[Export]
@@ -11,48 +12,61 @@ public partial class Enemy : Node2D
 	private Player player;
 	public Vector2 enemyDirection { get; set; }
 	public AnimationPlayer animation;
-	private bool isHit = false;
+	private Sprite2D enemySprite;
+	private bool canMove = true;
+	private bool isAttacking = false;
+	private Timer attackCooldown;
+	private Timer hitCooldown;
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
 		player = GetParent().GetNode<Player>("Player");
 		animation = GetNode<AnimationPlayer>("AnimationPlayer");
-
+		enemySprite = GetNode<Sprite2D>("EnemyArea/EnemySprite");
+		attackCooldown = GetNode<Timer>("AttackCooldown");
+		hitCooldown = GetNode<Timer>("HitCooldown");
+		attackCooldown.Timeout += onAttackCooldownTimeout;
+		hitCooldown.Timeout += onHitCooldownTimeout;
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
 	{
-		if (!isHit)
+		var distanceToPlayer = player.Position - Position;
+		enemyDirection = distanceToPlayer.Normalized();
+
+		if (distanceToPlayer.Length() > attackRange && canMove)
 		{
-			enemyDirection = (player.Position - Position).Normalized();
 			Position += enemyDirection * speed * (float)delta;
-			EntityHelper.playAnimation(this, "walk");
 		}
-	}
-
-	private void onAnimationFinished(StringName animationName)
-	{
-		if (animationName.Equals("hit"))
+		else if (distanceToPlayer.Length() <= attackRange && !isAttacking)
 		{
-			isHit = false;
+			player.takeDamage(damage);
+			isAttacking = true;
+			attackCooldown.Start();
 		}
-	}
-
-	private void onCollisionDetected(Node2D body)
-	{
-		if (body is Player p)
-		{
-			GD.Print("PLayer TAking damage");
-			p.takeDamage(damage);
-		}
+		EntityHelper.playAnimation(this, "walk");
 	}
 
 	public void takeDamage(int damage)
 	{
 		health -= damage;
-		isHit = true;
-		animation.Play("hit");
+		var tween = CreateTween();
+		tween.TweenProperty(enemySprite, "self_modulate", new Color(4, 4, 4, 4), .2f);
+		tween.TweenProperty(enemySprite, "self_modulate", Colors.White, 0f);
+		canMove = false;
+		animation.Pause();
+		hitCooldown.Start();
+	}
+
+	private void onAttackCooldownTimeout()
+	{
+		isAttacking = false;
+	}
+
+	private void onHitCooldownTimeout()
+	{
+		canMove = true;
 	}
 }
