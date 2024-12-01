@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://d27tgl25p8g58"]
+[gd_scene load_steps=20 format=3 uid="uid://d27tgl25p8g58"]
 
 [ext_resource type="Texture2D" uid="uid://uiqa86t6b86u" path="res://assets/textures/characters/NinjaRed/SpriteSheet.png" id="1_dlb78"]
 [ext_resource type="Script" path="res://scripts/Player.cs" id="1_t7pu8"]
@@ -10,12 +10,39 @@
 blend_mode = 2
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_qdg2v"]
-radius = 6.0
-height = 12.0
+radius = 7.0
+height = 14.0
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_7qv7g"]
 radius = 3.53553
 height = 11.3086
+
+[sub_resource type="Animation" id="Animation_gubvr"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Area2D/MeleeWeapon:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-6, 12)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Area2D/MeleeWeapon:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
 
 [sub_resource type="Animation" id="Animation_h02rd"]
 resource_name = "attack"
@@ -688,7 +715,7 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0, 0.2, 0.4, 0.6),
 "transitions": PackedFloat32Array(1, 1, 1, 1),
 "update": 1,
-"values": [Vector2(-5.33333, 13.3333), Vector2(-5.33333, 10.6667), Vector2(-5.33333, 12.6667), Vector2(-3.33333, 14)]
+"values": [Vector2(-6, 12), Vector2(-5.33333, 10.6667), Vector2(-5.33333, 12.6667), Vector2(-3.33333, 14)]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
@@ -962,7 +989,7 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0, 0.2, 0.4, 0.6),
 "transitions": PackedFloat32Array(1, 1, 1, 1),
 "update": 1,
-"values": [Vector2(5.33333, 7.33333), Vector2(9.33333, 7.33333), Vector2(5.33333, 7.33333), Vector2(2, 7.33333)]
+"values": [Vector2(4, 6), Vector2(9.33333, 7.33333), Vector2(5.33333, 7.33333), Vector2(2, 7.33333)]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
@@ -1212,6 +1239,7 @@ tracks/10/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_43gym"]
 _data = {
+"RESET": SubResource("Animation_gubvr"),
 "attack_down": SubResource("Animation_h02rd"),
 "attack_left": SubResource("Animation_qrkyu"),
 "attack_right": SubResource("Animation_l4tfw"),
@@ -1231,7 +1259,6 @@ self_modulate = Color(1.5, 1, 1, 1)
 texture = ExtResource("1_dlb78")
 hframes = 4
 vframes = 7
-frame = 12
 
 [node name="Shadow" type="Sprite2D" parent="."]
 material = SubResource("CanvasItemMaterial_smbii")
@@ -1243,21 +1270,22 @@ position = Vector2(0, 1)
 shape = SubResource("CapsuleShape2D_qdg2v")
 
 [node name="Area2D" type="Area2D" parent="."]
+position = Vector2(1, 0)
 monitoring = false
 
 [node name="MeleeWeapon" type="Sprite2D" parent="Area2D"]
-position = Vector2(3, 11)
-rotation = -0.936609
+position = Vector2(-6, 12)
 texture = ExtResource("4_2mbj4")
 
 [node name="WeaponShape" type="CollisionShape2D" parent="Area2D"]
-position = Vector2(4, 12)
-rotation = -0.971876
+position = Vector2(-5, 13)
+rotation = -0.00514764
 shape = SubResource("CapsuleShape2D_7qv7g")
 
 [node name="RangeWeapon" type="Sprite2D" parent="."]
 visible = false
-position = Vector2(-3, 7)
+position = Vector2(-5.33333, 7.33333)
+rotation = 0.261799
 scale = Vector2(0.9, 0.9)
 texture = ExtResource("5_iqmla")
 
@@ -1269,8 +1297,9 @@ libraries = {
 [node name="Camera2D" type="Camera2D" parent="."]
 
 [node name="AttackCooldown" type="Timer" parent="."]
-wait_time = 0.7
+wait_time = 0.8
 one_shot = true
 
-[connection signal="area_entered" from="Area2D" to="." method="onMeleeHit"]
+[connection signal="area_entered" from="Area2D" to="." method="onMeleeAttackHit"]
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="onAnimationFinished"]
+[connection signal="current_animation_changed" from="AnimationPlayer" to="." method="onAnimationChanged"]

@@ -1,7 +1,7 @@
 using Enums;
 using Godot;
 using System;
-using static Enums.Direction;
+using System.Collections.Generic;
 using static Enums.WeaponType;
 
 public partial class Player : CharacterBody2D
@@ -21,14 +21,16 @@ public partial class Player : CharacterBody2D
 	private Sprite2D playerSprite;
 	private Timer attackCooldown;
 	private bool canAttack = true;
+	private HashSet<Enemy> enemiesMeleeTargeted;
 
 	public override void _Ready()
 	{
 		animation = GetNode<AnimationPlayer>("AnimationPlayer");
 		meleeWeapon = GetNode<Area2D>("Area2D");
 		rangedWeapon = GetNode<Sprite2D>("RangeWeapon");
-		projectileScene = GD.Load<PackedScene>("res://scenes/Projectile.tscn");
+		projectileScene = AssetManager.instance.projectileScene;
 		playerSprite = GetNode<Sprite2D>("Body");
+		enemiesMeleeTargeted = new HashSet<Enemy>();
 		attackCooldown = GetNode<Timer>("AttackCooldown");
 		attackCooldown.Timeout += onAttackCooldownTimeout;
 	}
@@ -83,33 +85,7 @@ public partial class Player : CharacterBody2D
 		{
 			isAttacking = false;
 			meleeWeapon.Monitoring = false;
-		}
-	}
-
-	//Checks the mouse position relative to the player and return the equivalent Quadrant
-	private Direction getMouseQuadrant()
-	{
-		if (Math.Abs(mouseDirection.X) > Math.Abs(mouseDirection.Y))
-		{
-			if (mouseDirection.X > 0)
-			{
-				return RIGHT;
-			}
-			else
-			{
-				return LEFT;
-			}
-		}
-		else
-		{
-			if (mouseDirection.Y > 0)
-			{
-				return DOWN;
-			}
-			else
-			{
-				return TOP;
-			}
+			enemiesMeleeTargeted.Clear();
 		}
 	}
 
@@ -140,7 +116,7 @@ public partial class Player : CharacterBody2D
 		damage = new Vector2I(melee.damage, ranged.damage);
 		meleeWeapon.GetNode<Sprite2D>("MeleeWeapon").Texture = melee.textures[0];
 		rangedWeapon.Texture = c.rangedWeapon.textures[0];
-		//Projectile texture adjustment
+		//Projectile texture adjustment, need to initialize the scene and pack it again for future use
 		var auxProjectile = projectileScene.Instantiate<Projectile>();
 		auxProjectile.isProjectile = ranged.isProjectile;
 		auxProjectile.GetNode<Sprite2D>("ProjectileSprite").Texture = ranged.textures[1];
@@ -151,9 +127,15 @@ public partial class Player : CharacterBody2D
 
 	private void makeAttack(WeaponType type)
 	{
+		EntityHelper.playAnimation(this, "attack");
+		isAttacking = true;
+		canAttack = false;
+		attackCooldown.Start();
+
 		if (type == MELEE)
 		{
 			swapWeaponVisibility(type);
+			AssetManager.instance.playSFX("meleeAttack");
 		}
 		else if (type == RANGED)
 		{
@@ -161,19 +143,20 @@ public partial class Player : CharacterBody2D
 			var projectile = projectileScene.Instantiate<Projectile>();
 			projectile.init(GlobalPosition, mouseDirection, mouseDirection.Angle(), damage.Y);
 			GetTree().CurrentScene.AddChild(projectile);
+			AssetManager.instance.playSFX("rangedAttack");
 		}
-		EntityHelper.playAnimation(this, "attack");
-		isAttacking = true;
-		canAttack = false;
-		attackCooldown.Start();
 	}
 
-	private void onMeleeHit(Area2D area)
+	private void onMeleeAttackHit(Area2D area)
 	{
-		if (area.GetParent() is Enemy e && isAttacking)
+
+		if (area.GetParent() is Enemy e && isAttacking && !enemiesMeleeTargeted.Contains(e))
 		{
 			GD.Print("Hitting enemy");
 			e.takeDamage(damage.X);
+			//In case swaping animations between 1 attack need to ensure the enemy
+			//was targeted only once (removing in finishing attack animation)
+			enemiesMeleeTargeted.Add(e);
 		}
 	}
 
@@ -184,6 +167,7 @@ public partial class Player : CharacterBody2D
 		var tween = CreateTween();
 		tween.TweenProperty(playerSprite, "self_modulate", Colors.DarkRed, .2f);
 		tween.TweenProperty(playerSprite, "self_modulate", Colors.White, 0f);
+		AssetManager.instance.playSFX("playerHit");
 	}
 
 	private void onAttackCooldownTimeout()

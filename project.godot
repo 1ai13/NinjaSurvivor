@@ -16,6 +16,14 @@ run/main_scene="res://scenes/Game.tscn"
 config/features=PackedStringArray("4.3", "C#", "Mobile")
 config/icon="res://icon.svg"
 
+[audio]
+
+buses/default_bus_layout="res://assets/resources/audio/game_bus_layout.tres"
+
+[autoload]
+
+AssetManager="*res://scripts/utils/AssetManager.cs"
+
 [display]
 
 window/size/viewport_width=640

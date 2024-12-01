@@ -4,7 +4,7 @@ using System;
 public partial class Enemy : Node2D
 {
 	private const float speed = 90f;
-	private const float attackRange = 20f;
+	private const float attackRange = 18f;
 	[Export]
 	private int health { get; set; } = 100;
 	[Export]
@@ -58,6 +58,7 @@ public partial class Enemy : Node2D
 		canMove = false;
 		animation.Pause();
 		hitCooldown.Start();
+		AssetManager.instance.playSFX("enemyHit", -10f);
 	}
 
 	private void onAttackCooldownTimeout()

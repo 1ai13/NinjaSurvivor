@@ -42,6 +42,7 @@ public partial class Projectile : Area2D
 		}
 	}
 
+	//Hitting enemy
 	private void onAreaDetected(Area2D area)
 	{
 		if (area.GetParent() is Enemy e)
@@ -51,8 +52,10 @@ public partial class Projectile : Area2D
 		}
 	}
 
+	//On Wall collision
 	private void onBodyEntered(Node2D body)
 	{
 		isAlive = false;
+		AssetManager.instance.playSFX("rangedWallHit", -10f);
 	}
 }

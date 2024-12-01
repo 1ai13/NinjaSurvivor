@@ -51,8 +51,8 @@ public partial class EntityHelper : Node
             direction = e.enemyDirection;
             animation = e.animation;
         }
-        var targetRotation = direction * rotation_factor;
 
+        var targetRotation = direction * rotation_factor;
         switch (getDirectionQuadrant(direction))
         {
             case TOP:

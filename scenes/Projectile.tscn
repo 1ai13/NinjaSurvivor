@@ -4,8 +4,8 @@
 [ext_resource type="Texture2D" uid="uid://bndsrbo0t6wxi" path="res://assets/textures/weapons/Bow2/Projectile.png" id="1_eqmcl"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_mpsag"]
-radius = 3.9887
-height = 7.99951
+radius = 5.0
+height = 10.0
 
 [node name="Projectile" type="Area2D"]
 script = ExtResource("1_1ad1x")
