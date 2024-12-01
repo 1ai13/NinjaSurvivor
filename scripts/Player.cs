@@ -85,6 +85,7 @@ public partial class Player : CharacterBody2D
 		{
 			isAttacking = false;
 			meleeWeapon.Monitoring = false;
+			//Remove enemies targeted from list when animation finishes
 			enemiesMeleeTargeted.Clear();
 		}
 	}
@@ -154,8 +155,7 @@ public partial class Player : CharacterBody2D
 		{
 			GD.Print("Hitting enemy");
 			e.takeDamage(damage.X);
-			//In case swaping animations between 1 attack need to ensure the enemy
-			//was targeted only once (removing in finishing attack animation)
+			//In case swaping Direction animation in same attack, ensure the enemy was hit only once
 			enemiesMeleeTargeted.Add(e);
 		}
 	}
