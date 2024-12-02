@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://copbpawgnmm4p"]
+[gd_scene load_steps=13 format=3 uid="uid://copbpawgnmm4p"]
 
 [ext_resource type="Texture2D" uid="uid://c5qugiwr57opx" path="res://assets/textures/enemies/Slime/Slime4.png" id="1_wrvcs"]
 [ext_resource type="Script" path="res://scripts/Enemy.cs" id="1_yuc4a"]
@@ -79,6 +79,31 @@ _data = {
 "walk_up": SubResource("Animation_yhiax")
 }
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_uprsn"]
+bg_color = Color(0.351563, 0.351563, 0.351562, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.103744, 0.103744, 0.103743, 1)
+border_blend = true
+corner_radius_top_left = 1
+corner_radius_top_right = 1
+corner_radius_bottom_right = 1
+corner_radius_bottom_left = 1
+expand_margin_left = 1.0
+expand_margin_top = 1.0
+expand_margin_right = 1.0
+expand_margin_bottom = 1.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0fxst"]
+bg_color = Color(1, 1, 1, 1)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_lydwh"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ddimb"]
+bg_color = Color(1, 1, 1, 1)
+
 [node name="Enemy" type="Node2D"]
 script = ExtResource("1_yuc4a")
 
@@ -88,7 +113,6 @@ script = ExtResource("1_yuc4a")
 texture = ExtResource("1_wrvcs")
 hframes = 4
 vframes = 4
-frame = 1
 
 [node name="EnemyShape" type="CollisionShape2D" parent="EnemyArea"]
 position = Vector2(0, 2)
@@ -106,6 +130,27 @@ one_shot = true
 [node name="HitCooldown" type="Timer" parent="."]
 wait_time = 0.2
 one_shot = true
+
+[node name="BaseHealthBar" type="ProgressBar" parent="."]
+top_level = true
+offset_left = -8.0
+offset_top = -14.0
+offset_right = 8.0
+offset_bottom = -12.0
+theme_override_styles/background = SubResource("StyleBoxFlat_uprsn")
+theme_override_styles/fill = SubResource("StyleBoxFlat_0fxst")
+show_percentage = false
+
+[node name="HealthBar" type="ProgressBar" parent="BaseHealthBar"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/background = SubResource("StyleBoxEmpty_lydwh")
+theme_override_styles/fill = SubResource("StyleBoxFlat_ddimb")
+show_percentage = false
 
 [connection signal="area_entered" from="EnemyArea" to="." method="onAreaEntered"]
 [connection signal="area_exited" from="EnemyArea" to="." method="onAreaExited"]

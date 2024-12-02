@@ -7,8 +7,10 @@ using static Enums.WeaponType;
 public partial class Player : CharacterBody2D
 {
 
+	[Signal]
+	public delegate void healthChangedEventHandler(int health);
 	[Export]
-	private float speed = 100f;
+	private float speed = 60f;
 	[Export]
 	private int health { get; set; } = 100;
 	public AnimationPlayer animation;
@@ -33,6 +35,8 @@ public partial class Player : CharacterBody2D
 		enemiesMeleeTargeted = new HashSet<Enemy>();
 		attackCooldown = GetNode<Timer>("AttackCooldown");
 		attackCooldown.Timeout += onAttackCooldownTimeout;
+		EmitSignal(SignalName.healthChanged, health);
+		//TODO Create Dash behaviour
 	}
 	public override void _PhysicsProcess(double delta)
 	{
@@ -142,7 +146,8 @@ public partial class Player : CharacterBody2D
 		{
 			swapWeaponVisibility(type);
 			var projectile = projectileScene.Instantiate<Projectile>();
-			projectile.init(GlobalPosition, mouseDirection, mouseDirection.Angle(), damage.Y);
+			projectile.init(GlobalPosition, mouseDirection, mouseDirection.Angle(), damage.Y, this);
+			projectile.projectileHit += onRangedEnemyHit;
 			GetTree().CurrentScene.AddChild(projectile);
 			AssetManager.instance.playSFX("rangedAttack");
 		}
@@ -150,13 +155,43 @@ public partial class Player : CharacterBody2D
 
 	private void onMeleeAttackHit(Area2D area)
 	{
-
+		//FIXME HITS ON FAST ATTACKSPEED
 		if (area.GetParent() is Enemy e && isAttacking && !enemiesMeleeTargeted.Contains(e))
 		{
-			GD.Print("Hitting enemy");
-			e.takeDamage(damage.X);
+			GD.Print("Hitting melee enemy");
+
+			var isCrit = EntityHelper.isCriticalHit();
+			int dmg;
+			if (isCrit)
+			{
+				dmg = (int)(damage.X * 2f);
+			}
+			else
+			{
+				dmg = EntityHelper.getVariableDamage(damage.X);
+			}
+			e.takeDamage(dmg, isCrit);
 			//In case swaping Direction animation in same attack, ensure the enemy was hit only once
 			enemiesMeleeTargeted.Add(e);
+		}
+	}
+	private void onRangedEnemyHit(Area2D area)
+	{
+		if (area.GetParent() is Enemy e && isAttacking && !enemiesMeleeTargeted.Contains(e))
+		{
+			GD.Print("Hitting ranged enemy");
+			var isCrit = EntityHelper.isCriticalHit();
+			int dmg;
+			if (isCrit)
+			{
+				dmg = (int)(damage.Y * 2f);
+			}
+			else
+			{
+				dmg = EntityHelper.getVariableDamage(damage.Y);
+			}
+			GD.Print("Final Damage" + dmg);
+			e.takeDamage(dmg, isCrit);
 		}
 	}
 
@@ -168,6 +203,7 @@ public partial class Player : CharacterBody2D
 		tween.TweenProperty(playerSprite, "self_modulate", Colors.DarkRed, .2f);
 		tween.TweenProperty(playerSprite, "self_modulate", Colors.White, 0f);
 		AssetManager.instance.playSFX("playerHit");
+		EmitSignal(SignalName.healthChanged, health);
 	}
 
 	private void onAttackCooldownTimeout()

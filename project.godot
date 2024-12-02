@@ -30,13 +30,17 @@ window/size/viewport_width=640
 window/size/viewport_height=360
 window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
-window/snap/snap_2d_transforms_to_pixel=false
+window/snap/snap_2d_transforms_to_pixel=true
 window/quality/msaa_2d=0
 window/quality/screen_space_aa=0
 
 [dotnet]
 
 project/assembly_name="NinjaSurvivor"
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/Todo_Manager/plugin.cfg", "res://addons/imrp/plugin.cfg")
 
 [input]
 

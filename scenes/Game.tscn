@@ -14,6 +14,11 @@ script = ExtResource("1_fmhb6")
 characterSelected = "Ninja"
 characters = Array[Object]([ExtResource("2_m37q8"), ExtResource("3_ugdps")])
 
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="HUD" parent="CanvasLayer" instance=ExtResource("7_mtukj")]
+texture_filter = 1
+
 [node name="Arena" parent="." instance=ExtResource("1_vwonq")]
 
 [node name="Player" parent="." instance=ExtResource("2_s2hus")]
@@ -22,6 +27,4 @@ position = Vector2(555, 131)
 [node name="Enemy" parent="." instance=ExtResource("6_pbjp6")]
 position = Vector2(692, 458)
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
-
-[node name="HUD" parent="CanvasLayer" instance=ExtResource("7_mtukj")]
+[connection signal="healthChanged" from="Player" to="CanvasLayer/HUD" method="onHealthChanged"]

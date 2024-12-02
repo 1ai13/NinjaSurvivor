@@ -1,8 +1,11 @@
 using Godot;
 using System;
+using System.Buffers;
 
 public partial class Projectile : Area2D
 {
+	[Signal]
+	public delegate void projectileHitEventHandler(Area2D area);
 	[Export]
 	private float speed = 200f;
 	private float rotationSpeed = 500f;
@@ -14,9 +17,11 @@ public partial class Projectile : Area2D
 	private Vector2 velocity { get; set; } = Vector2.Zero;
 	[Export]
 	public bool isProjectile { get; set; }
+	private Node2D owner;
 
-	public void init(Vector2 position, Vector2 vel, float rotation, int dmg)
+	public void init(Vector2 position, Vector2 vel, float rotation, int dmg, Node2D owner)
 	{
+		this.owner = owner;
 		velocity = vel;
 		damage = dmg;
 		// Sets the bullet away from the player
@@ -45,9 +50,11 @@ public partial class Projectile : Area2D
 	//Hitting enemy
 	private void onAreaDetected(Area2D area)
 	{
-		if (area.GetParent() is Enemy e)
+		if (owner is Player && area.GetParent() is Enemy e)
 		{
-			e.takeDamage(damage);
+			var dmg = damage;
+			EmitSignal(SignalName.projectileHit, area);
+			var isCrit = EntityHelper.getVariableDamage(dmg);
 			QueueFree();
 		}
 	}
@@ -56,6 +63,6 @@ public partial class Projectile : Area2D
 	private void onBodyEntered(Node2D body)
 	{
 		isAlive = false;
-		AssetManager.instance.playSFX("rangedWallHit", -10f);
+		AssetManager.instance.playSFX("rangedWallHit", -5f);
 	}
 }

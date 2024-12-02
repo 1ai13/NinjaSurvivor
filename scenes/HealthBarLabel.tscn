@@ -1,0 +1,25 @@
+[gd_scene load_steps=3 format=3 uid="uid://duau41cr72m53"]
+
+[ext_resource type="FontFile" uid="uid://botklpdl5a2x1" path="res://assets/fonts/NormalFont.ttf" id="1_gkmwq"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_27syn"]
+font = ExtResource("1_gkmwq")
+font_size = 5
+outline_size = 2
+outline_color = Color(0, 0, 0, 1)
+
+[node name="Label" type="Label"]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -4.0
+offset_top = -9.0
+offset_right = 3.0
+offset_bottom = -1.0
+grow_horizontal = 2
+pivot_offset = Vector2(4, 4)
+text = "-1
+"
+label_settings = SubResource("LabelSettings_27syn")
+horizontal_alignment = 1
+vertical_alignment = 1

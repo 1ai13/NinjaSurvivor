@@ -21,6 +21,9 @@ public partial class Game : Node2D
 				player.loadCharacter(c, playerSpawn.Position);
 			}
 		}
+		//TODO Enemy spawner + MORE enemies
+		//TODO Add more Levels / procedural logic level
+		//TODO Freshy arena look
 	}
 
 	public override void _Process(double delta)

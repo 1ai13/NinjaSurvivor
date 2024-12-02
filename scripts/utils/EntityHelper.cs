@@ -7,6 +7,7 @@ public partial class EntityHelper : Node
 {
 
     private const float rotation_factor = .4f;
+    public static RandomNumberGenerator rnd = new RandomNumberGenerator();
 
     //Checks the mouse OR enemy positions relative to the player and return the equivalent Quadrant
     public static Direction getDirectionQuadrant(Vector2 direction)
@@ -74,6 +75,27 @@ public partial class EntityHelper : Node
             default:
                 GD.PrintErr("Invalid Direction to Move/Attack");
                 break;
+        }
+    }
+
+    public static int getVariableDamage(int damage)
+    {
+        GD.Print("\nIncoming damage" + damage);
+        var damageVariation = (int)(damage * 0.2f);
+        GD.Print("variation damage" + damageVariation);
+        GD.Print("Basic hit damage" + damage);
+        return rnd.RandiRange(damage - damageVariation, damage + damageVariation);
+    }
+
+    public static bool isCriticalHit()
+    {
+        if (rnd.Randf() > .6f)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
         }
     }
 }
