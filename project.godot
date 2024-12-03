@@ -28,9 +28,10 @@ AssetManager="*res://scripts/utils/AssetManager.cs"
 
 window/size/viewport_width=640
 window/size/viewport_height=360
+window/size/always_on_top=true
 window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
-window/snap/snap_2d_transforms_to_pixel=true
+window/snap/snap_2d_transforms_to_pixel=false
 window/quality/msaa_2d=0
 window/quality/screen_space_aa=0
 
@@ -84,3 +85,4 @@ melee_attack={
 [rendering]
 
 renderer/rendering_method="mobile"
+2d/snap/snap_2d_transforms_to_pixel=true

@@ -22,7 +22,6 @@ public partial class Player : CharacterBody2D
 	private Vector2I damage { get; set; }
 	private Sprite2D playerSprite;
 	private Timer attackCooldown;
-	private bool canAttack = true;
 	private HashSet<Enemy> enemiesMeleeTargeted;
 
 	public override void _Ready()
@@ -73,11 +72,11 @@ public partial class Player : CharacterBody2D
 
 	public override void _Input(InputEvent @event)
 	{
-		if (@event.IsActionPressed("melee_attack") && canAttack)
+		if (@event.IsActionPressed("melee_attack") && attackCooldown.IsStopped())
 		{
 			makeAttack(MELEE);
 		}
-		else if (@event.IsActionPressed("ranged_attack") && canAttack)
+		else if (@event.IsActionPressed("ranged_attack") && attackCooldown.IsStopped())
 		{
 			makeAttack(RANGED);
 		}
@@ -87,10 +86,11 @@ public partial class Player : CharacterBody2D
 	{
 		if (animationName.ToString().StartsWith("attack"))
 		{
+			GD.Print("Finishing animation");
+			//Reseting speedscale for walk animation
+			animation.SpeedScale = 1;
 			isAttacking = false;
 			meleeWeapon.Monitoring = false;
-			//Remove enemies targeted from list when animation finishes
-			enemiesMeleeTargeted.Clear();
 		}
 	}
 
@@ -132,10 +132,11 @@ public partial class Player : CharacterBody2D
 
 	private void makeAttack(WeaponType type)
 	{
+		// Adjusting Animation Speed to adjust Player Attack speed
+		// Diving current attack animation duration BY the attack speed timer 
+		float animationDuration = Mathf.Lerp(.2f, .8f, (float)attackCooldown.WaitTime - .2f);
+		animation.SpeedScale = .1f / animationDuration + 0.05f;
 		EntityHelper.playAnimation(this, "attack");
-		isAttacking = true;
-		canAttack = false;
-		attackCooldown.Start();
 
 		if (type == MELEE)
 		{
@@ -151,20 +152,25 @@ public partial class Player : CharacterBody2D
 			GetTree().CurrentScene.AddChild(projectile);
 			AssetManager.instance.playSFX("rangedAttack");
 		}
+
+
+		isAttacking = true;
+		attackCooldown.Start();
+		GD.Print("Attacking enemy, MELEE COUNTS" + enemiesMeleeTargeted.Count);
 	}
 
 	private void onMeleeAttackHit(Area2D area)
 	{
-		//FIXME HITS ON FAST ATTACKSPEED
-		if (area.GetParent() is Enemy e && isAttacking && !enemiesMeleeTargeted.Contains(e))
+		GD.Print("Overlapping Enemy");
+		//FIXME Weird behaviours on edges
+		if (area.GetParent() is Enemy e && !attackCooldown.IsStopped() && !enemiesMeleeTargeted.Contains(e))
 		{
 			GD.Print("Hitting melee enemy");
-
 			var isCrit = EntityHelper.isCriticalHit();
 			int dmg;
 			if (isCrit)
 			{
-				dmg = (int)(damage.X * 2f);
+				dmg = (int)(damage.X * 1.6f);
 			}
 			else
 			{
@@ -177,20 +183,18 @@ public partial class Player : CharacterBody2D
 	}
 	private void onRangedEnemyHit(Area2D area)
 	{
-		if (area.GetParent() is Enemy e && isAttacking && !enemiesMeleeTargeted.Contains(e))
+		if (area.GetParent() is Enemy e)
 		{
-			GD.Print("Hitting ranged enemy");
 			var isCrit = EntityHelper.isCriticalHit();
 			int dmg;
 			if (isCrit)
 			{
-				dmg = (int)(damage.Y * 2f);
+				dmg = (int)(damage.Y * 1.6f);
 			}
 			else
 			{
 				dmg = EntityHelper.getVariableDamage(damage.Y);
 			}
-			GD.Print("Final Damage" + dmg);
 			e.takeDamage(dmg, isCrit);
 		}
 	}
@@ -208,7 +212,8 @@ public partial class Player : CharacterBody2D
 
 	private void onAttackCooldownTimeout()
 	{
-		canAttack = true;
+		//Remove enemies targeted from list when animation finishes
+		enemiesMeleeTargeted.Clear();
 		if (Input.IsActionPressed("melee_attack"))
 		{
 			makeAttack(MELEE);

@@ -4,7 +4,7 @@ using System.Linq;
 
 public partial class Enemy : Node2D
 {
-	private const float speed = 60f;
+	private const float speed = 50f;
 	private const float attackRange = 18f;
 	[Export]
 	private int health { get; set; } = 100;
@@ -42,7 +42,6 @@ public partial class Enemy : Node2D
 		healthBar.Value = health;
 		healthBar.SelfModulate = Colors.Green;
 		lastHealth = health;
-		//TODO add attack animation
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -55,13 +54,14 @@ public partial class Enemy : Node2D
 		if (distanceToPlayer.Length() > attackRange && hitCooldown.IsStopped())
 		{
 			Position += enemyDirection * speed * (float)delta;
+			EntityHelper.playAnimation(this, "walk");
 		}
 		else if (distanceToPlayer.Length() <= attackRange && attackCooldown.IsStopped())
 		{
+			EntityHelper.playAnimation(this, "attack");
 			player.takeDamage(damage);
 			attackCooldown.Start();
 		}
-		EntityHelper.playAnimation(this, "walk");
 		if (lerpValue < lerpDuration)
 		{
 			lerpValue += (float)delta;
@@ -73,7 +73,6 @@ public partial class Enemy : Node2D
 	public void takeDamage(int damage, bool criticalHit)
 	{
 		//Assign Health and HealthBar values
-		animation.Pause();
 		lastHealth = (int)baseHealthBar.Value;
 		health -= damage;
 		healthBar.Value = health;
@@ -131,12 +130,10 @@ public partial class Enemy : Node2D
 		//Cleanup unused enemy Labels
 		baseHealthBar.GetChildren().OfType<Label>().ToList().ForEach(label =>
 		{
-			GD.Print("Finding labels" + label.Name);
 			if (label is Label l)
 			{
 				if (l.Visible == false)
 				{
-					GD.Print("Removing labels" + label.Name);
 					l.QueueFree();
 				}
 			}

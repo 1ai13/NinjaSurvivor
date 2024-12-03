@@ -46,7 +46,7 @@ tracks/1/keys = {
 
 [sub_resource type="Animation" id="Animation_h02rd"]
 resource_name = "attack"
-length = 0.3
+length = 0.1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -54,7 +54,7 @@ tracks/0/path = NodePath("Body:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.133333, 0.266667),
+"times": PackedFloat32Array(0, 0.0333333, 0.0666667),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 1,
 "values": [12, 16, 0]
@@ -66,7 +66,7 @@ tracks/1/path = NodePath("Area2D/MeleeWeapon:position")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.133333, 0.266667),
+"times": PackedFloat32Array(0, 0.0333333, 0.0666667),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 1,
 "values": [Vector2(3, 11), Vector2(-1, 14), Vector2(-9, 11)]
@@ -78,7 +78,7 @@ tracks/2/path = NodePath("Area2D/MeleeWeapon:rotation")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
-"times": PackedFloat32Array(0, 0.133333, 0.266667),
+"times": PackedFloat32Array(0, 0.0333333, 0.0666667),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 1,
 "values": [-0.936609, -0.112595, 0.704833]
@@ -90,7 +90,7 @@ tracks/3/path = NodePath("RangeWeapon:position")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
-"times": PackedFloat32Array(0, 0.133333, 0.266667),
+"times": PackedFloat32Array(0, 0.0333333, 0.0666667),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 1,
 "values": [Vector2(-3, 7), Vector2(-1.90735e-06, 8), Vector2(-4, 7)]
@@ -102,7 +102,7 @@ tracks/4/path = NodePath("RangeWeapon:rotation")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
-"times": PackedFloat32Array(0, 0.266667),
+"times": PackedFloat32Array(0, 0.0666667),
 "transitions": PackedFloat32Array(1, 1),
 "update": 1,
 "values": [0.0, 0.523598]
@@ -114,7 +114,7 @@ tracks/5/path = NodePath("Area2D/WeaponShape:position")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/keys = {
-"times": PackedFloat32Array(0, 0.133333, 0.266667),
+"times": PackedFloat32Array(0, 0.0333333, 0.0666667),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 1,
 "values": [Vector2(4, 12), Vector2(-1, 15), Vector2(-10, 12)]
@@ -126,7 +126,7 @@ tracks/6/path = NodePath("Area2D/WeaponShape:rotation")
 tracks/6/interp = 1
 tracks/6/loop_wrap = true
 tracks/6/keys = {
-"times": PackedFloat32Array(0, 0.133333, 0.266667),
+"times": PackedFloat32Array(0, 0.0333333, 0.0666667),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 1,
 "values": [-0.971876, -0.0991084, 0.732872]
@@ -182,7 +182,7 @@ tracks/10/keys = {
 
 [sub_resource type="Animation" id="Animation_qrkyu"]
 resource_name = "attack_left"
-length = 0.3
+length = 0.1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -190,7 +190,7 @@ tracks/0/path = NodePath("Body:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.133333, 0.266667),
+"times": PackedFloat32Array(0, 0.0333333, 0.0666667),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 1,
 "values": [2, 6, 14]
@@ -202,7 +202,7 @@ tracks/1/path = NodePath("Area2D/MeleeWeapon:position")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.133333, 0.266667),
+"times": PackedFloat32Array(0, 0.0333333, 0.0666667),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 1,
 "values": [Vector2(-9, 9), Vector2(-11, 2), Vector2(-9, -3)]
@@ -214,7 +214,7 @@ tracks/2/path = NodePath("Area2D/MeleeWeapon:rotation")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
-"times": PackedFloat32Array(0, 0.133333, 0.266667),
+"times": PackedFloat32Array(0, 0.0333333, 0.0666667),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 1,
 "values": [-2.35619, -1.43228, -0.844271]
@@ -226,7 +226,7 @@ tracks/3/path = NodePath("RangeWeapon:position")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
-"times": PackedFloat32Array(0, 0.133333, 0.266667),
+"times": PackedFloat32Array(0, 0.0333333, 0.0666667),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 1,
 "values": [Vector2(-1, 4), Vector2(-5, 4), Vector2(-6, 3)]
@@ -238,7 +238,7 @@ tracks/4/path = NodePath("RangeWeapon:rotation")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
-"times": PackedFloat32Array(0, 0.133333, 0.266667),
+"times": PackedFloat32Array(0, 0.0333333, 0.0666667),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 1,
 "values": [0.261799, 1.0472, 1.57079]
@@ -250,7 +250,7 @@ tracks/5/path = NodePath("Area2D/WeaponShape:position")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/keys = {
-"times": PackedFloat32Array(0, 0.133333, 0.266667),
+"times": PackedFloat32Array(0, 0.0333333, 0.0666667),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 1,
 "values": [Vector2(-10, 10), Vector2(-13, 2), Vector2(-11, -4)]
@@ -262,7 +262,7 @@ tracks/6/path = NodePath("Area2D/WeaponShape:rotation")
 tracks/6/interp = 1
 tracks/6/loop_wrap = true
 tracks/6/keys = {
-"times": PackedFloat32Array(0, 0.133333, 0.266667),
+"times": PackedFloat32Array(0, 0.0333333, 0.0666667),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 1,
 "values": [0.785397, 1.66134, -0.906578]
@@ -318,7 +318,7 @@ tracks/10/keys = {
 
 [sub_resource type="Animation" id="Animation_l4tfw"]
 resource_name = "attack_right"
-length = 0.3
+length = 0.1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -326,7 +326,7 @@ tracks/0/path = NodePath("Body:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.2),
+"times": PackedFloat32Array(0, 0.0333333, 0.0666667),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 1,
 "values": [19, 7, 3]
@@ -338,7 +338,7 @@ tracks/1/path = NodePath("Area2D/MeleeWeapon:position")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.2),
+"times": PackedFloat32Array(0, 0.0333333, 0.0666667),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 1,
 "values": [Vector2(12, -1), Vector2(10, 6), Vector2(5, 11)]
@@ -350,7 +350,7 @@ tracks/2/path = NodePath("Area2D/MeleeWeapon:rotation")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.2),
+"times": PackedFloat32Array(0, 0.0333333, 0.0666667),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 1,
 "values": [-2.35619, -1.57079, -0.880645]
@@ -362,7 +362,7 @@ tracks/3/path = NodePath("RangeWeapon:position")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.2),
+"times": PackedFloat32Array(0, 0.0333333, 0.0666667),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 1,
 "values": [Vector2(5, 5), Vector2(6, 5), Vector2(2, 6)]
@@ -374,7 +374,7 @@ tracks/4/path = NodePath("RangeWeapon:rotation")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.2),
+"times": PackedFloat32Array(0, 0.0333333, 0.0666667),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 1,
 "values": [-0.785397, -1.57079, -0.261799]
@@ -386,7 +386,7 @@ tracks/5/path = NodePath("Area2D/WeaponShape:position")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.2),
+"times": PackedFloat32Array(0, 0.0333333, 0.0666667),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 1,
 "values": [Vector2(13, -2), Vector2(11, 6), Vector2(7, 12)]
@@ -398,7 +398,7 @@ tracks/6/path = NodePath("Area2D/WeaponShape:rotation")
 tracks/6/interp = 1
 tracks/6/loop_wrap = true
 tracks/6/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.2),
+"times": PackedFloat32Array(0, 0.0333333, 0.0666667),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 1,
 "values": [0.785397, 1.57079, -0.95211]
@@ -454,7 +454,7 @@ tracks/10/keys = {
 
 [sub_resource type="Animation" id="Animation_o71hk"]
 resource_name = "attack_uo"
-length = 0.3
+length = 0.1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -462,7 +462,7 @@ tracks/0/path = NodePath("Body:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.133333, 0.266667),
+"times": PackedFloat32Array(0, 0.0333333, 0.0666667),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 1,
 "values": [13, 17, 13]
@@ -474,7 +474,7 @@ tracks/1/path = NodePath("Area2D/MeleeWeapon:position")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.133333, 0.266667),
+"times": PackedFloat32Array(0, 0.0333333, 0.0666667),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 1,
 "values": [Vector2(-5, -7), Vector2(3, -12), Vector2(10, -4)]
@@ -486,7 +486,7 @@ tracks/2/path = NodePath("Area2D/MeleeWeapon:rotation")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
-"times": PackedFloat32Array(0, 0.133333, 0.266667),
+"times": PackedFloat32Array(0, 0.0333333, 0.0666667),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 1,
 "values": [-3.95881, -3.15956, 3.81754]
@@ -498,7 +498,7 @@ tracks/3/path = NodePath("Area2D/WeaponShape:position")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
-"times": PackedFloat32Array(0, 0.133333, 0.266667),
+"times": PackedFloat32Array(0, 0.0333333, 0.0666667),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 1,
 "values": [Vector2(-6, -7), Vector2(3, -13), Vector2(11, -6)]
@@ -510,7 +510,7 @@ tracks/4/path = NodePath("Area2D/WeaponShape:rotation")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
-"times": PackedFloat32Array(0, 0.133333, 0.266667),
+"times": PackedFloat32Array(0, 0.0333333, 0.0666667),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 1,
 "values": [-0.75522, -0.00339773, 0.720967]
@@ -570,7 +570,7 @@ tracks/9/path = NodePath("RangeWeapon:position")
 tracks/9/interp = 1
 tracks/9/loop_wrap = true
 tracks/9/keys = {
-"times": PackedFloat32Array(0, 0.133333, 0.266667),
+"times": PackedFloat32Array(0, 0.0333333, 0.0666667),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 1,
 "values": [Vector2(4, -3), Vector2(0, -6), Vector2(5, 3)]
@@ -582,7 +582,7 @@ tracks/10/path = NodePath("RangeWeapon:rotation")
 tracks/10/interp = 1
 tracks/10/loop_wrap = true
 tracks/10/keys = {
-"times": PackedFloat32Array(0, 0.133333, 0.266667),
+"times": PackedFloat32Array(0, 0.0333333, 0.0666667),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 1,
 "values": [-2.56771, 3.156, 4.01471]
@@ -1302,4 +1302,4 @@ one_shot = true
 
 [connection signal="area_entered" from="Area2D" to="." method="onMeleeAttackHit"]
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="onAnimationFinished"]
-[connection signal="current_animation_changed" from="AnimationPlayer" to="." method="onAnimationChanged"]
+[connection signal="animation_started" from="AnimationPlayer" to="." method="onAnimationStarted"]

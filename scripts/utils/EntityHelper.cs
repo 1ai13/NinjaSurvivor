@@ -80,10 +80,7 @@ public partial class EntityHelper : Node
 
     public static int getVariableDamage(int damage)
     {
-        GD.Print("\nIncoming damage" + damage);
         var damageVariation = (int)(damage * 0.2f);
-        GD.Print("variation damage" + damageVariation);
-        GD.Print("Basic hit damage" + damage);
         return rnd.RandiRange(damage - damageVariation, damage + damageVariation);
     }
 
