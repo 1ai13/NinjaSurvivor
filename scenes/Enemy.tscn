@@ -236,7 +236,3 @@ grow_vertical = 2
 theme_override_styles/background = SubResource("StyleBoxEmpty_lydwh")
 theme_override_styles/fill = SubResource("StyleBoxFlat_ddimb")
 show_percentage = false
-
-[connection signal="area_entered" from="EnemyArea" to="." method="onAreaEntered"]
-[connection signal="area_exited" from="EnemyArea" to="." method="onAreaExited"]
-[connection signal="body_entered" from="EnemyArea" to="." method="onCollisionDetected"]

@@ -90,10 +90,8 @@ public partial class Player : CharacterBody2D
 			//Reseting speedscale for walk animation
 			animation.SpeedScale = 1;
 			isAttacking = false;
-			meleeWeapon.Monitoring = false;
 		}
 	}
-
 	private void swapWeaponVisibility(WeaponType type)
 	{
 		if (type == MELEE)
@@ -137,10 +135,12 @@ public partial class Player : CharacterBody2D
 		float animationDuration = Mathf.Lerp(.2f, .8f, (float)attackCooldown.WaitTime - .2f);
 		animation.SpeedScale = .1f / animationDuration + 0.05f;
 		EntityHelper.playAnimation(this, "attack");
-
+		isAttacking = true;
+		attackCooldown.Start();
 		if (type == MELEE)
 		{
 			swapWeaponVisibility(type);
+			GD.Print("Changing visibility");
 			AssetManager.instance.playSFX("meleeAttack");
 		}
 		else if (type == RANGED)
@@ -152,18 +152,13 @@ public partial class Player : CharacterBody2D
 			GetTree().CurrentScene.AddChild(projectile);
 			AssetManager.instance.playSFX("rangedAttack");
 		}
-
-
-		isAttacking = true;
-		attackCooldown.Start();
-		GD.Print("Attacking enemy, MELEE COUNTS" + enemiesMeleeTargeted.Count);
 	}
 
 	private void onMeleeAttackHit(Area2D area)
 	{
 		GD.Print("Overlapping Enemy");
-		//FIXME Weird behaviours on edges
-		if (area.GetParent() is Enemy e && !attackCooldown.IsStopped() && !enemiesMeleeTargeted.Contains(e))
+
+		if (area.GetParent() is Enemy e && isAttacking && !enemiesMeleeTargeted.Contains(e))
 		{
 			GD.Print("Hitting melee enemy");
 			var isCrit = EntityHelper.isCriticalHit();
