@@ -25,6 +25,6 @@ texture_filter = 1
 position = Vector2(555, 131)
 
 [node name="Enemy" parent="." instance=ExtResource("6_pbjp6")]
-position = Vector2(692, 458)
+position = Vector2(852, 328)
 
 [connection signal="healthChanged" from="Player" to="CanvasLayer/HUD" method="onHealthChanged"]
