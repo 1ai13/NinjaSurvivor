@@ -23,6 +23,7 @@ public partial class Player : CharacterBody2D
 	private Sprite2D playerSprite;
 	private Timer attackCooldown;
 	private HashSet<Enemy> enemiesMeleeTargeted;
+	private WeaponType currentType = MELEE;
 
 	public override void _Ready()
 	{
@@ -86,7 +87,6 @@ public partial class Player : CharacterBody2D
 	{
 		if (animationName.ToString().StartsWith("attack"))
 		{
-			GD.Print("Finishing animation");
 			//Reseting speedscale for walk animation
 			animation.SpeedScale = 1;
 			isAttacking = false;
@@ -139,13 +139,20 @@ public partial class Player : CharacterBody2D
 		attackCooldown.Start();
 		if (type == MELEE)
 		{
-			swapWeaponVisibility(type);
-			GD.Print("Changing visibility");
+			if (currentType != type)
+			{
+				swapWeaponVisibility(type);
+				currentType = type;
+			}
 			AssetManager.instance.playSFX("meleeAttack");
 		}
 		else if (type == RANGED)
 		{
-			swapWeaponVisibility(type);
+			if (currentType != type)
+			{
+				swapWeaponVisibility(type);
+				currentType = type;
+			}
 			var projectile = projectileScene.Instantiate<Projectile>();
 			projectile.init(GlobalPosition, mouseDirection, mouseDirection.Angle(), damage.Y, this);
 			projectile.projectileHit += onRangedEnemyHit;
@@ -156,11 +163,9 @@ public partial class Player : CharacterBody2D
 
 	private void onMeleeAttackHit(Area2D area)
 	{
-		GD.Print("Overlapping Enemy");
-
+		//Ensure the enemy was hit only once, checking enemies targeted by attack
 		if (area.GetParent() is Enemy e && isAttacking && !enemiesMeleeTargeted.Contains(e))
 		{
-			GD.Print("Hitting melee enemy");
 			var isCrit = EntityHelper.isCriticalHit();
 			int dmg;
 			if (isCrit)
@@ -172,7 +177,6 @@ public partial class Player : CharacterBody2D
 				dmg = EntityHelper.getVariableDamage(damage.X);
 			}
 			e.takeDamage(dmg, isCrit);
-			//In case swaping Direction animation in same attack, ensure the enemy was hit only once
 			enemiesMeleeTargeted.Add(e);
 		}
 	}
@@ -197,7 +201,7 @@ public partial class Player : CharacterBody2D
 	public void takeDamage(int damage)
 	{
 		health -= damage;
-		//Blink animation
+		//Hurt animation
 		var tween = CreateTween();
 		tween.TweenProperty(playerSprite, "self_modulate", Colors.DarkRed, .2f);
 		tween.TweenProperty(playerSprite, "self_modulate", Colors.White, 0f);
@@ -208,7 +212,7 @@ public partial class Player : CharacterBody2D
 	private void onAttackCooldownTimeout()
 	{
 		//Remove enemies targeted from list when animation finishes
-		enemiesMeleeTargeted.Clear();
+		if (enemiesMeleeTargeted.Count != 0) enemiesMeleeTargeted.Clear();
 		if (Input.IsActionPressed("melee_attack"))
 		{
 			makeAttack(MELEE);

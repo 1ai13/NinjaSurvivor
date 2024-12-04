@@ -54,28 +54,30 @@ public partial class EntityHelper : Node
         }
 
         var targetRotation = direction * rotation_factor;
+        var selectedAnimation = "";
         switch (getDirectionQuadrant(direction))
         {
             case TOP:
                 entity.Rotation = targetRotation.X;
-                animation.Play($"{animationType}_up");
+                selectedAnimation = $"{animationType}_up";
                 break;
             case RIGHT:
                 entity.Rotation = targetRotation.Y;
-                animation.Play($"{animationType}_right");
+                selectedAnimation = $"{animationType}_right";
                 break;
             case DOWN:
                 entity.Rotation = -targetRotation.X;
-                animation.Play($"{animationType}_down");
+                selectedAnimation = $"{animationType}_down";
                 break;
             case LEFT:
                 entity.Rotation = -targetRotation.Y;
-                animation.Play($"{animationType}_left");
+                selectedAnimation = $"{animationType}_left";
                 break;
             default:
                 GD.PrintErr("Invalid Direction to Move/Attack");
                 break;
         }
+        animation.Play(selectedAnimation);
     }
 
     public static int getVariableDamage(int damage)

@@ -10,7 +10,6 @@ public partial class AssetManager : Node
 	private AudioStreamPlayer musicPlayer;
 	public PackedScene projectileScene;
 	public PackedScene enemyHealthBarLabel;
-	private RandomNumberGenerator rnd;
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
@@ -20,7 +19,6 @@ public partial class AssetManager : Node
 
 		projectileScene = GD.Load<PackedScene>("res://scenes/Projectile.tscn");
 		enemyHealthBarLabel = GD.Load<PackedScene>("res://scenes/HealthBarLabel.tscn");
-		rnd = new RandomNumberGenerator();
 
 		//Audio Manager
 		SFXAudios = new Dictionary<string, List<AudioStream>>();
@@ -82,7 +80,7 @@ public partial class AssetManager : Node
 			sfx = name switch
 			{
 				//If melee attack choose a random sound
-				"meleeAttack" => SFXAudios[name][rnd.RandiRange(0, SFXAudios[name].Count - 1)],
+				"meleeAttack" => SFXAudios[name][EntityHelper.rnd.RandiRange(0, SFXAudios[name].Count - 1)],
 				_ => SFXAudios[name][0]
 			};
 			var playback = (AudioStreamPlaybackPolyphonic)SFXPlayer.GetStreamPlayback();
@@ -90,4 +88,10 @@ public partial class AssetManager : Node
 		}
 	}
 
+
+	public void playSFX(AudioStream sfx, float volume = 0)
+	{
+		var playback = (AudioStreamPlaybackPolyphonic)SFXPlayer.GetStreamPlayback();
+		playback.PlayStream(sfx, 0, volume, 1, 0, "SFX");
+	}
 }

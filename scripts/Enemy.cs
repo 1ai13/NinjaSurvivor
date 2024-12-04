@@ -24,6 +24,7 @@ public partial class Enemy : Node2D
 	private float lerpValue = 0f;
 	private const float lerpDuration = .5f;
 	private int lastHealth;
+	private bool isDead = false;
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
@@ -38,6 +39,7 @@ public partial class Enemy : Node2D
 		healthBarLabel = AssetManager.instance.enemyHealthBarLabel;
 		baseHealthBar.Value = health;
 		baseHealthBar.MaxValue = health;
+		baseHealthBar.Visible = false;
 		healthBar.MaxValue = health;
 		healthBar.Value = health;
 		healthBar.SelfModulate = Colors.Green;
@@ -47,6 +49,21 @@ public partial class Enemy : Node2D
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _PhysicsProcess(double delta)
 	{
+		if (lerpValue < lerpDuration && baseHealthBar.Value > 0)
+		{
+			lerpValue += (float)delta;
+			var w = lerpValue / lerpDuration; //Normalizing lerpValue to achieve lerpDuration
+			baseHealthBar.Value = Mathf.Lerp(lastHealth, health, w);
+			if (baseHealthBar.Value == 0)
+			{
+				AssetManager.instance.playSFX(GD.Load<AudioStream>("res://assets/audio/enemies/slime/deadSlime.wav"));
+				baseHealthBar.Visible = false;
+			}
+		}
+		if (isDead)
+		{
+			return;
+		}
 		baseHealthBar.Position = Position - healthBarOffset;
 		var distanceToPlayer = player.Position - Position;
 		enemyDirection = distanceToPlayer.Normalized();
@@ -62,19 +79,20 @@ public partial class Enemy : Node2D
 			player.takeDamage(damage);
 			attackCooldown.Start();
 		}
-		if (lerpValue < lerpDuration)
-		{
-			lerpValue += (float)delta;
-			var w = lerpValue / lerpDuration; //Normalizing lerpValue to achieve lerpDuration
-			baseHealthBar.Value = Mathf.Lerp(lastHealth, health, w);
-		}
+
 	}
 
 	public void takeDamage(int damage, bool criticalHit)
 	{
+		if (isDead)
+		{
+			return;
+		}
 		//Assign Health and HealthBar values
+		if (!baseHealthBar.Visible) baseHealthBar.Visible = true;
 		lastHealth = (int)baseHealthBar.Value;
 		health -= damage;
+		health = Math.Max(health, 0);
 		healthBar.Value = health;
 		lerpValue = 0;
 
@@ -88,9 +106,12 @@ public partial class Enemy : Node2D
 			healthBar.SelfModulate = new Color(1, 1, 0, 1);
 		}
 
-		if (health < 0)
+		if (health == 0)
 		{
-			//#TODO enemy die logic
+			isDead = true;
+			animation.Play("dead");
+			var area = GetNode<Area2D>("EnemyArea");
+			area.SetDeferred(Area2D.PropertyName.Monitorable, false);
 		}
 
 		//Animate the player flash hit

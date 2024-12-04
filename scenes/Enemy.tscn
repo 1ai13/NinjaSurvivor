@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://copbpawgnmm4p"]
+[gd_scene load_steps=19 format=3 uid="uid://copbpawgnmm4p"]
 
 [ext_resource type="Script" path="res://scripts/Enemy.cs" id="1_yuc4a"]
 [ext_resource type="Texture2D" uid="uid://dfixpnuiqtoa" path="res://assets/textures/enemies/Slime/Slime4SpriteSheet.png" id="2_xc8gu"]
@@ -150,6 +150,22 @@ tracks/0/keys = {
 "values": [1, 5, 9, 13]
 }
 
+[sub_resource type="Animation" id="Animation_xm1wq"]
+resource_name = "dead"
+length = 0.9
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("EnemyArea/EnemySprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.333333, 0.633333),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [19, 23, 24]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_wfvps"]
 _data = {
 "RESET": SubResource("Animation_3nwor"),
@@ -157,6 +173,7 @@ _data = {
 "attack_left": SubResource("Animation_kp84l"),
 "attack_right": SubResource("Animation_ofjr2"),
 "attack_up": SubResource("Animation_p0jmh"),
+"dead": SubResource("Animation_xm1wq"),
 "walk_down": SubResource("Animation_fh3cq"),
 "walk_left": SubResource("Animation_br7gj"),
 "walk_right": SubResource("Animation_tnbok"),
@@ -196,7 +213,7 @@ script = ExtResource("1_yuc4a")
 [node name="EnemySprite" type="Sprite2D" parent="EnemyArea"]
 texture = ExtResource("2_xc8gu")
 hframes = 4
-vframes = 6
+vframes = 7
 frame = 16
 
 [node name="EnemyShape" type="CollisionShape2D" parent="EnemyArea"]
