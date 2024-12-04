@@ -36,7 +36,9 @@ public partial class Player : CharacterBody2D
 		attackCooldown = GetNode<Timer>("AttackCooldown");
 		attackCooldown.Timeout += onAttackCooldownTimeout;
 		EmitSignal(SignalName.healthChanged, health);
-		//TODO Create Dash behaviour
+		//TODO Create Dash behaviour (maybe not)
+		//TODO Add random buffs after finishing level
+		//TODO Add items (ammo?) from monsters + coins for shop?
 	}
 	public override void _PhysicsProcess(double delta)
 	{
