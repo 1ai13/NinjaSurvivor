@@ -1,0 +1,218 @@
+[gd_scene load_steps=19 format=3 uid="uid://dvj6l1rm50wnt"]
+
+[ext_resource type="PackedScene" uid="uid://copbpawgnmm4p" path="res://scenes/Enemy.tscn" id="1_u3pbf"]
+[ext_resource type="Texture2D" uid="uid://53b73617equ5" path="res://assets/textures/enemies/BlueBat/SpriteSheet.png" id="2_alqno"]
+[ext_resource type="Script" path="res://scripts/RangedEnemy.cs" id="2_od27k"]
+[ext_resource type="Resource" uid="uid://dc76ox265vks6" path="res://assets/resources/enemies/Bat.tres" id="3_lch3c"]
+[ext_resource type="Texture2D" uid="uid://djy0oilt0s6ru" path="res://assets/textures/characters/Shadow.png" id="5_ap4rl"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_5vx44"]
+radius = 5.0
+height = 10.0
+
+[sub_resource type="Animation" id="Animation_3nwor"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("EnemyArea/EnemySprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [16]
+}
+
+[sub_resource type="Animation" id="Animation_1c8kk"]
+resource_name = "attack_down"
+length = 0.9
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("EnemyArea/EnemySprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.8),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [20, 21, 22, 23]
+}
+
+[sub_resource type="Animation" id="Animation_kp84l"]
+resource_name = "attack_left"
+length = 0.9
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("EnemyArea/EnemySprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.766667),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [25, 26, 27, 28]
+}
+
+[sub_resource type="Animation" id="Animation_ofjr2"]
+resource_name = "attack_right"
+length = 0.9
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("EnemyArea/EnemySprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.8),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [24, 29, 30, 31]
+}
+
+[sub_resource type="Animation" id="Animation_p0jmh"]
+resource_name = "attack_up"
+length = 0.9
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("EnemyArea/EnemySprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.8),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [4, 9, 19, 14]
+}
+
+[sub_resource type="Animation" id="Animation_xm1wq"]
+resource_name = "dead"
+length = 0.9
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("EnemyArea/EnemySprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.333333, 0.633333),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [19, 23, 24]
+}
+
+[sub_resource type="Animation" id="Animation_fh3cq"]
+resource_name = "walk_down"
+length = 0.9
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("EnemyArea/EnemySprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [0, 5, 10, 15]
+}
+
+[sub_resource type="Animation" id="Animation_br7gj"]
+resource_name = "walk_left"
+length = 0.9
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("EnemyArea/EnemySprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [2, 7, 12, 17]
+}
+
+[sub_resource type="Animation" id="Animation_tnbok"]
+resource_name = "walk_right"
+length = 0.9
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("EnemyArea/EnemySprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [3, 8, 13, 18]
+}
+
+[sub_resource type="Animation" id="Animation_yhiax"]
+resource_name = "walk_up"
+length = 0.9
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("EnemyArea/EnemySprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [1, 6, 11, 16]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_wfvps"]
+_data = {
+"RESET": SubResource("Animation_3nwor"),
+"attack_down": SubResource("Animation_1c8kk"),
+"attack_left": SubResource("Animation_kp84l"),
+"attack_right": SubResource("Animation_ofjr2"),
+"attack_up": SubResource("Animation_p0jmh"),
+"dead": SubResource("Animation_xm1wq"),
+"walk_down": SubResource("Animation_fh3cq"),
+"walk_left": SubResource("Animation_br7gj"),
+"walk_right": SubResource("Animation_tnbok"),
+"walk_up": SubResource("Animation_yhiax")
+}
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_ke6n7"]
+blend_mode = 2
+
+[node name="Bat" instance=ExtResource("1_u3pbf")]
+script = ExtResource("2_od27k")
+data = ExtResource("3_lch3c")
+
+[node name="EnemySprite" type="Sprite2D" parent="EnemyArea" index="0"]
+texture = ExtResource("2_alqno")
+hframes = 5
+vframes = 7
+frame = 16
+
+[node name="EnemyShape" type="CollisionShape2D" parent="EnemyArea" index="1"]
+position = Vector2(0, 2)
+rotation = -1.57079
+shape = SubResource("CapsuleShape2D_5vx44")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." index="1"]
+libraries = {
+"": SubResource("AnimationLibrary_wfvps")
+}
+
+[node name="AttackCooldown" type="Timer" parent="." index="2"]
+wait_time = 1.5
+one_shot = true
+
+[node name="Shadow" type="Sprite2D" parent="." index="5"]
+material = SubResource("CanvasItemMaterial_ke6n7")
+position = Vector2(0, 18)
+texture = ExtResource("5_ap4rl")
+
+[connection signal="animation_finished" from="AnimationPlayer" to="." method="onAnimationFinished"]

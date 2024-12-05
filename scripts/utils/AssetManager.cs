@@ -41,6 +41,8 @@ public partial class AssetManager : Node
 		addSFX("rangedWallHit", "res://assets/audio/player/rangedWallHit.wav");
 		addSFX("playerHit", "res://assets/audio/player/hit.wav");
 		addSFX("enemyHit", "res://assets/audio/enemies/hit.wav");
+		addSFX("batAttack", "res://assets/audio/enemies/bat/batAttack.wav");
+		addSFX("batAttackHit", "res://assets/audio/enemies/bat/batAttackHit.wav");
 
 		//Playing it without AudioStream for PolyphonicPlayback assignment not null
 		SFXPlayer.Play();
@@ -48,28 +50,13 @@ public partial class AssetManager : Node
 
 	private void addSFX(string name, string path)
 	{
-		var sfx = GD.Load<AudioStream>(path);
-		if (!SFXAudios.ContainsKey(name))
-		{
-			SFXAudios[name] = new List<AudioStream> { sfx };
-		}
-		else
-		{
-			SFXAudios[name].Add(sfx);
-		}
+		loadSound(SFXAudios, name, path);
 	}
 
 	private void addMusic(string name, string path)
 	{
-		var music = GD.Load<AudioStream>(path);
-		if (!musicAudios.ContainsKey(name))
-		{
-			musicAudios[name] = new List<AudioStream> { music };
-		}
-		else
-		{
-			musicAudios[name].Add(music);
-		}
+		loadSound(musicAudios, name, path);
+
 	}
 
 	public void playSFX(string name, float volume = 0)
@@ -93,5 +80,18 @@ public partial class AssetManager : Node
 	{
 		var playback = (AudioStreamPlaybackPolyphonic)SFXPlayer.GetStreamPlayback();
 		playback.PlayStream(sfx, 0, volume, 1, 0, "SFX");
+	}
+
+	private void loadSound(Dictionary<string, List<AudioStream>> map, string name, string path)
+	{
+		var sound = GD.Load<AudioStream>(path);
+		if (!map.ContainsKey(name))
+		{
+			map[name] = new List<AudioStream> { sound };
+		}
+		else
+		{
+			map[name].Add(sound);
+		}
 	}
 }

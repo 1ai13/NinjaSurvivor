@@ -121,13 +121,7 @@ public partial class Player : CharacterBody2D
 		damage = new Vector2I(melee.damage, ranged.damage);
 		meleeWeapon.GetNode<Sprite2D>("MeleeWeapon").Texture = melee.textures[0];
 		rangedWeapon.Texture = c.rangedWeapon.textures[0];
-		//Projectile texture adjustment, need to initialize the scene and pack it again for future use
-		var auxProjectile = projectileScene.Instantiate<Projectile>();
-		auxProjectile.isProjectile = ranged.isProjectile;
-		auxProjectile.GetNode<Sprite2D>("ProjectileSprite").Texture = ranged.textures[1];
-		var auxScene = new PackedScene();
-		auxScene.Pack(auxProjectile);
-		projectileScene = auxScene;
+		projectileScene = EntityHelper.packProjectileScene(projectileScene, ranged.textures[1], ranged.isProjectile);
 	}
 
 	private void makeAttack(WeaponType type)
@@ -156,8 +150,8 @@ public partial class Player : CharacterBody2D
 				currentType = type;
 			}
 			var projectile = projectileScene.Instantiate<Projectile>();
-			projectile.init(GlobalPosition, mouseDirection, mouseDirection.Angle(), damage.Y, this);
-			projectile.projectileHit += onRangedEnemyHit;
+			projectile.init(GlobalPosition, mouseDirection, mouseDirection.Angle(), this);
+			projectile.projectileHitArea += onRangedEnemyHit;
 			GetTree().CurrentScene.AddChild(projectile);
 			AssetManager.instance.playSFX("rangedAttack");
 		}
@@ -196,6 +190,7 @@ public partial class Player : CharacterBody2D
 			{
 				dmg = EntityHelper.getVariableDamage(damage.Y);
 			}
+			GD.Print("damage: " + dmg);
 			e.takeDamage(dmg, isCrit);
 		}
 	}

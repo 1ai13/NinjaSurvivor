@@ -5,12 +5,13 @@ using System.Buffers;
 public partial class Projectile : Area2D
 {
 	[Signal]
-	public delegate void projectileHitEventHandler(Area2D area);
+	public delegate void projectileHitAreaEventHandler(Area2D area);
+	[Signal]
+	public delegate void projectileHitPlayerEventHandler(Player player);
 	[Export]
 	private float speed = 200f;
 	private float rotationSpeed = 500f;
 	private bool isAlive = true;
-	private int damage { get; set; }
 	private const int offset = 20;
 	private Vector2 initialPosition { get; set; }
 	private float initialRotation { get; set; }
@@ -19,11 +20,10 @@ public partial class Projectile : Area2D
 	public bool isProjectile { get; set; }
 	private Node2D owner;
 
-	public void init(Vector2 position, Vector2 vel, float rotation, int dmg, Node2D owner)
+	public void init(Vector2 position, Vector2 vel, float rotation, Node2D owner)
 	{
 		this.owner = owner;
 		velocity = vel;
-		damage = dmg;
 		// Sets the bullet away from the player
 		Position = position + velocity * offset;
 		Rotation = rotation;
@@ -52,17 +52,28 @@ public partial class Projectile : Area2D
 	{
 		if (owner is Player && area.GetParent() is Enemy e)
 		{
-			var dmg = damage;
-			EmitSignal(SignalName.projectileHit, area);
-			var isCrit = EntityHelper.getVariableDamage(dmg);
+			EmitSignal(SignalName.projectileHitArea, area);
 			QueueFree();
 		}
 	}
 
-	//On Wall collision
+	//On Wall or Player collision 
 	private void onBodyEntered(Node2D body)
 	{
 		isAlive = false;
-		AssetManager.instance.playSFX("rangedWallHit", -5f);
+		if (owner is RangedEnemy && body is Player p)
+		{
+			EmitSignal(SignalName.projectileHitPlayer, (Player)body);
+			QueueFree();
+		}
+		else if (owner is not Player)
+		{
+		}
+		else
+		{
+			AssetManager.instance.playSFX("rangedWallHit", -5f);
+			QueueFree();
+		}
+
 	}
 }

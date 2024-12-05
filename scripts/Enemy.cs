@@ -2,19 +2,20 @@ using Godot;
 using System;
 using System.Linq;
 
-public partial class Enemy : Node2D
+public abstract partial class Enemy : Node2D
 {
-	private const float speed = 50f;
-	private const float attackRange = 18f;
 	[Export]
-	private int health { get; set; } = 100;
-	[Export]
-	private int damage = 10;
-	private Player player;
+	protected EnemyData data;
+	public string name;
+	public float speed;
+	public float attackRange;
+	protected int health { get; set; }
+	public int damage;
+	protected Player player;
 	public Vector2 enemyDirection { get; set; }
 	public AnimationPlayer animation;
-	private Sprite2D enemySprite;
-	private Timer attackCooldown;
+	protected Sprite2D enemySprite;
+	protected Timer attackCooldown;
 	private Timer hitCooldown;
 	private ProgressBar baseHealthBar;
 	private ProgressBar healthBar;
@@ -25,6 +26,9 @@ public partial class Enemy : Node2D
 	private const float lerpDuration = .5f;
 	private int lastHealth;
 	private bool isDead = false;
+	public AudioStream deadSound;
+	protected bool isAttacking = false;
+	protected abstract void performAttack();
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
@@ -39,7 +43,6 @@ public partial class Enemy : Node2D
 		healthBarLabel = AssetManager.instance.enemyHealthBarLabel;
 		baseHealthBar.Value = health;
 		baseHealthBar.MaxValue = health;
-		baseHealthBar.Visible = false;
 		healthBar.MaxValue = health;
 		healthBar.Value = health;
 		healthBar.SelfModulate = Colors.Green;
@@ -56,7 +59,8 @@ public partial class Enemy : Node2D
 			baseHealthBar.Value = Mathf.Lerp(lastHealth, health, w);
 			if (baseHealthBar.Value == 0)
 			{
-				AssetManager.instance.playSFX(GD.Load<AudioStream>("res://assets/audio/enemies/slime/deadSlime.wav"));
+				AssetManager.instance.playSFX(deadSound);
+				playDeadSound();
 				baseHealthBar.Visible = false;
 			}
 		}
@@ -68,22 +72,21 @@ public partial class Enemy : Node2D
 		var distanceToPlayer = player.Position - Position;
 		enemyDirection = distanceToPlayer.Normalized();
 
-		if (distanceToPlayer.Length() > attackRange && hitCooldown.IsStopped())
+		if (distanceToPlayer.Length() > attackRange && hitCooldown.IsStopped() && (this is RangedEnemy && !isAttacking))
 		{
 			Position += enemyDirection * speed * (float)delta;
 			EntityHelper.playAnimation(this, "walk");
 		}
 		else if (distanceToPlayer.Length() <= attackRange && attackCooldown.IsStopped())
 		{
-			EntityHelper.playAnimation(this, "attack");
-			player.takeDamage(damage);
-			attackCooldown.Start();
+			performAttack();
 		}
 
 	}
 
 	public void takeDamage(int damage, bool criticalHit)
 	{
+		GD.Print("damage: " + damage);
 		if (isDead)
 		{
 			return;
@@ -114,12 +117,17 @@ public partial class Enemy : Node2D
 			area.SetDeferred(Area2D.PropertyName.Monitorable, false);
 		}
 
-		//Animate the player flash hit
+		//Animate the player flash hit and SFX
 		var tweenSprite = CreateTween();
 		tweenSprite.TweenProperty(enemySprite, "self_modulate", new Color(4, 4, 4, 4), .2f);
 		tweenSprite.TweenProperty(enemySprite, "self_modulate", Colors.White, 0);
 		AssetManager.instance.playSFX("enemyHit", -10f);
+		hitCooldown.Start();
+		animateHealthBar(damage, criticalHit);
 
+	}
+	private void animateHealthBar(int damage, bool criticalHit)
+	{
 		//Create and animate the HealthBar Labels
 		////Creating
 		var label = healthBarLabel.Instantiate<Label>();
@@ -139,6 +147,7 @@ public partial class Enemy : Node2D
 			offset[1] = rndY;
 		}
 		baseHealthBar.AddChild(label);
+		////Animating
 		var tweenLabel = CreateTween().SetParallel();
 		tweenLabel.TweenProperty(label, "position", label.Position - offset, .3f);
 		tweenLabel.TweenProperty(label, "rotation", Mathf.DegToRad(-5), .1f);
@@ -146,7 +155,6 @@ public partial class Enemy : Node2D
 		tweenLabel.TweenProperty(label, "rotation", Mathf.DegToRad(5 * 2), .2f);
 		tweenLabel.TweenProperty(label, "rotation", 0, .1f);
 		tweenLabel.TweenProperty(label, "visible", false, .2f);
-		hitCooldown.Start();
 
 		//Cleanup unused enemy Labels
 		baseHealthBar.GetChildren().OfType<Label>().ToList().ForEach(label =>
@@ -159,5 +167,16 @@ public partial class Enemy : Node2D
 				}
 			}
 		});
+	}
+
+	private void playDeadSound()
+	{
+		switch (name)
+		{
+			//TODO add monster sounds create Monsters Enum and switch the enemies dead sounds
+			default:
+				GD.PrintErr("No sound available for this enemy");
+				break;
+		}
 	}
 }

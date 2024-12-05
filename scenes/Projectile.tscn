@@ -4,15 +4,14 @@
 [ext_resource type="Texture2D" uid="uid://bndsrbo0t6wxi" path="res://assets/textures/weapons/Bow2/Projectile.png" id="1_eqmcl"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_mpsag"]
-radius = 5.0
-height = 10.0
+radius = 6.0
+height = 12.0
 
 [node name="Projectile" type="Area2D"]
 script = ExtResource("1_1ad1x")
 metadata/isProjectile = false
 
 [node name="ProjectileSprite" type="Sprite2D" parent="."]
-position = Vector2(0, -0.25)
 texture = ExtResource("1_eqmcl")
 
 [node name="ProjectileShape" type="CollisionShape2D" parent="."]
