@@ -14,3 +14,4 @@ speed = 70.0
 range = 150.0
 isProjectile = true
 projectileSpeed = 350.0
+angularSpeed = 0.0

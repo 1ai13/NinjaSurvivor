@@ -21,4 +21,6 @@ public partial class EnemyData : Resource
 	public bool isProjectile;
 	[Export]
 	public float projectileSpeed;
+	[Export]
+	public float angularSpeed;
 }

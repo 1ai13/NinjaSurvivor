@@ -24,6 +24,7 @@ public partial class Player : CharacterBody2D
 	private Timer attackCooldown;
 	private HashSet<Enemy> enemiesMeleeTargeted;
 	private WeaponType currentType = MELEE;
+	private Character characterData;
 
 	public override void _Ready()
 	{
@@ -121,7 +122,7 @@ public partial class Player : CharacterBody2D
 		damage = new Vector2I(melee.damage, ranged.damage);
 		meleeWeapon.GetNode<Sprite2D>("MeleeWeapon").Texture = melee.textures[0];
 		rangedWeapon.Texture = c.rangedWeapon.textures[0];
-		projectileScene = EntityHelper.packProjectileScene(projectileScene, ranged.textures[1], ranged.isProjectile, 200);
+		characterData = c;
 	}
 
 	private void makeAttack(WeaponType type)
@@ -149,8 +150,9 @@ public partial class Player : CharacterBody2D
 				swapWeaponVisibility(type);
 				currentType = type;
 			}
+			var rangedWepaon = characterData.rangedWeapon;
 			var projectile = projectileScene.Instantiate<Projectile>();
-			projectile.init(GlobalPosition, mouseDirection, mouseDirection.Angle(), this);
+			projectile.init(GlobalPosition, mouseDirection, mouseDirection.Angle(), this, rangedWepaon.projectileSpeed, rangedWepaon.angularSpeed, rangedWepaon.isProjectile, rangedWepaon.textures[1]);
 			projectile.projectileHitArea += onRangedEnemyHit;
 			GetTree().CurrentScene.AddChild(projectile);
 			AssetManager.instance.playSFX("rangedAttack");

@@ -8,7 +8,6 @@ public partial class RangedEnemy : Enemy
 	public override void _Ready()
 	{
 		projectileScene = AssetManager.instance.projectileScene;
-		projectileScene = EntityHelper.packProjectileScene(projectileScene, data.enemySprites[1], data.isProjectile, data.projectileSpeed);
 		health = data.health;
 		base._Ready();
 		EntityHelper.initEnemy(this, data);
@@ -32,7 +31,7 @@ public partial class RangedEnemy : Enemy
 		if (animationName.ToString().StartsWith("attack"))
 		{
 			var projectile = projectileScene.Instantiate<Projectile>();
-			projectile.init(GlobalPosition, enemyDirection, enemyDirection.Angle(), this);
+			projectile.init(GlobalPosition, enemyDirection, enemyDirection.Angle(), this, data.projectileSpeed, data.angularSpeed, data.isProjectile, data.enemySprites[1]);
 			projectile.projectileHitPlayer += onPlayerHit;
 			GetTree().CurrentScene.AddChild(projectile);
 			isAttacking = false;

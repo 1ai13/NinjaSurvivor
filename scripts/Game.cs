@@ -23,7 +23,6 @@ public partial class Game : Node2D
 		}
 		//TODO Enemy spawner + MORE enemies
 		//TODO Add more Levels / procedural logic level
-		//TODO Create door collission + even MORE Freshy arena look
 	}
 
 	public override void _Process(double delta)

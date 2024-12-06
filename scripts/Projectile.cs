@@ -12,8 +12,7 @@ public partial class Projectile : Area2D
 	public delegate void projectileHitPlayerEventHandler(Player player);
 	[Export]
 	public float speed = 200f;
-	private float rotationSpeed = 500f;
-	private bool isAlive = true;
+	public float angularSpeed = 500f;
 	private const int offset = 20;
 	private Vector2 initialPosition { get; set; }
 	private float initialRotation { get; set; }
@@ -21,30 +20,36 @@ public partial class Projectile : Area2D
 	[Export]
 	public bool isProjectile { get; set; }
 	private Node2D owner;
+	public Texture2D sprite;
 
-	public void init(Vector2 position, Vector2 vel, float rotation, Node2D owner)
+	public void init(Vector2 position, Vector2 vel, float rotation, Node2D owner, float s, float angularS, bool isProjectile, Texture2D sprite)
 	{
 		this.owner = owner;
 		velocity = vel;
 		// Sets the bullet away from the player
 		Position = position + velocity * offset;
 		Rotation = rotation;
+		speed = s;
+		angularSpeed = angularS;
+		this.isProjectile = isProjectile;
+		this.sprite = sprite;
 	}
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
+		GetNode<Sprite2D>("ProjectileSprite").Texture = sprite;
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _PhysicsProcess(double delta)
 	{
-		if (isAlive)
+		if (IsPhysicsProcessing())
 		{
 			Position += velocity * speed * (float)delta;
 			if (!isProjectile)
 			{
-				Rotation += rotationSpeed * (float)delta;
+				Rotation += angularSpeed * (float)delta;
 			}
 		}
 	}
@@ -62,7 +67,6 @@ public partial class Projectile : Area2D
 	//On Wall or Player collision 
 	private void onBodyEntered(Node2D body)
 	{
-		isAlive = false;
 		if (owner is RangedEnemy o && body is Player p)
 		{
 			EmitSignal(SignalName.projectileHitPlayer, p);
@@ -76,6 +80,7 @@ public partial class Projectile : Area2D
 		}
 		else
 		{
+			SetPhysicsProcess(false);
 			AssetManager.instance.playSFX("rangedWallHit", -5f);
 		}
 

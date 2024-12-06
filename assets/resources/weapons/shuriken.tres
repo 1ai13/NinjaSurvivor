@@ -10,4 +10,5 @@ name = "shuriken"
 damage = 50
 textures = Array[Texture2D]([ExtResource("3_326f1"), ExtResource("1_kxsdk")])
 isProjectile = false
-projectileSpeed = false
+projectileSpeed = 200.0
+angularSpeed = 500.0

@@ -10,3 +10,5 @@ name = "bow"
 damage = 10
 textures = Array[Texture2D]([ExtResource("2_pk5ye"), ExtResource("3_2sktx")])
 isProjectile = true
+projectileSpeed = 200.0
+angularSpeed = 0.0

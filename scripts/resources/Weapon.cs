@@ -13,5 +13,7 @@ public partial class Weapon : Resource
     [Export]
     public bool isProjectile { get; set; }
     [Export]
-    public bool projectileSpeed { get; set; }
+    public float projectileSpeed { get; set; }
+    [Export]
+    public float angularSpeed { get; set; }
 }
