@@ -31,7 +31,6 @@ public partial class Player : CharacterBody2D
 		animation = GetNode<AnimationPlayer>("AnimationPlayer");
 		meleeWeapon = GetNode<Area2D>("Area2D");
 		rangedWeapon = GetNode<Sprite2D>("RangeWeapon");
-		projectileScene = AssetManager.instance.projectileScene;
 		playerSprite = GetNode<Sprite2D>("Body");
 		enemiesMeleeTargeted = new HashSet<Enemy>();
 		attackCooldown = GetNode<Timer>("AttackCooldown");
@@ -151,10 +150,9 @@ public partial class Player : CharacterBody2D
 				currentType = type;
 			}
 			var rangedWepaon = characterData.rangedWeapon;
-			var projectile = projectileScene.Instantiate<Projectile>();
+			var projectile = PoolEngine.instance.pullFromPool();
 			projectile.init(GlobalPosition, mouseDirection, mouseDirection.Angle(), this, rangedWepaon.projectileSpeed, rangedWepaon.angularSpeed, rangedWepaon.isProjectile, rangedWepaon.textures[1]);
 			projectile.projectileHitArea += onRangedEnemyHit;
-			GetTree().CurrentScene.AddChild(projectile);
 			AssetManager.instance.playSFX("rangedAttack");
 		}
 	}
@@ -178,7 +176,7 @@ public partial class Player : CharacterBody2D
 			enemiesMeleeTargeted.Add(e);
 		}
 	}
-	private void onRangedEnemyHit(Area2D area)
+	public void onRangedEnemyHit(Area2D area)
 	{
 		if (area.GetParent() is Enemy e)
 		{
@@ -192,7 +190,6 @@ public partial class Player : CharacterBody2D
 			{
 				dmg = EntityHelper.getVariableDamage(damage.Y);
 			}
-			GD.Print("damage: " + dmg);
 			e.takeDamage(dmg, isCrit);
 		}
 	}

@@ -7,7 +7,6 @@ public partial class RangedEnemy : Enemy
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
-		projectileScene = AssetManager.instance.projectileScene;
 		health = data.health;
 		base._Ready();
 		EntityHelper.initEnemy(this, data);
@@ -30,16 +29,15 @@ public partial class RangedEnemy : Enemy
 	{
 		if (animationName.ToString().StartsWith("attack"))
 		{
-			var projectile = projectileScene.Instantiate<Projectile>();
+			var projectile = PoolEngine.instance.pullFromPool();
 			projectile.init(GlobalPosition, enemyDirection, enemyDirection.Angle(), this, data.projectileSpeed, data.angularSpeed, data.isProjectile, data.enemySprites[1]);
 			projectile.projectileHitPlayer += onPlayerHit;
-			GetTree().CurrentScene.AddChild(projectile);
 			isAttacking = false;
 			playAttackSound();
 		}
 	}
 
-	private void onPlayerHit(Player body)
+	public void onPlayerHit(Player body)
 	{
 		GD.Print("Hitting player");
 		player.takeDamage(damage);

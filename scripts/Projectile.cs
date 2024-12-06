@@ -1,7 +1,6 @@
 using Enums;
 using Godot;
 using System;
-using System.Buffers;
 using static Enums.EnemyType;
 
 public partial class Projectile : Area2D
@@ -20,9 +19,9 @@ public partial class Projectile : Area2D
 	[Export]
 	public bool isProjectile { get; set; }
 	private Node2D owner;
-	public Texture2D sprite;
+	public Sprite2D sprite;
 
-	public void init(Vector2 position, Vector2 vel, float rotation, Node2D owner, float s, float angularS, bool isProjectile, Texture2D sprite)
+	public void init(Vector2 position, Vector2 vel, float rotation, Node2D owner, float s, float angularS, bool isProjectile, Texture2D texture)
 	{
 		this.owner = owner;
 		velocity = vel;
@@ -32,13 +31,13 @@ public partial class Projectile : Area2D
 		speed = s;
 		angularSpeed = angularS;
 		this.isProjectile = isProjectile;
-		this.sprite = sprite;
+		sprite = GetNode<Sprite2D>("ProjectileSprite");
+		sprite.Texture = texture;
 	}
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
-		GetNode<Sprite2D>("ProjectileSprite").Texture = sprite;
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -57,10 +56,11 @@ public partial class Projectile : Area2D
 	//Hitting enemy
 	private void onAreaDetected(Area2D area)
 	{
-		if (owner is Player && area.GetParent() is Enemy e)
+		if (owner is Player o && area.GetParent() is Enemy e)
 		{
 			EmitSignal(SignalName.projectileHitArea, area);
-			QueueFree();
+			projectileHitArea -= o.onRangedEnemyHit;
+			PoolEngine.instance.addToPool(this);
 		}
 	}
 
@@ -70,13 +70,15 @@ public partial class Projectile : Area2D
 		if (owner is RangedEnemy o && body is Player p)
 		{
 			EmitSignal(SignalName.projectileHitPlayer, p);
+			projectileHitPlayer -= o.onPlayerHit;
 			playHitSound(o.type);
-			QueueFree();
+			PoolEngine.instance.addToPool(this);
 		}
 		else if (owner is RangedEnemy own)
 		{
+			projectileHitPlayer -= own.onPlayerHit;
 			playHitSound(own.type);
-			QueueFree();
+			PoolEngine.instance.addToPool(this);
 		}
 		else
 		{
