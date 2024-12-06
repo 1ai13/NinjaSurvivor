@@ -12,4 +12,6 @@ public partial class Weapon : Resource
     public Texture2D[] textures { get; set; }
     [Export]
     public bool isProjectile { get; set; }
+    [Export]
+    public bool projectileSpeed { get; set; }
 }

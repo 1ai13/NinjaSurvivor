@@ -6,7 +6,7 @@
 
 [resource]
 script = ExtResource("1_osshk")
-name = "Slime"
+name = 0
 enemySprites = Array[Texture2D]([ExtResource("1_rbmg8")])
 health = 200
 damage = 10

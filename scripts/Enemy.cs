@@ -1,12 +1,14 @@
+using Enums;
 using Godot;
 using System;
 using System.Linq;
+using static Enums.EnemyType;
 
 public abstract partial class Enemy : Node2D
 {
 	[Export]
 	protected EnemyData data;
-	public string name;
+	public EnemyType type;
 	public float speed;
 	public float attackRange;
 	protected int health { get; set; }
@@ -59,8 +61,6 @@ public abstract partial class Enemy : Node2D
 			baseHealthBar.Value = Mathf.Lerp(lastHealth, health, w);
 			if (baseHealthBar.Value == 0)
 			{
-				AssetManager.instance.playSFX(deadSound);
-				playDeadSound();
 				baseHealthBar.Visible = false;
 			}
 		}
@@ -72,7 +72,7 @@ public abstract partial class Enemy : Node2D
 		var distanceToPlayer = player.Position - Position;
 		enemyDirection = distanceToPlayer.Normalized();
 
-		if (distanceToPlayer.Length() > attackRange && hitCooldown.IsStopped() && (this is RangedEnemy && !isAttacking))
+		if (distanceToPlayer.Length() > attackRange && hitCooldown.IsStopped() && (this is RangedEnemy && !isAttacking || this is MeleeEnemy && attackCooldown.IsStopped()))
 		{
 			Position += enemyDirection * speed * (float)delta;
 			EntityHelper.playAnimation(this, "walk");
@@ -80,13 +80,16 @@ public abstract partial class Enemy : Node2D
 		else if (distanceToPlayer.Length() <= attackRange && attackCooldown.IsStopped())
 		{
 			performAttack();
+			if (this is MeleeEnemy)
+			{
+				playAttackSound();
+			}
 		}
 
 	}
 
 	public void takeDamage(int damage, bool criticalHit)
 	{
-		GD.Print("damage: " + damage);
 		if (isDead)
 		{
 			return;
@@ -113,6 +116,7 @@ public abstract partial class Enemy : Node2D
 		{
 			isDead = true;
 			animation.Play("dead");
+			playDeadSound();
 			var area = GetNode<Area2D>("EnemyArea");
 			area.SetDeferred(Area2D.PropertyName.Monitorable, false);
 		}
@@ -171,11 +175,32 @@ public abstract partial class Enemy : Node2D
 
 	private void playDeadSound()
 	{
-		switch (name)
+		switch (type)
 		{
-			//TODO add monster sounds create Monsters Enum and switch the enemies dead sounds
+			case SLIME:
+				AssetManager.instance.playSFX("deadSlime");
+				break;
+			case BAT:
+				AssetManager.instance.playSFX("deadBat");
+				break;
 			default:
-				GD.PrintErr("No sound available for this enemy");
+				GD.PrintErr("No dead sound loaded for enemy");
+				break;
+		}
+	}
+
+	protected void playAttackSound()
+	{
+		switch (type)
+		{
+			case SLIME:
+				AssetManager.instance.playSFX("slimeAttack");
+				break;
+			case BAT:
+				AssetManager.instance.playSFX("batAttack");
+				break;
+			default:
+				GD.PrintErr("Unable to load attack sound from enemy");
 				break;
 		}
 	}

@@ -1,13 +1,10 @@
-[gd_scene load_steps=20 format=3 uid="uid://d27tgl25p8g58"]
+[gd_scene load_steps=19 format=3 uid="uid://d27tgl25p8g58"]
 
 [ext_resource type="Texture2D" uid="uid://uiqa86t6b86u" path="res://assets/textures/characters/NinjaRed/SpriteSheet.png" id="1_dlb78"]
 [ext_resource type="Script" path="res://scripts/Player.cs" id="1_t7pu8"]
 [ext_resource type="Texture2D" uid="uid://djy0oilt0s6ru" path="res://assets/textures/characters/Shadow.png" id="2_3a80c"]
 [ext_resource type="Texture2D" uid="uid://b566t108c24u0" path="res://assets/textures/weapons/Sword/SpriteInHand.png" id="4_2mbj4"]
 [ext_resource type="Texture2D" uid="uid://c17ltn1lri0do" path="res://assets/textures/weapons/Bow2/SpriteInHand.png" id="5_iqmla"]
-
-[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_smbii"]
-blend_mode = 2
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_qdg2v"]
 radius = 7.0
@@ -1434,15 +1431,15 @@ _data = {
 [node name="Player" type="CharacterBody2D"]
 script = ExtResource("1_t7pu8")
 
+[node name="Shadow" type="Sprite2D" parent="."]
+self_modulate = Color(1, 1, 1, 0.5)
+position = Vector2(0, 8)
+texture = ExtResource("2_3a80c")
+
 [node name="Body" type="Sprite2D" parent="."]
 texture = ExtResource("1_dlb78")
 hframes = 4
 vframes = 7
-
-[node name="Shadow" type="Sprite2D" parent="."]
-material = SubResource("CanvasItemMaterial_smbii")
-position = Vector2(0, 8)
-texture = ExtResource("2_3a80c")
 
 [node name="PlayerShape" type="CollisionShape2D" parent="."]
 position = Vector2(0, 1)

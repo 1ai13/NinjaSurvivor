@@ -100,18 +100,18 @@ public partial class EntityHelper : Node
 
     public static void initEnemy(Enemy e, EnemyData data)
     {
-        e.name = data.name;
+        e.type = data.name;
         e.damage = data.damage;
         e.speed = data.speed;
         e.attackRange = data.range;
-        e.deadSound = data.deadSound;
     }
 
-    public static PackedScene packProjectileScene(PackedScene scene, Texture2D sprite, bool isProjectile)
+    public static PackedScene packProjectileScene(PackedScene scene, Texture2D sprite, bool isProjectile, float speed)
     {
         //Projectile texture adjustment, need to initialize the scene and pack it again for future use
         var auxProjectile = scene.Instantiate<Projectile>();
         auxProjectile.isProjectile = isProjectile;
+        auxProjectile.speed = speed;
         auxProjectile.GetNode<Sprite2D>("ProjectileSprite").Texture = sprite;
         var auxScene = new PackedScene();
         auxScene.Pack(auxProjectile);

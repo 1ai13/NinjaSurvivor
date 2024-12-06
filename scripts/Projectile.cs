@@ -1,6 +1,8 @@
+using Enums;
 using Godot;
 using System;
 using System.Buffers;
+using static Enums.EnemyType;
 
 public partial class Projectile : Area2D
 {
@@ -9,7 +11,7 @@ public partial class Projectile : Area2D
 	[Signal]
 	public delegate void projectileHitPlayerEventHandler(Player player);
 	[Export]
-	private float speed = 200f;
+	public float speed = 200f;
 	private float rotationSpeed = 500f;
 	private bool isAlive = true;
 	private const int offset = 20;
@@ -61,19 +63,35 @@ public partial class Projectile : Area2D
 	private void onBodyEntered(Node2D body)
 	{
 		isAlive = false;
-		if (owner is RangedEnemy && body is Player p)
+		if (owner is RangedEnemy o && body is Player p)
 		{
-			EmitSignal(SignalName.projectileHitPlayer, (Player)body);
+			EmitSignal(SignalName.projectileHitPlayer, p);
+			playHitSound(o.type);
 			QueueFree();
 		}
-		else if (owner is not Player)
+		else if (owner is RangedEnemy own)
 		{
+			playHitSound(own.type);
+			QueueFree();
 		}
 		else
 		{
 			AssetManager.instance.playSFX("rangedWallHit", -5f);
-			QueueFree();
 		}
 
 	}
+
+	private void playHitSound(EnemyType type)
+	{
+		switch (type)
+		{
+			case BAT:
+				AssetManager.instance.playSFX("batAttackHit");
+				break;
+			default:
+				GD.PrintErr("No wall hit sound available for projectile");
+				break;
+		}
+	}
+
 }

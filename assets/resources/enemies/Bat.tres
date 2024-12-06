@@ -1,17 +1,16 @@
-[gd_resource type="Resource" script_class="EnemyData" load_steps=5 format=3 uid="uid://dc76ox265vks6"]
+[gd_resource type="Resource" script_class="EnemyData" load_steps=4 format=3 uid="uid://dc76ox265vks6"]
 
-[ext_resource type="AudioStream" uid="uid://df325d06xor2q" path="res://assets/audio/enemies/slime/deadSlime.wav" id="1_s8qx1"]
 [ext_resource type="Texture2D" uid="uid://yeny0l7ofjt0" path="res://assets/textures/enemies/BlueBat/Faceset.png" id="2_mu1bf"]
 [ext_resource type="Texture2D" uid="uid://c8lgymqvd1n8u" path="res://assets/textures/enemies/BlueBat/Bullet.png" id="4_y7868"]
 [ext_resource type="Script" path="res://scripts/resources/EnemyData.cs" id="5_dm44m"]
 
 [resource]
 script = ExtResource("5_dm44m")
-name = "Bat"
+name = 1
 enemySprites = Array[Texture2D]([ExtResource("2_mu1bf"), ExtResource("4_y7868")])
 health = 150
 damage = 20
 speed = 70.0
 range = 150.0
-deadSound = ExtResource("1_s8qx1")
 isProjectile = true
+projectileSpeed = 350.0

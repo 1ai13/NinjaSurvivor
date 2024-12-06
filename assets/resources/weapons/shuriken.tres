@@ -7,6 +7,7 @@
 [resource]
 script = ExtResource("2_5dvri")
 name = "shuriken"
-damage = 10
+damage = 50
 textures = Array[Texture2D]([ExtResource("3_326f1"), ExtResource("1_kxsdk")])
 isProjectile = false
+projectileSpeed = false

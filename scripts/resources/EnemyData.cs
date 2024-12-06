@@ -1,3 +1,4 @@
+using Enums;
 using Godot;
 using System;
 
@@ -5,7 +6,7 @@ using System;
 public partial class EnemyData : Resource
 {
 	[Export]
-	public string name { get; set; }
+	public EnemyType name { get; set; }
 	[Export]
 	public Texture2D[] enemySprites;
 	[Export]
@@ -17,7 +18,7 @@ public partial class EnemyData : Resource
 	[Export]
 	public float range;
 	[Export]
-	public AudioStream deadSound;
-	[Export]
 	public bool isProjectile;
+	[Export]
+	public float projectileSpeed;
 }

@@ -121,7 +121,7 @@ public partial class Player : CharacterBody2D
 		damage = new Vector2I(melee.damage, ranged.damage);
 		meleeWeapon.GetNode<Sprite2D>("MeleeWeapon").Texture = melee.textures[0];
 		rangedWeapon.Texture = c.rangedWeapon.textures[0];
-		projectileScene = EntityHelper.packProjectileScene(projectileScene, ranged.textures[1], ranged.isProjectile);
+		projectileScene = EntityHelper.packProjectileScene(projectileScene, ranged.textures[1], ranged.isProjectile, 200);
 	}
 
 	private void makeAttack(WeaponType type)
