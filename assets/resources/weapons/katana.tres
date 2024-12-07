@@ -9,4 +9,5 @@ name = "katana"
 damage = 5
 textures = Array[Texture2D]([ExtResource("2_606ib")])
 isProjectile = false
-projectileSpeed = false
+projectileSpeed = 0.0
+angularSpeed = 0.0

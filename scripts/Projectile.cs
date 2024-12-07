@@ -12,7 +12,7 @@ public partial class Projectile : Area2D
 	[Export]
 	public float speed = 200f;
 	public float angularSpeed = 500f;
-	private const int offset = 20;
+	private const int offset = 15;
 	private Vector2 initialPosition { get; set; }
 	private float initialRotation { get; set; }
 	private Vector2 velocity { get; set; } = Vector2.Zero;

@@ -22,7 +22,7 @@ buses/default_bus_layout="res://assets/resources/audio/game_bus_layout.tres"
 
 [autoload]
 
-AssetManager="*res://scripts/utils/AssetManager.cs"
+AssetManager="*res://scripts/managers/AssetManager.cs"
 SignalBus="*res://scripts/utils/SignalBus.cs"
 PoolEngine="*res://scripts/engines/PoolEngine.cs"
 

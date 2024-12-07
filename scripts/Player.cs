@@ -25,6 +25,7 @@ public partial class Player : CharacterBody2D
 	private HashSet<Enemy> enemiesMeleeTargeted;
 	private WeaponType currentType = MELEE;
 	private Character characterData;
+	private Camera2D camera;
 
 	public override void _Ready()
 	{
@@ -36,6 +37,7 @@ public partial class Player : CharacterBody2D
 		attackCooldown = GetNode<Timer>("AttackCooldown");
 		attackCooldown.Timeout += onAttackCooldownTimeout;
 		EmitSignal(SignalName.healthChanged, health);
+		camera = GetNode<Camera2D>("Camera2D");
 		//TODO Create Dash behaviour (maybe not)
 		//TODO Add random buffs after finishing level
 		//TODO Add items (ammo?) from monsters + coins for shop?
@@ -43,7 +45,13 @@ public partial class Player : CharacterBody2D
 	public override void _PhysicsProcess(double delta)
 	{
 		//Mouse direction relative to the Player - Need Player Global Position due to World Coordinates (Viewport mouse position would need a conversion)
-		mouseDirection = (GetGlobalMousePosition() - GlobalPosition).Normalized();
+		var mouseDistance = GetGlobalMousePosition() - GlobalPosition;
+		mouseDirection = mouseDistance.Normalized();
+
+		//Move camera according to mouse
+		var offsetX = Mathf.Clamp(camera.Offset.X + mouseDirection.X, -10, 10);
+		var offsetY = Mathf.Clamp(camera.Offset.Y + mouseDirection.Y, -10, 10);
+		camera.Offset = new Vector2(offsetX, offsetY);
 		// Player movement logic
 		Vector2 velocity = Velocity;
 		Vector2 playerDirection = Input.GetVector("left", "right", "up", "down");
@@ -149,9 +157,9 @@ public partial class Player : CharacterBody2D
 				swapWeaponVisibility(type);
 				currentType = type;
 			}
-			var rangedWepaon = characterData.rangedWeapon;
+			var rangedWeapon = characterData.rangedWeapon;
 			var projectile = PoolEngine.instance.pullFromPool();
-			projectile.init(GlobalPosition, mouseDirection, mouseDirection.Angle(), this, rangedWepaon.projectileSpeed, rangedWepaon.angularSpeed, rangedWepaon.isProjectile, rangedWepaon.textures[1]);
+			projectile.init(GlobalPosition, mouseDirection, mouseDirection.Angle(), this, rangedWeapon.projectileSpeed, rangedWeapon.angularSpeed, rangedWeapon.isProjectile, rangedWeapon.textures[1]);
 			projectile.projectileHitArea += onRangedEnemyHit;
 			AssetManager.instance.playSFX("rangedAttack");
 		}
