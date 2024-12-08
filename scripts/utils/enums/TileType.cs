@@ -4,6 +4,8 @@ namespace Enums
     {
         GRASS,
         SAND,
+        SNOW,
+        FOREST,
         TRAP,
         DECOR
     }

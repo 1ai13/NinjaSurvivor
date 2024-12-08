@@ -54,6 +54,7 @@ public abstract partial class Enemy : Node2D
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _PhysicsProcess(double delta)
 	{
+		//Adjust taken damage over time
 		if (lerpValue < lerpDuration && baseHealthBar.Value > 0)
 		{
 			lerpValue += (float)delta;
@@ -68,6 +69,7 @@ public abstract partial class Enemy : Node2D
 		{
 			return;
 		}
+		//Enemy VS Player logic
 		baseHealthBar.Position = Position - healthBarOffset;
 		var distanceToPlayer = player.Position - Position;
 		enemyDirection = distanceToPlayer.Normalized();

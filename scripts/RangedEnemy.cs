@@ -39,7 +39,6 @@ public partial class RangedEnemy : Enemy
 
 	public void onPlayerHit(Player body)
 	{
-		GD.Print("Hitting player");
 		player.takeDamage(damage);
 	}
 }

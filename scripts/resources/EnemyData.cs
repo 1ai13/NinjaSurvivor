@@ -9,6 +9,7 @@ public partial class EnemyData : Resource
 	public EnemyType name { get; set; }
 	[Export]
 	public Texture2D[] enemySprites;
+	[ExportGroup("Stats")]
 	[Export]
 	public int health;
 	[Export]
@@ -17,6 +18,7 @@ public partial class EnemyData : Resource
 	public float speed;
 	[Export]
 	public float range;
+	[ExportSubgroup("Projectile Stats")]
 	[Export]
 	public bool isProjectile;
 	[Export]

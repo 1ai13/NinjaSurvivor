@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public partial class Hud : Control
+public partial class HudController : Control
 {
 	private TextureProgressBar healthBar;
 	// Called when the node enters the scene tree for the first time.

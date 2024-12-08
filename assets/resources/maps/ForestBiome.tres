@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="BiomeConfig" load_steps=2 format=3 uid="uid://bbk16kldo5xxd"]
+
+[ext_resource type="Script" path="res://scripts/resources/BiomeConfig.cs" id="1_i3oq4"]
+
+[resource]
+script = ExtResource("1_i3oq4")
+enemies = Array[int]([0, 1])
+type = 3

@@ -13,6 +13,7 @@ public partial class Player : CharacterBody2D
 	private float speed = 60f;
 	[Export]
 	private int health { get; set; } = 100;
+	public int maxHealth;
 	public AnimationPlayer animation;
 	private PackedScene projectileScene;
 	private Area2D meleeWeapon;
@@ -38,10 +39,12 @@ public partial class Player : CharacterBody2D
 		attackCooldown.Timeout += onAttackCooldownTimeout;
 		EmitSignal(SignalName.healthChanged, health);
 		camera = GetNode<Camera2D>("Camera2D");
+		maxHealth = health;
 		//TODO Create Dash behaviour (maybe not)
 		//TODO Add random buffs after finishing level
 		//TODO Add items (ammo?) from monsters + coins for shop?
 	}
+
 	public override void _PhysicsProcess(double delta)
 	{
 		//Mouse direction relative to the Player - Need Player Global Position due to World Coordinates (Viewport mouse position would need a conversion)
@@ -102,6 +105,7 @@ public partial class Player : CharacterBody2D
 			isAttacking = false;
 		}
 	}
+
 	private void swapWeaponVisibility(WeaponType type)
 	{
 		if (type == MELEE)

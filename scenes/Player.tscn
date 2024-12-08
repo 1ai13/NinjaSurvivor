@@ -76,6 +76,18 @@ tracks/4/keys = {
 "update": 0,
 "values": [-0.0218304]
 }
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("Area2D/WeaponShape:position")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-9, 9)]
+}
 
 [sub_resource type="Animation" id="Animation_h02rd"]
 resource_name = "attack"
@@ -310,7 +322,7 @@ tracks/5/keys = {
 "times": PackedFloat32Array(0, 0.0333333, 0.0666667),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 1,
-"values": [Vector2(-10, 10), Vector2(-13, 2), Vector2(-11, -4)]
+"values": [Vector2(-9, 9), Vector2(-12, 2), Vector2(-10, -4)]
 }
 tracks/6/type = "value"
 tracks/6/imported = false
@@ -1437,9 +1449,11 @@ position = Vector2(0, 8)
 texture = ExtResource("2_3a80c")
 
 [node name="Body" type="Sprite2D" parent="."]
+z_index = 1
 texture = ExtResource("1_dlb78")
 hframes = 4
 vframes = 7
+frame = 14
 
 [node name="PlayerShape" type="CollisionShape2D" parent="."]
 position = Vector2(0, 1)
@@ -1451,17 +1465,19 @@ position = Vector2(1, 0)
 [node name="MeleeWeapon" type="Sprite2D" parent="Area2D"]
 position = Vector2(-6, 12)
 texture = ExtResource("4_2mbj4")
+flip_h = true
+flip_v = true
 
 [node name="WeaponShape" type="CollisionShape2D" parent="Area2D"]
-position = Vector2(13, -2)
+position = Vector2(-9, 9)
 rotation = -0.0218304
 shape = SubResource("CapsuleShape2D_0ii24")
 disabled = true
 
 [node name="RangeWeapon" type="Sprite2D" parent="."]
 visible = false
-position = Vector2(5, 5)
-rotation = -0.785397
+position = Vector2(-6, 3)
+rotation = 1.57079
 scale = Vector2(0.9, 0.9)
 texture = ExtResource("5_iqmla")
 
@@ -1476,6 +1492,7 @@ one_shot = true
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(-1, 0)
+zoom = Vector2(0.495, 0.495)
 position_smoothing_enabled = true
 position_smoothing_speed = 4.0
 

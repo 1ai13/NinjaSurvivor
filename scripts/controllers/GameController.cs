@@ -1,0 +1,72 @@
+using Godot;
+using Godot.Collections;
+using System;
+using System.Linq;
+
+public partial class GameController : Node2D
+{
+	private Player player;
+	private Marker2D playerSpawn;
+	[Export]
+	private string characterSelected;
+	[Export]
+	private Character[] characters;
+	private int level = 0;
+	private LevelManager levelManager;
+	[Export]
+	private Array<BiomeConfig> biomeConfigs;
+	private Array<Rect2> trapsPosition;
+	Vector2I playerFeetOffset = new Vector2I(0, 7);
+	private bool areTrapsActive = false;
+
+	public override void _Ready()
+	{
+		player = GetNode<Player>("Player");
+		var arena = GetNode<TileMapLayer>("Arena");
+		levelManager = new LevelManager(arena, biomeConfigs);
+		playerSpawn = GetNode<Marker2D>("Arena/Marker2D");
+		foreach (var c in characters)
+		{
+			if (c.name.Equals(characterSelected))
+			{
+				player.loadCharacter(c, playerSpawn.Position);
+			}
+		}
+		trapsPosition = new Array<Rect2>();
+		SignalBus.bus.onTrapsCreated += assignTraps;
+		SignalBus.bus.onTrapsActive += onTrapsActive;
+		SignalBus.bus.onTrapsInactive += onTrapsInactive;
+		levelManager.generateLevel(level);
+		//TODO Add more Levels / procedural logic level
+		//TODO Enemy spawner + MORE enemies
+	}
+
+	public override void _Process(double delta)
+	{
+		if (areTrapsActive)
+		{
+			foreach (var t in trapsPosition)
+			{
+				if (t.HasPoint(player.GlobalPosition + playerFeetOffset))
+				{
+					areTrapsActive = false;
+					player.takeDamage((int)(player.maxHealth * 0.25f));
+				}
+			}
+		}
+	}
+
+	private void onTrapsActive()
+	{
+		areTrapsActive = true;
+	}
+
+	private void onTrapsInactive()
+	{
+		areTrapsActive = false;
+	}
+	private void assignTraps(Array<Rect2> traps)
+	{
+		trapsPosition = traps;
+	}
+}
