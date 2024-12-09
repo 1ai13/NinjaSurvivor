@@ -23,7 +23,6 @@ public partial class GameController : Node2D
 	{
 		player = GetNode<Player>("Player");
 		var arena = GetNode<TileMapLayer>("Arena");
-		levelManager = new LevelManager(arena, biomeConfigs);
 		playerSpawn = GetNode<Marker2D>("Arena/Marker2D");
 		foreach (var c in characters)
 		{
@@ -36,7 +35,7 @@ public partial class GameController : Node2D
 		SignalBus.bus.onTrapsCreated += assignTraps;
 		SignalBus.bus.onTrapsActive += onTrapsActive;
 		SignalBus.bus.onTrapsInactive += onTrapsInactive;
-		levelManager.generateLevel(level);
+		levelManager = new LevelManager(arena, biomeConfigs, level);
 		//TODO Add more Levels / procedural logic level
 		//TODO Enemy spawner + MORE enemies
 	}

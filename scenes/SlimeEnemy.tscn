@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://cgykevomx5nxt"]
+[gd_scene load_steps=18 format=3 uid="uid://cgykevomx5nxt"]
 
 [ext_resource type="PackedScene" uid="uid://copbpawgnmm4p" path="res://scenes/Enemy.tscn" id="1_o4lgr"]
 [ext_resource type="Script" path="res://scripts/MeleeEnemy.cs" id="2_1bbre"]
@@ -8,21 +8,6 @@
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_kavio"]
 radius = 6.00001
 height = 14.0
-
-[sub_resource type="Animation" id="Animation_3nwor"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("EnemyArea/EnemySprite:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [16]
-}
 
 [sub_resource type="Animation" id="Animation_1c8kk"]
 resource_name = "attack_down"
@@ -104,6 +89,46 @@ tracks/0/keys = {
 "values": [19, 23, 24]
 }
 
+[sub_resource type="Animation" id="Animation_5xvx4"]
+resource_name = "spawn"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("GPUParticles2D:emitting")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("EnemyArea/EnemySprite:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1.26667),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("EnemyArea/EnemySprite:self_modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(1.26667, 2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(100, 100, 100, 1), Color(1, 1, 1, 1)]
+}
+
 [sub_resource type="Animation" id="Animation_fh3cq"]
 resource_name = "walk_down"
 length = 0.9
@@ -168,14 +193,30 @@ tracks/0/keys = {
 "values": [1, 5, 9, 13]
 }
 
+[sub_resource type="Animation" id="Animation_7wwkn"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("EnemyArea/EnemySprite:self_modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(100, 100, 100, 1)]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_wfvps"]
 _data = {
-"RESET": SubResource("Animation_3nwor"),
+"RESET": SubResource("Animation_7wwkn"),
 "attack_down": SubResource("Animation_1c8kk"),
 "attack_left": SubResource("Animation_kp84l"),
 "attack_right": SubResource("Animation_ofjr2"),
 "attack_up": SubResource("Animation_p0jmh"),
 "dead": SubResource("Animation_xm1wq"),
+"spawn": SubResource("Animation_5xvx4"),
 "walk_down": SubResource("Animation_fh3cq"),
 "walk_left": SubResource("Animation_br7gj"),
 "walk_right": SubResource("Animation_tnbok"),
@@ -186,11 +227,14 @@ _data = {
 script = ExtResource("2_1bbre")
 data = ExtResource("3_f1qk1")
 
+[node name="EnemyArea" parent="." index="0"]
+position = Vector2(0, -1)
+
 [node name="EnemySprite" type="Sprite2D" parent="EnemyArea" index="0"]
+self_modulate = Color(100, 100, 100, 1)
 texture = ExtResource("2_jadii")
 hframes = 4
 vframes = 7
-frame = 16
 
 [node name="EnemyShape" type="CollisionShape2D" parent="EnemyArea" index="1"]
 position = Vector2(0, 2)

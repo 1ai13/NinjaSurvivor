@@ -1451,9 +1451,10 @@ texture = ExtResource("2_3a80c")
 [node name="Body" type="Sprite2D" parent="."]
 z_index = 1
 texture = ExtResource("1_dlb78")
+flip_h = true
 hframes = 4
 vframes = 7
-frame = 14
+frame = 3
 
 [node name="PlayerShape" type="CollisionShape2D" parent="."]
 position = Vector2(0, 1)
@@ -1465,7 +1466,6 @@ position = Vector2(1, 0)
 [node name="MeleeWeapon" type="Sprite2D" parent="Area2D"]
 position = Vector2(-6, 12)
 texture = ExtResource("4_2mbj4")
-flip_h = true
 flip_v = true
 
 [node name="WeaponShape" type="CollisionShape2D" parent="Area2D"]
@@ -1476,8 +1476,7 @@ disabled = true
 
 [node name="RangeWeapon" type="Sprite2D" parent="."]
 visible = false
-position = Vector2(-6, 3)
-rotation = 1.57079
+position = Vector2(7.7486e-07, 4.66667)
 scale = Vector2(0.9, 0.9)
 texture = ExtResource("5_iqmla")
 
@@ -1492,7 +1491,6 @@ one_shot = true
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(-1, 0)
-zoom = Vector2(0.495, 0.495)
 position_smoothing_enabled = true
 position_smoothing_speed = 4.0
 

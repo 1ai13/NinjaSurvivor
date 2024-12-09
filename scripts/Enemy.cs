@@ -35,6 +35,7 @@ public abstract partial class Enemy : Node2D
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
+		SetPhysicsProcess(false);
 		player = GetParent().GetNode<Player>("Player");
 		animation = GetNode<AnimationPlayer>("AnimationPlayer");
 		enemySprite = GetNode<Sprite2D>("EnemyArea/EnemySprite");
@@ -49,6 +50,17 @@ public abstract partial class Enemy : Node2D
 		healthBar.Value = health;
 		healthBar.SelfModulate = Colors.Green;
 		lastHealth = health;
+		animation.AnimationFinished += onAnimationFinished;
+		animation.Play("spawn");
+
+	}
+
+	private void onAnimationFinished(StringName animName)
+	{
+		if (animName.ToString().Equals("spawn"))
+		{
+			SetPhysicsProcess(true);
+		}
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.

@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://b0w0mvnkhnene"]
+[gd_scene load_steps=11 format=3 uid="uid://b0w0mvnkhnene"]
 
 [ext_resource type="Script" path="res://scripts/controllers/GameController.cs" id="1_fmhb6"]
 [ext_resource type="PackedScene" uid="uid://by6wissqun38m" path="res://scenes/Arena.tscn" id="1_vwonq"]
@@ -10,8 +10,6 @@
 [ext_resource type="Resource" uid="uid://cw84oje3xaqku" path="res://assets/resources/maps/TundraBiome.tres" id="6_qt4k3"]
 [ext_resource type="Resource" uid="uid://dfmocbfcrs7rp" path="res://assets/resources/maps/GrassBiome.tres" id="7_gefoh"]
 [ext_resource type="PackedScene" uid="uid://c0fa61ops184b" path="res://scenes/HUD.tscn" id="7_mtukj"]
-[ext_resource type="PackedScene" uid="uid://dvj6l1rm50wnt" path="res://scenes/BatEnemy.tscn" id="8_4hvla"]
-[ext_resource type="PackedScene" uid="uid://cgykevomx5nxt" path="res://scenes/SlimeEnemy.tscn" id="8_lmtcr"]
 
 [node name="Game" type="Node2D"]
 texture_filter = 1
@@ -29,11 +27,5 @@ texture_filter = 1
 
 [node name="Player" parent="." instance=ExtResource("2_s2hus")]
 position = Vector2(555, 131)
-
-[node name="Slime" parent="." instance=ExtResource("8_lmtcr")]
-position = Vector2(797, 337)
-
-[node name="Bat" parent="." instance=ExtResource("8_4hvla")]
-position = Vector2(500, 306)
 
 [connection signal="healthChanged" from="Player" to="CanvasLayer/HUD" method="onHealthChanged"]

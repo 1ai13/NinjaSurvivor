@@ -27,7 +27,11 @@ public partial class LevelManager
 
 	private Godot.Collections.Dictionary<Vector2I, Rect2> trapCells;
 	private Array<BiomeConfig> biomes;
-	public LevelManager(TileMapLayer baseLayer, Array<BiomeConfig> biomes)
+	private int level;
+	private int wave;
+	private BiomeConfig biome;
+
+	public LevelManager(TileMapLayer baseLayer, Array<BiomeConfig> biomes, int level)
 	{
 		trapCooldown = new Timer();
 		trapCooldown.WaitTime = 3f;
@@ -37,6 +41,8 @@ public partial class LevelManager
 		trapCells = new Godot.Collections.Dictionary<Vector2I, Rect2>();
 		rnd = new RandomNumberGenerator();
 		this.biomes = biomes;
+		this.level = level;
+		wave = 0;
 		//Save all Tiled Map Layers
 		layers.Add(baseLayer);
 		baseLayer.GetChildren().OfType<TileMapLayer>().ToList().ForEach(x =>
@@ -50,30 +56,11 @@ public partial class LevelManager
 		{
 			arenaRect = arenaRect.Expand(c);
 		}
-		GD.Print("Arena size" + arenaRect.Size);
-		GD.Print("Arena pos" + arenaRect.Position);
+		generateLevel();
 	}
-	public void generateLevel(int level)
+	public void generateLevel()
 	{
-		generateTerrain(level);
-		generateArenaCells(level);
-		generateSpawns(level);
-	}
-
-	private void generateSpawns(int level)
-	{
-
-		var spawns = poissonDiskSampling(25, 5);
-		GD.Print(spawns.Count);
-		foreach (var s in spawns)
-		{
-			layers[1].SetCell(s, 6, tilesMap[DECOR][tilesMap[DECOR].Count - 2]);
-		}
-	}
-
-	private void generateTerrain(int level)
-	{
-		var biome = level switch
+		biome = level switch
 		{
 			<= 5 => biomes[0],
 			<= 10 => biomes[1],
@@ -81,6 +68,63 @@ public partial class LevelManager
 			<= 20 => biomes[3],
 			_ => biomes[0]
 		};
+
+		generateTerrain();
+		generateArenaCells();
+		generateSpawns();
+	}
+
+	private void generateSpawns()
+	{
+		wave++;
+		var spawnCount = 0;
+		var minDistance = 0;
+		var enemyTypes = new Array<EnemyType>();
+		switch (wave)
+		{
+			case 1:
+				spawnCount = 3;
+				minDistance = 10;
+				enemyTypes.Add(biome.enemies[0]);
+				break;
+			case 2:
+			case 3:
+				spawnCount = 5;
+				minDistance = 6;
+				enemyTypes.Add(biome.enemies[1]);
+				break;
+			case 4:
+				spawnCount = 7;
+				minDistance = 4;
+				enemyTypes = biome.enemies;
+				break;
+			case 5:
+				spawnCount = 10;
+				minDistance = 3;
+				enemyTypes = biome.enemies;
+				break;
+		};
+		var spawns = poissonDiskSampling(spawnCount, minDistance);
+		var enemyScenes = new Array<PackedScene>();
+		foreach (var e in enemyTypes)
+		{
+			var name = e.ToString().Capitalize();
+			enemyScenes.Add(GD.Load<PackedScene>($"res://scenes/{name}Enemy.tscn"));
+		}
+		foreach (var s in spawns)
+		{
+			var rndEnemy = rnd.RandiRange(0, enemyTypes.Count - 1);
+			GD.Print("world coords pos:" + layers[0].MapToLocal(s));
+			var enemy = enemyScenes[rndEnemy].Instantiate<Enemy>();
+			enemy.GlobalPosition = layers[0].MapToLocal(s);
+			GD.Print("enemy pos:" + enemy.GlobalPosition);
+			layers[0].GetParent().AddChild(enemy);
+			layers[1].SetCell(s, 6, tilesMap[DECOR][tilesMap[DECOR].Count - 2]);
+		}
+	}
+
+	private void generateTerrain()
+	{
 		var cellPos = new Vector2I();
 		//Whole Map
 		var mapSize = layers[0].GetUsedRect();
@@ -107,7 +151,7 @@ public partial class LevelManager
 		}
 	}
 
-	private void generateArenaCells(int level)
+	private void generateArenaCells()
 	{
 		arenaCells.ToList().ForEach(x =>
 		{
@@ -162,7 +206,7 @@ public partial class LevelManager
 	}
 
 	//TODO DISTRIBUTING EVENLY INTO SPACE Study more this algorithm , working with some own adjustments
-	private List<Vector2I> poissonDiskSampling(int numPoints, float minDistance, int attempts = 100)
+	private List<Vector2I> poissonDiskSampling(int numPoints, float minDistance, int attempts = 50)
 	{
 		List<Vector2I> points = new List<Vector2I>() { };
 		List<Vector2I> spawnPoints = new List<Vector2I> { (Vector2I)arenaRect.GetCenter() };

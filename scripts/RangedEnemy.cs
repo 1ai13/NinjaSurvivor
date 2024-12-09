@@ -30,7 +30,7 @@ public partial class RangedEnemy : Enemy
 		if (animationName.ToString().StartsWith("attack"))
 		{
 			var projectile = PoolEngine.instance.pullFromPool();
-			projectile.init(GlobalPosition, enemyDirection, enemyDirection.Angle(), this, data.projectileSpeed, data.angularSpeed, data.isProjectile, data.enemySprites[1]);
+			projectile.init(GlobalPosition, enemyDirection, enemyDirection.Angle(), this, data.projectileSpeed, data.angularSpeed, data.isProjectile, data.enemySprites[2]);
 			projectile.projectileHitPlayer += onPlayerHit;
 			isAttacking = false;
 			playAttackSound();

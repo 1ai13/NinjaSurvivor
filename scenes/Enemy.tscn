@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://copbpawgnmm4p"]
+[gd_scene load_steps=12 format=3 uid="uid://copbpawgnmm4p"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_uprsn"]
 bg_color = Color(0.351563, 0.351563, 0.351562, 1)
@@ -24,6 +24,43 @@ bg_color = Color(1, 1, 1, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ddimb"]
 bg_color = Color(1, 1, 1, 1)
+
+[sub_resource type="Gradient" id="Gradient_m8tf6"]
+offsets = PackedFloat32Array(0.148594, 0.361446)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_5nh64"]
+gradient = SubResource("Gradient_m8tf6")
+
+[sub_resource type="Curve" id="Curve_esndj"]
+max_value = 60.0
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 60), -111.7, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_4gqld"]
+curve = SubResource("Curve_esndj")
+
+[sub_resource type="Curve" id="Curve_faspg"]
+_data = [Vector2(0, 0.327917), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_hcc3s"]
+curve = SubResource("Curve_faspg")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_jikck"]
+particle_flag_disable_z = true
+emission_shape = 6
+emission_ring_axis = Vector3(0, 0, 1)
+emission_ring_height = 1.0
+emission_ring_radius = 20.0
+emission_ring_inner_radius = 10.0
+orbit_velocity_min = -0.128
+orbit_velocity_max = 0.128
+gravity = Vector3(0, 0, 0)
+radial_accel_min = -23.0
+radial_accel_max = -2.23517e-06
+radial_accel_curve = SubResource("CurveTexture_4gqld")
+scale_curve = SubResource("CurveTexture_hcc3s")
+color_ramp = SubResource("GradientTexture1D_5nh64")
 
 [node name="Enemy" type="Node2D"]
 
@@ -54,3 +91,12 @@ grow_vertical = 2
 theme_override_styles/background = SubResource("StyleBoxEmpty_lydwh")
 theme_override_styles/fill = SubResource("StyleBoxFlat_ddimb")
 show_percentage = false
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="."]
+emitting = false
+amount = 75
+process_material = SubResource("ParticleProcessMaterial_jikck")
+one_shot = true
+local_coords = true
+trail_enabled = true
+trail_lifetime = 0.32

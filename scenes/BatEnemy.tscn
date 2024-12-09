@@ -10,57 +10,6 @@
 radius = 5.0
 height = 10.0
 
-[sub_resource type="Animation" id="Animation_3nwor"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("EnemyArea/EnemySprite:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [16]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("EnemyArea/EnemySprite:position")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(0, 7)]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("EnemyArea/EnemySprite:rotation")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [-0.572432]
-}
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath("EnemyArea/Shadow:self_modulate")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Color(100, 1, 1, 0.65)]
-}
-
 [sub_resource type="Animation" id="Animation_1c8kk"]
 resource_name = "attack_down"
 length = 0.9
@@ -321,6 +270,46 @@ tracks/3/keys = {
 "values": [Color(1, 1, 1, 0.5), Color(100, 1, 1, 0.65)]
 }
 
+[sub_resource type="Animation" id="Animation_s5327"]
+resource_name = "spawn"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("GPUParticles2D:emitting")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("EnemyArea:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1.26667),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("EnemyArea/EnemySprite:self_modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(1.26667, 2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(100, 100, 100, 1), Color(1, 1, 1, 1)]
+}
+
 [sub_resource type="Animation" id="Animation_fh3cq"]
 resource_name = "walk_down"
 length = 0.9
@@ -531,12 +520,12 @@ tracks/3/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_wfvps"]
 _data = {
-"RESET": SubResource("Animation_3nwor"),
 "attack_down": SubResource("Animation_1c8kk"),
 "attack_left": SubResource("Animation_kp84l"),
 "attack_right": SubResource("Animation_ofjr2"),
 "attack_up": SubResource("Animation_p0jmh"),
 "dead": SubResource("Animation_xm1wq"),
+"spawn": SubResource("Animation_s5327"),
 "walk_down": SubResource("Animation_fh3cq"),
 "walk_left": SubResource("Animation_br7gj"),
 "walk_right": SubResource("Animation_tnbok"),
@@ -547,23 +536,25 @@ _data = {
 script = ExtResource("2_od27k")
 data = ExtResource("3_lch3c")
 
+[node name="EnemyArea" parent="." index="0"]
+visible = false
+
 [node name="EnemyShape" type="CollisionShape2D" parent="EnemyArea" index="0"]
 position = Vector2(0, 2)
 rotation = -1.57079
 shape = SubResource("CapsuleShape2D_5vx44")
 
 [node name="Shadow" type="Sprite2D" parent="EnemyArea" index="1"]
-self_modulate = Color(100, 1, 1, 0.65)
+self_modulate = Color(1, 1, 1, 0.5)
 position = Vector2(0, 18)
 texture = ExtResource("5_ap4rl")
 
 [node name="EnemySprite" type="Sprite2D" parent="EnemyArea" index="2"]
-position = Vector2(0, 7)
-rotation = -0.572432
+self_modulate = Color(100, 100, 100, 1)
 texture = ExtResource("2_alqno")
 hframes = 5
 vframes = 7
-frame = 16
+frame = 20
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." index="1"]
 libraries = {
