@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://d27tgl25p8g58"]
+[gd_scene load_steps=21 format=3 uid="uid://d27tgl25p8g58"]
 
 [ext_resource type="Texture2D" uid="uid://uiqa86t6b86u" path="res://assets/textures/characters/NinjaRed/SpriteSheet.png" id="1_dlb78"]
 [ext_resource type="Script" path="res://scripts/Player.cs" id="1_t7pu8"]
@@ -13,81 +13,6 @@ height = 14.0
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_0ii24"]
 radius = 3.5
 height = 12.0
-
-[sub_resource type="Animation" id="Animation_gubvr"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Area2D/MeleeWeapon:position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(-6, 12)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("Area2D/MeleeWeapon:rotation")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [0.0]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("Area2D/WeaponShape:shape")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [SubResource("CapsuleShape2D_0ii24")]
-}
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath("Area2D/WeaponShape:disabled")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [true]
-}
-tracks/4/type = "value"
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/path = NodePath("Area2D/WeaponShape:rotation")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [-0.0218304]
-}
-tracks/5/type = "value"
-tracks/5/imported = false
-tracks/5/enabled = true
-tracks/5/path = NodePath("Area2D/WeaponShape:position")
-tracks/5/interp = 1
-tracks/5/loop_wrap = true
-tracks/5/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(-9, 9)]
-}
 
 [sub_resource type="Animation" id="Animation_h02rd"]
 resource_name = "attack"
@@ -978,6 +903,30 @@ tracks/11/keys = {
 "update": 1,
 "values": [true]
 }
+tracks/12/type = "value"
+tracks/12/imported = false
+tracks/12/enabled = true
+tracks/12/path = NodePath("CPUParticles2D:position")
+tracks/12/interp = 1
+tracks/12/loop_wrap = true
+tracks/12/keys = {
+"times": PackedFloat32Array(0.0666667, 0.533333),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [Vector2(3, -8), Vector2(-3, -8)]
+}
+tracks/13/type = "value"
+tracks/13/imported = false
+tracks/13/enabled = true
+tracks/13/path = NodePath("CPUParticles2D:emitting")
+tracks/13/interp = 1
+tracks/13/loop_wrap = true
+tracks/13/keys = {
+"times": PackedFloat32Array(0.0666667, 0.533333),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, true]
+}
 
 [sub_resource type="Animation" id="Animation_m3tmd"]
 resource_name = "walk_left"
@@ -1126,6 +1075,30 @@ tracks/11/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 1,
 "values": [true]
+}
+tracks/12/type = "value"
+tracks/12/imported = false
+tracks/12/enabled = true
+tracks/12/path = NodePath("CPUParticles2D:position")
+tracks/12/interp = 1
+tracks/12/loop_wrap = true
+tracks/12/keys = {
+"times": PackedFloat32Array(0.0666667, 0.533333),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [Vector2(7, 8), Vector2(8, 3)]
+}
+tracks/13/type = "value"
+tracks/13/imported = false
+tracks/13/enabled = true
+tracks/13/path = NodePath("CPUParticles2D:emitting")
+tracks/13/interp = 1
+tracks/13/loop_wrap = true
+tracks/13/keys = {
+"times": PackedFloat32Array(0.0666667, 0.533333),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, true]
 }
 
 [sub_resource type="Animation" id="Animation_msixx"]
@@ -1276,6 +1249,30 @@ tracks/11/keys = {
 "update": 1,
 "values": [true]
 }
+tracks/12/type = "value"
+tracks/12/imported = false
+tracks/12/enabled = true
+tracks/12/path = NodePath("CPUParticles2D:position")
+tracks/12/interp = 1
+tracks/12/loop_wrap = true
+tracks/12/keys = {
+"times": PackedFloat32Array(0.0666667, 0.533333),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [Vector2(-8, 8), Vector2(-9, 3)]
+}
+tracks/13/type = "value"
+tracks/13/imported = false
+tracks/13/enabled = true
+tracks/13/path = NodePath("CPUParticles2D:emitting")
+tracks/13/interp = 1
+tracks/13/loop_wrap = true
+tracks/13/keys = {
+"times": PackedFloat32Array(0.0666667, 0.533333),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, true]
+}
 
 [sub_resource type="Animation" id="Animation_ka8fq"]
 resource_name = "walk_down"
@@ -1425,10 +1422,49 @@ tracks/11/keys = {
 "update": 1,
 "values": [true]
 }
+tracks/12/type = "value"
+tracks/12/imported = false
+tracks/12/enabled = true
+tracks/12/path = NodePath("CPUParticles2D:position")
+tracks/12/interp = 1
+tracks/12/loop_wrap = true
+tracks/12/keys = {
+"times": PackedFloat32Array(0.0666667, 0.533333),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [Vector2(-3, 10), Vector2(3, 10)]
+}
+tracks/13/type = "value"
+tracks/13/imported = false
+tracks/13/enabled = true
+tracks/13/path = NodePath("CPUParticles2D:emitting")
+tracks/13/interp = 1
+tracks/13/loop_wrap = true
+tracks/13/keys = {
+"times": PackedFloat32Array(0.0666667, 0.533333),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, true]
+}
+
+[sub_resource type="Animation" id="Animation_wsg4a"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CPUParticles2D:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-3, 10)]
+}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_43gym"]
 _data = {
-"RESET": SubResource("Animation_gubvr"),
+"RESET": SubResource("Animation_wsg4a"),
 "attack_down": SubResource("Animation_h02rd"),
 "attack_left": SubResource("Animation_qrkyu"),
 "attack_right": SubResource("Animation_l4tfw"),
@@ -1440,8 +1476,17 @@ _data = {
 "walk_up": SubResource("Animation_ka8fq")
 }
 
+[sub_resource type="Curve" id="Curve_52bsn"]
+_data = [Vector2(0, 0.423239), 0.0, 0.0, 0, 0, Vector2(1e-05, 1), 0.0, 0.0, 0, 0, Vector2(1, 0.0112677), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="Gradient" id="Gradient_5n1v0"]
+offsets = PackedFloat32Array(0, 0.565385)
+colors = PackedColorArray(0.292, 0.292, 0.292, 0.513, 1, 1, 1, 0.8)
+
 [node name="Player" type="CharacterBody2D"]
 script = ExtResource("1_t7pu8")
+speed = 150.0
 
 [node name="Shadow" type="Sprite2D" parent="."]
 self_modulate = Color(1, 1, 1, 0.5)
@@ -1454,7 +1499,7 @@ texture = ExtResource("1_dlb78")
 flip_h = true
 hframes = 4
 vframes = 7
-frame = 3
+frame = 11
 
 [node name="PlayerShape" type="CollisionShape2D" parent="."]
 position = Vector2(0, 1)
@@ -1464,19 +1509,20 @@ shape = SubResource("CapsuleShape2D_qdg2v")
 position = Vector2(1, 0)
 
 [node name="MeleeWeapon" type="Sprite2D" parent="Area2D"]
-position = Vector2(-6, 12)
+position = Vector2(-5.33333, 5.33333)
+rotation = -1.57079
 texture = ExtResource("4_2mbj4")
 flip_v = true
 
 [node name="WeaponShape" type="CollisionShape2D" parent="Area2D"]
-position = Vector2(-9, 9)
-rotation = -0.0218304
+position = Vector2(-5, 5)
+rotation = 1.56044
 shape = SubResource("CapsuleShape2D_0ii24")
 disabled = true
 
 [node name="RangeWeapon" type="Sprite2D" parent="."]
 visible = false
-position = Vector2(7.7486e-07, 4.66667)
+position = Vector2(1.33333, 4.66667)
 scale = Vector2(0.9, 0.9)
 texture = ExtResource("5_iqmla")
 
@@ -1493,6 +1539,22 @@ one_shot = true
 position = Vector2(-1, 0)
 position_smoothing_enabled = true
 position_smoothing_speed = 4.0
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="."]
+position = Vector2(-3, 10)
+emitting = false
+amount = 20
+lifetime = 0.3
+one_shot = true
+explosiveness = 1.0
+randomness = 1.0
+emission_shape = 1
+emission_sphere_radius = 1.5
+gravity = Vector2(0, 0)
+angular_velocity_max = 158.96
+radial_accel_max = 5.0
+scale_amount_curve = SubResource("Curve_52bsn")
+color_ramp = SubResource("Gradient_5n1v0")
 
 [connection signal="area_entered" from="Area2D" to="." method="onMeleeAttackHit"]
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="onAnimationFinished"]

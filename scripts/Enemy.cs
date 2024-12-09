@@ -130,6 +130,7 @@ public abstract partial class Enemy : Node2D
 		{
 			isDead = true;
 			animation.Play("dead");
+			SignalBus.bus.EmitSignal("onEnemyKilled");
 			playDeadSound();
 			var area = GetNode<Area2D>("EnemyArea");
 			area.SetDeferred(Area2D.PropertyName.Monitorable, false);

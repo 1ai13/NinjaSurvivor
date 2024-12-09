@@ -231,6 +231,7 @@ data = ExtResource("3_f1qk1")
 position = Vector2(0, -1)
 
 [node name="EnemySprite" type="Sprite2D" parent="EnemyArea" index="0"]
+visible = false
 self_modulate = Color(100, 100, 100, 1)
 texture = ExtResource("2_jadii")
 hframes = 4

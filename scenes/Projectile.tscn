@@ -7,9 +7,8 @@
 radius = 6.0
 height = 12.0
 
-[node name="Projectile" type="Area2D"]
+[node name="Projectile" type="Area2D" groups=["Projectiles"]]
 script = ExtResource("1_1ad1x")
-metadata/isProjectile = false
 
 [node name="ProjectileSprite" type="Sprite2D" parent="."]
 texture = ExtResource("1_eqmcl")

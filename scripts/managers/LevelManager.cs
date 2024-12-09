@@ -28,8 +28,10 @@ public partial class LevelManager
 	private Godot.Collections.Dictionary<Vector2I, Rect2> trapCells;
 	private Array<BiomeConfig> biomes;
 	private int level;
-	private int wave;
+	public int wave;
 	private BiomeConfig biome;
+	public int spawnCount;
+	private Array<PackedScene> enemyScenes;
 
 	public LevelManager(TileMapLayer baseLayer, Array<BiomeConfig> biomes, int level)
 	{
@@ -60,66 +62,97 @@ public partial class LevelManager
 	}
 	public void generateLevel()
 	{
-		biome = level switch
+		level++;
+		wave = 0;
+		switch (level)
 		{
-			<= 5 => biomes[0],
-			<= 10 => biomes[1],
-			<= 15 => biomes[2],
-			<= 20 => biomes[3],
-			_ => biomes[0]
-		};
+			case <= 5:
+				biome = biomes[0];
+				break;
+			case <= 10:
+				biome = biomes[1];
+				break;
+			case <= 15:
+				biome = biomes[2];
+				break;
+			case <= 20:
+				biome = biomes[3];
+				break;
+			default:
+				biome = biomes[0];
+				break;
 
+		}
+		enemyScenes = new Array<PackedScene>();
+		foreach (var e in biome.enemies)
+		{
+			var name = e.ToString().Capitalize();
+			enemyScenes.Add(GD.Load<PackedScene>($"res://scenes/{name}Enemy.tscn"));
+		}
 		generateTerrain();
 		generateArenaCells();
 		generateSpawns();
 	}
 
-	private void generateSpawns()
+	public void generateSpawns()
 	{
 		wave++;
-		var spawnCount = 0;
+		GD.Print(wave);
 		var minDistance = 0;
 		var enemyTypes = new Array<EnemyType>();
 		switch (wave)
 		{
 			case 1:
 				spawnCount = 3;
-				minDistance = 10;
+				minDistance = 9;
 				enemyTypes.Add(biome.enemies[0]);
 				break;
 			case 2:
+				spawnCount = 3;
+				minDistance = 9;
+				enemyTypes.Add(biome.enemies[1]);
+				break;
 			case 3:
 				spawnCount = 5;
 				minDistance = 6;
-				enemyTypes.Add(biome.enemies[1]);
+				enemyTypes = biome.enemies;
 				break;
 			case 4:
 				spawnCount = 7;
-				minDistance = 4;
+				minDistance = 5;
 				enemyTypes = biome.enemies;
 				break;
 			case 5:
 				spawnCount = 10;
-				minDistance = 3;
+				minDistance = 4;
+				enemyTypes = biome.enemies;
+				break;
+			default:
+				spawnCount = 10;
+				minDistance = 4;
 				enemyTypes = biome.enemies;
 				break;
 		};
 		var spawns = poissonDiskSampling(spawnCount, minDistance);
-		var enemyScenes = new Array<PackedScene>();
-		foreach (var e in enemyTypes)
-		{
-			var name = e.ToString().Capitalize();
-			enemyScenes.Add(GD.Load<PackedScene>($"res://scenes/{name}Enemy.tscn"));
-		}
+		var rndEnemy = 0;
 		foreach (var s in spawns)
 		{
-			var rndEnemy = rnd.RandiRange(0, enemyTypes.Count - 1);
-			GD.Print("world coords pos:" + layers[0].MapToLocal(s));
-			var enemy = enemyScenes[rndEnemy].Instantiate<Enemy>();
+			// if (wave == 1)
+			// {
+			// 	rndEnemy = 0;
+			// }
+			// else if (wave == 2)
+			// {
+			// 	rndEnemy = 1;
+			// }
+			// else
+			// {
+			// 	rndEnemy = rnd.RandiRange(0, enemyTypes.Count - 1);
+			// }
+			var enemy = enemyScenes[1].Instantiate<Enemy>();
 			enemy.GlobalPosition = layers[0].MapToLocal(s);
-			GD.Print("enemy pos:" + enemy.GlobalPosition);
-			layers[0].GetParent().AddChild(enemy);
-			layers[1].SetCell(s, 6, tilesMap[DECOR][tilesMap[DECOR].Count - 2]);
+			// layers[0].GetParent().AddChild(enemy);
+			layers[0].GetParent().CallDeferred("add_child", enemy);
 		}
 	}
 
@@ -142,9 +175,12 @@ public partial class LevelManager
 				};
 				cellPos.X = i;
 				cellPos.Y = y;
-				//Dont generate terrain in case its arena area
+				//Generate base terrain in case its arena area
 				if (arenaCells.Contains(cellPos))
+				{
 					layers[0].SetCell(cellPos, 0, tilesMap[biome.name][0]);
+					layers[1].SetCell(cellPos, 6, tilesMap[biome.name][0]);
+				}
 				else
 					layers[0].SetCell(cellPos, 0, tilesMap[biome.name][cellType]);
 			}
@@ -153,16 +189,19 @@ public partial class LevelManager
 
 	private void generateArenaCells()
 	{
+		trapCells.Clear();
 		arenaCells.ToList().ForEach(x =>
 		{
 			Vector2I cellType;
-			if (rnd.Randf() < .75f) return;
+			if (rnd.Randf() < .80f) return;
 			var rand = rnd.Randf();
 			switch (rand)
 			{
 				case < .90f:
 					//Create decoration
 					rand = rnd.RandiRange(0, tilesMap[DECOR].Count - 3);
+					var isSkull = rnd.Randf() > .90f;
+					if (isSkull) rand = rnd.RandiRange(tilesMap[DECOR].Count - 2, tilesMap[DECOR].Count - 1);
 					cellType = tilesMap[DECOR][(int)rand];
 					layers[1].SetCell(x, 6, cellType);
 					break;
@@ -173,12 +212,6 @@ public partial class LevelManager
 					var mapPos = layers[0].MapToLocal(x);
 					trapCells.Add(x, new Rect2(mapPos.X - TILE_SIZE.X / 2, mapPos.Y - TILE_SIZE.Y / 2, TILE_SIZE.X, TILE_SIZE.Y));
 					break;
-					// case < 1f:
-					// 	//Create skulls
-					// 	var cell = rnd.RandiRange(tilesMap[DECOR].Count - 2, tilesMap[DECOR].Count - 1);
-					// 	cellType = tilesMap[DECOR][cell];
-					// 	layers[1].SetCell(x, 6, cellType);
-					// 	break;
 			}
 		});
 		SignalBus.bus.EmitSignal("onTrapsCreated", (Array<Rect2>)trapCells.Values);
@@ -205,7 +238,7 @@ public partial class LevelManager
 		SignalBus.bus.EmitSignal("onTrapsInactive");
 	}
 
-	//TODO DISTRIBUTING EVENLY INTO SPACE Study more this algorithm , working with some own adjustments
+	//DISTRIBUTING EVENLY INTO SPACE, working with some own adjustments
 	private List<Vector2I> poissonDiskSampling(int numPoints, float minDistance, int attempts = 50)
 	{
 		List<Vector2I> points = new List<Vector2I>() { };
@@ -219,7 +252,7 @@ public partial class LevelManager
 
 			for (int i = 0; i < attempts; i++)
 			{
-				float angle = rnd.Randf() * MathF.PI * 2f;
+				float angle = rnd.Randf() * Mathf.Tau;
 				float radius = rnd.RandfRange(minDistance, minDistance * 2);
 				Vector2I candidate = spawnCenter + new Vector2I((int)(Mathf.Cos(angle) * radius), (int)(Mathf.Sin(angle) * radius));
 

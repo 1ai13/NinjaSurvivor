@@ -19,7 +19,6 @@ public partial class PoolEngine : Node
 
 	public void addToPool(Projectile p)
 	{
-		p.sprite.Texture = null;
 		p.SetPhysicsProcess(false);
 		p.Hide();
 		projectilePool.Add(p);
@@ -38,8 +37,6 @@ public partial class PoolEngine : Node
 		{
 			var projectile = projectilePool.Last();
 			projectilePool.RemoveAt(projectilePool.IndexOf(projectilePool.Last()));
-			projectile.SetPhysicsProcess(true);
-			projectile.Show();
 			return projectile;
 		}
 	}

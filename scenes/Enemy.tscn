@@ -62,7 +62,7 @@ radial_accel_curve = SubResource("CurveTexture_4gqld")
 scale_curve = SubResource("CurveTexture_hcc3s")
 color_ramp = SubResource("GradientTexture1D_5nh64")
 
-[node name="Enemy" type="Node2D"]
+[node name="Enemy" type="Node2D" groups=["Enemies"]]
 
 [node name="EnemyArea" type="Area2D" parent="."]
 

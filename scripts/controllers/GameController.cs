@@ -18,6 +18,7 @@ public partial class GameController : Node2D
 	private Array<Rect2> trapsPosition;
 	Vector2I playerFeetOffset = new Vector2I(0, 7);
 	private bool areTrapsActive = false;
+	private int enemiesKilled;
 
 	public override void _Ready()
 	{
@@ -35,9 +36,10 @@ public partial class GameController : Node2D
 		SignalBus.bus.onTrapsCreated += assignTraps;
 		SignalBus.bus.onTrapsActive += onTrapsActive;
 		SignalBus.bus.onTrapsInactive += onTrapsInactive;
+		SignalBus.bus.onEnemyKilled += onEnemyKilled;
 		levelManager = new LevelManager(arena, biomeConfigs, level);
 		//TODO Add more Levels / procedural logic level
-		//TODO Enemy spawner + MORE enemies
+		//TODO MORE enemies
 	}
 
 	public override void _Process(double delta)
@@ -66,6 +68,23 @@ public partial class GameController : Node2D
 	}
 	private void assignTraps(Array<Rect2> traps)
 	{
+		trapsPosition.ToList().Clear();
 		trapsPosition = traps;
+	}
+	private void onEnemyKilled()
+	{
+		enemiesKilled++;
+		if (enemiesKilled == levelManager.spawnCount)
+		{
+			if (levelManager.wave == 5)
+			{
+				levelManager.generateLevel();
+			}
+			else
+			{
+				levelManager.generateSpawns();
+			}
+			enemiesKilled = 0;
+		}
 	}
 }

@@ -8,7 +8,7 @@ public partial class Projectile : Area2D
 	[Signal]
 	public delegate void projectileHitAreaEventHandler(Area2D area);
 	[Signal]
-	public delegate void projectileHitPlayerEventHandler(Player player);
+	public delegate void projectileHitPlayerEventHandler();
 	[Export]
 	public float speed = 200f;
 	public float angularSpeed = 500f;
@@ -33,6 +33,8 @@ public partial class Projectile : Area2D
 		this.isProjectile = isProjectile;
 		sprite = GetNode<Sprite2D>("ProjectileSprite");
 		sprite.Texture = texture;
+		SetPhysicsProcess(true);
+		Show();
 	}
 
 	// Called when the node enters the scene tree for the first time.
@@ -58,6 +60,7 @@ public partial class Projectile : Area2D
 	{
 		if (owner is Player o && area.GetParent() is Enemy e)
 		{
+			//FIXME wierd bug when projectiles cross each other
 			EmitSignal(SignalName.projectileHitArea, area);
 			projectileHitArea -= o.onRangedEnemyHit;
 			PoolEngine.instance.addToPool(this);
@@ -69,7 +72,7 @@ public partial class Projectile : Area2D
 	{
 		if (owner is RangedEnemy o && body is Player p)
 		{
-			EmitSignal(SignalName.projectileHitPlayer, p);
+			EmitSignal(SignalName.projectileHitPlayer);
 			projectileHitPlayer -= o.onPlayerHit;
 			playHitSound(o.type);
 			PoolEngine.instance.addToPool(this);
@@ -80,8 +83,10 @@ public partial class Projectile : Area2D
 			playHitSound(own.type);
 			PoolEngine.instance.addToPool(this);
 		}
-		else
+		else if (owner is Player pl)
 		{
+			//FIXME wierd bug when projectiles cross each other
+			projectileHitArea -= pl.onRangedEnemyHit;
 			SetPhysicsProcess(false);
 			AssetManager.instance.playSFX("rangedWallHit", -5f);
 		}

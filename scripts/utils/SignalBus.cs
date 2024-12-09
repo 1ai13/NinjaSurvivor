@@ -13,6 +13,8 @@ public partial class SignalBus : Node
 	public delegate void onTrapsActiveEventHandler();
 	[Signal]
 	public delegate void onTrapsInactiveEventHandler();
+	[Signal]
+	public delegate void onEnemyKilledEventHandler();
 
 	//Init method
 	public override void _Ready()

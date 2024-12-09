@@ -37,7 +37,7 @@ public partial class RangedEnemy : Enemy
 		}
 	}
 
-	public void onPlayerHit(Player body)
+	public void onPlayerHit()
 	{
 		player.takeDamage(damage);
 	}
