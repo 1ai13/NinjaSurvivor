@@ -15,17 +15,17 @@ public partial class Projectile : Area2D
 	private const int offset = 15;
 	private Vector2 initialPosition { get; set; }
 	private float initialRotation { get; set; }
-	private Vector2 velocity { get; set; } = Vector2.Zero;
+	public Vector2 velocity { get; set; } = Vector2.Zero;
 	[Export]
 	public bool isProjectile { get; set; }
-	private Node2D owner;
+	public Node2D owner;
 	public Sprite2D sprite;
 
 	public void init(Vector2 position, Vector2 vel, float rotation, Node2D owner, float s, float angularS, bool isProjectile, Texture2D texture)
 	{
 		this.owner = owner;
 		velocity = vel;
-		// Sets the bullet away from the player
+		// Sets the bullet away from the entity
 		Position = position + velocity * offset;
 		Rotation = rotation;
 		speed = s;
@@ -35,6 +35,7 @@ public partial class Projectile : Area2D
 		sprite.Texture = texture;
 		SetPhysicsProcess(true);
 		Show();
+
 	}
 
 	// Called when the node enters the scene tree for the first time.
@@ -60,7 +61,6 @@ public partial class Projectile : Area2D
 	{
 		if (owner is Player o && area.GetParent() is Enemy e)
 		{
-			//FIXME wierd bug when projectiles cross each other
 			EmitSignal(SignalName.projectileHitArea, area);
 			projectileHitArea -= o.onRangedEnemyHit;
 			PoolEngine.instance.addToPool(this);
@@ -76,17 +76,17 @@ public partial class Projectile : Area2D
 			projectileHitPlayer -= o.onPlayerHit;
 			playHitSound(o.type);
 			PoolEngine.instance.addToPool(this);
+
 		}
 		else if (owner is RangedEnemy own)
 		{
 			projectileHitPlayer -= own.onPlayerHit;
 			playHitSound(own.type);
 			PoolEngine.instance.addToPool(this);
+
 		}
-		else if (owner is Player pl)
+		else
 		{
-			//FIXME wierd bug when projectiles cross each other
-			projectileHitArea -= pl.onRangedEnemyHit;
 			SetPhysicsProcess(false);
 			AssetManager.instance.playSFX("rangedWallHit", -5f);
 		}

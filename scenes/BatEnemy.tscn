@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://dvj6l1rm50wnt"]
+[gd_scene load_steps=19 format=3 uid="uid://dvj6l1rm50wnt"]
 
 [ext_resource type="PackedScene" uid="uid://copbpawgnmm4p" path="res://scenes/Enemy.tscn" id="1_u3pbf"]
 [ext_resource type="Texture2D" uid="uid://53b73617equ5" path="res://assets/textures/enemies/BlueBat/SpriteSheet.png" id="2_alqno"]
@@ -518,8 +518,12 @@ tracks/3/keys = {
 "values": [Color(1, 1, 1, 0.5)]
 }
 
+[sub_resource type="Animation" id="Animation_cmbd3"]
+length = 0.001
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_wfvps"]
 _data = {
+"RESET": SubResource("Animation_cmbd3"),
 "attack_down": SubResource("Animation_1c8kk"),
 "attack_left": SubResource("Animation_kp84l"),
 "attack_right": SubResource("Animation_ofjr2"),

@@ -65,6 +65,7 @@ color_ramp = SubResource("GradientTexture1D_5nh64")
 [node name="Enemy" type="Node2D" groups=["Enemies"]]
 
 [node name="EnemyArea" type="Area2D" parent="."]
+monitorable = false
 
 [node name="HitCooldown" type="Timer" parent="."]
 wait_time = 0.2

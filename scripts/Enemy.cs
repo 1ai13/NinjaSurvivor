@@ -16,6 +16,7 @@ public abstract partial class Enemy : Node2D
 	protected Player player;
 	public Vector2 enemyDirection { get; set; }
 	public AnimationPlayer animation;
+	private Area2D enemyArea;
 	protected Sprite2D enemySprite;
 	protected Timer attackCooldown;
 	private Timer hitCooldown;
@@ -39,6 +40,7 @@ public abstract partial class Enemy : Node2D
 		player = GetParent().GetNode<Player>("Player");
 		animation = GetNode<AnimationPlayer>("AnimationPlayer");
 		enemySprite = GetNode<Sprite2D>("EnemyArea/EnemySprite");
+		enemyArea = GetNode<Area2D>("EnemyArea");
 		attackCooldown = GetNode<Timer>("AttackCooldown");
 		hitCooldown = GetNode<Timer>("HitCooldown");
 		baseHealthBar = GetNode<ProgressBar>("BaseHealthBar");
@@ -60,6 +62,7 @@ public abstract partial class Enemy : Node2D
 		if (animName.ToString().Equals("spawn"))
 		{
 			SetPhysicsProcess(true);
+			enemyArea.Monitorable = true;
 		}
 	}
 
@@ -132,8 +135,7 @@ public abstract partial class Enemy : Node2D
 			animation.Play("dead");
 			SignalBus.bus.EmitSignal("onEnemyKilled");
 			playDeadSound();
-			var area = GetNode<Area2D>("EnemyArea");
-			area.SetDeferred(Area2D.PropertyName.Monitorable, false);
+			enemyArea.SetDeferred(Area2D.PropertyName.Monitorable, false);
 		}
 
 		//Animate the player flash hit and SFX

@@ -137,19 +137,19 @@ public partial class LevelManager
 		var rndEnemy = 0;
 		foreach (var s in spawns)
 		{
-			// if (wave == 1)
-			// {
-			// 	rndEnemy = 0;
-			// }
-			// else if (wave == 2)
-			// {
-			// 	rndEnemy = 1;
-			// }
-			// else
-			// {
-			// 	rndEnemy = rnd.RandiRange(0, enemyTypes.Count - 1);
-			// }
-			var enemy = enemyScenes[1].Instantiate<Enemy>();
+			if (wave == 1)
+			{
+				rndEnemy = 0;
+			}
+			else if (wave == 2)
+			{
+				rndEnemy = 1;
+			}
+			else
+			{
+				rndEnemy = rnd.RandiRange(0, enemyTypes.Count - 1);
+			}
+			var enemy = enemyScenes[rndEnemy].Instantiate<Enemy>();
 			enemy.GlobalPosition = layers[0].MapToLocal(s);
 			// layers[0].GetParent().AddChild(enemy);
 			layers[0].GetParent().CallDeferred("add_child", enemy);

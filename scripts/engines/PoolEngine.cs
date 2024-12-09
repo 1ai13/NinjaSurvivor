@@ -21,6 +21,7 @@ public partial class PoolEngine : Node
 	{
 		p.SetPhysicsProcess(false);
 		p.Hide();
+		resetProjectile(p);
 		projectilePool.Add(p);
 	}
 
@@ -36,8 +37,18 @@ public partial class PoolEngine : Node
 		else
 		{
 			var projectile = projectilePool.Last();
-			projectilePool.RemoveAt(projectilePool.IndexOf(projectilePool.Last()));
+			projectilePool.RemoveAt(projectilePool.Count - 1);
 			return projectile;
 		}
+	}
+	private void resetProjectile(Projectile p)
+	{
+		p.owner = null;
+		p.velocity = Vector2.Zero;
+		p.Position = Vector2.Zero;
+		p.Rotation = 0;
+		p.speed = 0;
+		p.angularSpeed = 0;
+		p.sprite = null;
 	}
 }
