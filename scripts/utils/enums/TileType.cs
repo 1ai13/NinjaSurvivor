@@ -7,6 +7,7 @@ namespace Enums
         SNOW,
         FOREST,
         TRAP,
-        DECOR
+        DECOR,
+        DOOR
     }
 }

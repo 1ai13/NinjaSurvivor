@@ -1,7 +1,7 @@
 using Godot;
 using Godot.Collections;
 using System;
-using System.Linq;
+
 
 public partial class GameController : Node2D
 {
@@ -11,14 +11,12 @@ public partial class GameController : Node2D
 	private string characterSelected;
 	[Export]
 	private Character[] characters;
-	private int level = 0;
-	private LevelManager levelManager;
+	public int level = 0;
 	[Export]
-	private Array<BiomeConfig> biomeConfigs;
-	private Array<Rect2> trapsPosition;
+	public Array<BiomeConfig> biomeConfigs;
+	public Array<Rect2> trapsPosition;
 	Vector2I playerFeetOffset = new Vector2I(0, 7);
-	private bool areTrapsActive = false;
-	private int enemiesKilled;
+	public bool areTrapsActive = false;
 
 	public override void _Ready()
 	{
@@ -33,12 +31,8 @@ public partial class GameController : Node2D
 			}
 		}
 		trapsPosition = new Array<Rect2>();
-		SignalBus.bus.onTrapsCreated += assignTraps;
-		SignalBus.bus.onTrapsActive += onTrapsActive;
-		SignalBus.bus.onTrapsInactive += onTrapsInactive;
-		SignalBus.bus.onEnemyKilled += onEnemyKilled;
-		levelManager = new LevelManager(arena, biomeConfigs, level);
-		//TODO Add more Levels / procedural logic level
+		new LevelManager(this, arena);
+		//TODO Add more Levels
 		//TODO MORE enemies
 	}
 
@@ -57,34 +51,4 @@ public partial class GameController : Node2D
 		}
 	}
 
-	private void onTrapsActive()
-	{
-		areTrapsActive = true;
-	}
-
-	private void onTrapsInactive()
-	{
-		areTrapsActive = false;
-	}
-	private void assignTraps(Array<Rect2> traps)
-	{
-		trapsPosition.ToList().Clear();
-		trapsPosition = traps;
-	}
-	private void onEnemyKilled()
-	{
-		enemiesKilled++;
-		if (enemiesKilled == levelManager.spawnCount)
-		{
-			if (levelManager.wave == 5)
-			{
-				levelManager.generateLevel();
-			}
-			else
-			{
-				levelManager.generateSpawns();
-			}
-			enemiesKilled = 0;
-		}
-	}
 }

@@ -9,6 +9,7 @@ using static Enums.TileType;
 public partial class LevelManager
 {
 	private readonly Vector2I TILE_SIZE;
+	private GameController controller;
 	Timer trapCooldown;
 	private Godot.Collections.Dictionary<TileType, Array<Vector2I>> tilesMap = new Godot.Collections.Dictionary<TileType, Array<Vector2I>>
 	{
@@ -18,6 +19,7 @@ public partial class LevelManager
 		{FOREST, new Array<Vector2I> { new Vector2I(16, 12), new Vector2I(17, 12), new Vector2I(18, 12), new Vector2I(19, 12), new Vector2I(20, 12) }},
 		{TRAP, new Array<Vector2I> { new Vector2I(5, 1), new Vector2I(4, 1) }},
 		{DECOR, new Array<Vector2I> { new Vector2I(27, 2), new Vector2I(28, 2), new Vector2I(29, 2), new Vector2I(30, 2), new Vector2I(27, 1), new Vector2I(32, 0), new Vector2I(40, 0), new Vector2I(41, 0)}},
+		{DOOR, new Array<Vector2I> { new Vector2I(22, 9), new Vector2I(22, 6)}},
 	};
 
 	private RandomNumberGenerator rnd;
@@ -28,13 +30,16 @@ public partial class LevelManager
 	private Godot.Collections.Dictionary<Vector2I, Rect2> trapCells;
 	private Array<BiomeConfig> biomes;
 	private int level;
-	public int wave;
+	private int wave;
 	private BiomeConfig biome;
-	public int spawnCount;
+	private int spawnCount;
 	private Array<PackedScene> enemyScenes;
+	private int enemiesKilled;
+	private Area2D doorArea;
 
-	public LevelManager(TileMapLayer baseLayer, Array<BiomeConfig> biomes, int level)
+	public LevelManager(GameController game, TileMapLayer baseLayer)
 	{
+		controller = game;
 		trapCooldown = new Timer();
 		trapCooldown.WaitTime = 3f;
 		trapCooldown.Timeout += onTrapTrigger;
@@ -42,10 +47,12 @@ public partial class LevelManager
 		layers = new List<TileMapLayer>();
 		trapCells = new Godot.Collections.Dictionary<Vector2I, Rect2>();
 		rnd = new RandomNumberGenerator();
-		this.biomes = biomes;
-		this.level = level;
+		this.biomes = game.biomeConfigs;
+		this.level = game.level;
 		wave = 0;
-		//Save all Tiled Map Layers
+		doorArea = game.GetNode<Area2D>("Arena/DoorArea");
+
+		//Initialize all Tiled Map Layers
 		layers.Add(baseLayer);
 		baseLayer.GetChildren().OfType<TileMapLayer>().ToList().ForEach(x =>
 		{
@@ -59,7 +66,10 @@ public partial class LevelManager
 			arenaRect = arenaRect.Expand(c);
 		}
 		generateLevel();
+		SignalBus.bus.onEnemyKilled += onEnemyKilled;
+		doorArea.BodyEntered += onDoorCrossed;
 	}
+
 	public void generateLevel()
 	{
 		level++;
@@ -214,7 +224,8 @@ public partial class LevelManager
 					break;
 			}
 		});
-		SignalBus.bus.EmitSignal("onTrapsCreated", (Array<Rect2>)trapCells.Values);
+		controller.trapsPosition.ToList().Clear();
+		controller.trapsPosition = (Array<Rect2>)trapCells.Values;
 		trapCooldown.Start();
 	}
 
@@ -226,7 +237,7 @@ public partial class LevelManager
 					layers[1].SetCell(x.Key, 2, tilesMap[TRAP][1]);
 				});
 
-		SignalBus.bus.EmitSignal("onTrapsActive");
+		controller.areTrapsActive = true;
 
 		//Reset traps after short delay
 		var node = layers[0];
@@ -235,7 +246,7 @@ public partial class LevelManager
 		{
 			layers[1].SetCell(x.Key, 2, tilesMap[TRAP][0]);
 		});
-		SignalBus.bus.EmitSignal("onTrapsInactive");
+		controller.areTrapsActive = false;
 	}
 
 	//DISTRIBUTING EVENLY INTO SPACE, working with some own adjustments
@@ -284,5 +295,38 @@ public partial class LevelManager
 			}
 		}
 		return points;
+	}
+
+	public void openLevelDoor()
+	{
+		var door = layers[1].GetUsedCellsById(1, tilesMap[DOOR][0]);
+		layers[1].SetCell(door[0], 1, tilesMap[DOOR][1]);
+	}
+
+	private void onEnemyKilled()
+	{
+		enemiesKilled++;
+		if (enemiesKilled == spawnCount)
+		{
+			if (wave == 5)
+			{
+				openLevelDoor();
+
+			}
+			else
+			{
+				generateSpawns();
+			}
+			enemiesKilled = 0;
+		}
+	}
+
+	private void onDoorCrossed(Node2D body)
+	{
+		if (body is Player)
+		{
+			generateLevel();
+			//TODO new level improvement
+		}
 	}
 }
