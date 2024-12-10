@@ -195,7 +195,7 @@ public abstract partial class Enemy : Node2D
 		switch (type)
 		{
 			case SLIME:
-				AssetManager.instance.playSFX("deadSlime");
+				AssetManager.instance.playSFX("deadSlime", 10f);
 				break;
 			case BAT:
 				AssetManager.instance.playSFX("deadBat");

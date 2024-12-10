@@ -10,6 +10,9 @@
 radius = 5.0
 height = 10.0
 
+[sub_resource type="Animation" id="Animation_cmbd3"]
+length = 0.001
+
 [sub_resource type="Animation" id="Animation_1c8kk"]
 resource_name = "attack_down"
 length = 0.9
@@ -517,9 +520,6 @@ tracks/3/keys = {
 "update": 0,
 "values": [Color(1, 1, 1, 0.5)]
 }
-
-[sub_resource type="Animation" id="Animation_cmbd3"]
-length = 0.001
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_wfvps"]
 _data = {

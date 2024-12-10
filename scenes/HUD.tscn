@@ -1,9 +1,18 @@
-[gd_scene load_steps=5 format=3 uid="uid://c0fa61ops184b"]
+[gd_scene load_steps=7 format=3 uid="uid://c0fa61ops184b"]
 
 [ext_resource type="Texture2D" uid="uid://cp5vvsmrwuc3h" path="res://assets/textures/GUI/HUD/WholeHeart.png" id="1_7bmn5"]
 [ext_resource type="Script" path="res://scripts/controllers/HudController.cs" id="1_icudm"]
 [ext_resource type="Texture2D" uid="uid://ckv8jopi6ofq" path="res://assets/textures/GUI/HUD/HeartOver.png" id="2_t3ldn"]
 [ext_resource type="Texture2D" uid="uid://7vau1wqjnfi1" path="res://assets/textures/GUI/HUD/HeartProgress.png" id="3_m5eml"]
+[ext_resource type="FontFile" uid="uid://botklpdl5a2x1" path="res://assets/fonts/NormalFont.ttf" id="5_k1iq5"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_rtjc3"]
+font = ExtResource("5_k1iq5")
+font_size = 28
+outline_size = 5
+outline_color = Color(0, 0, 0, 1)
+shadow_size = 10
+shadow_color = Color(0, 0, 0, 0.5)
 
 [node name="HUD" type="Control"]
 texture_repeat = 2
@@ -26,3 +35,25 @@ texture_under = ExtResource("1_7bmn5")
 texture_over = ExtResource("2_t3ldn")
 texture_progress = ExtResource("3_m5eml")
 texture_progress_offset = Vector2(2, 2)
+
+[node name="NotificationLabel" type="Label" parent="."]
+visible = false
+self_modulate = Color(1, 1, 1, 0)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -64.0
+offset_top = -32.0
+offset_right = 64.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "LEVEL     1"
+label_settings = SubResource("LabelSettings_rtjc3")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="NotificationTimer" type="Timer" parent="."]
+one_shot = true

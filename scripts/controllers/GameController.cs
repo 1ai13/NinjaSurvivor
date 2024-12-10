@@ -6,7 +6,7 @@ using System;
 public partial class GameController : Node2D
 {
 	private Player player;
-	private Marker2D playerSpawn;
+	public Marker2D playerSpawn;
 	[Export]
 	private string characterSelected;
 	[Export]
@@ -17,12 +17,14 @@ public partial class GameController : Node2D
 	public Array<Rect2> trapsPosition;
 	Vector2I playerFeetOffset = new Vector2I(0, 7);
 	public bool areTrapsActive = false;
+	public HudController hud;
 
 	public override void _Ready()
 	{
 		player = GetNode<Player>("Player");
 		var arena = GetNode<TileMapLayer>("Arena");
-		playerSpawn = GetNode<Marker2D>("Arena/Marker2D");
+		playerSpawn = GetNode<Marker2D>("Arena/PlayerRespawn");
+		hud = GetNode<HudController>("CanvasLayer/HUD");
 		foreach (var c in characters)
 		{
 			if (c.name.Equals(characterSelected))

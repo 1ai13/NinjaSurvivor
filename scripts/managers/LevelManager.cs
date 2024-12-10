@@ -9,7 +9,7 @@ using static Enums.TileType;
 public partial class LevelManager
 {
 	private readonly Vector2I TILE_SIZE;
-	private GameController controller;
+	private GameController game;
 	Timer trapCooldown;
 	private Godot.Collections.Dictionary<TileType, Array<Vector2I>> tilesMap = new Godot.Collections.Dictionary<TileType, Array<Vector2I>>
 	{
@@ -39,7 +39,7 @@ public partial class LevelManager
 
 	public LevelManager(GameController game, TileMapLayer baseLayer)
 	{
-		controller = game;
+		this.game = game;
 		trapCooldown = new Timer();
 		trapCooldown.WaitTime = 3f;
 		trapCooldown.Timeout += onTrapTrigger;
@@ -49,7 +49,6 @@ public partial class LevelManager
 		rnd = new RandomNumberGenerator();
 		this.biomes = game.biomeConfigs;
 		this.level = game.level;
-		wave = 0;
 		doorArea = game.GetNode<Area2D>("Arena/DoorArea");
 
 		//Initialize all Tiled Map Layers
@@ -72,7 +71,13 @@ public partial class LevelManager
 
 	public void generateLevel()
 	{
+		if (level >= 1)
+		{
+			game.GetTree().CallGroup("Enemies", "queue_free");
+			game.GetTree().CallGroup("Projectiles", "queue_free");
+		}
 		level++;
+		showNotification($"LEVEL   {level}", Colors.White);
 		wave = 0;
 		switch (level)
 		{
@@ -107,8 +112,7 @@ public partial class LevelManager
 	public void generateSpawns()
 	{
 		wave++;
-		GD.Print(wave);
-		var minDistance = 0;
+		int minDistance;
 		var enemyTypes = new Array<EnemyType>();
 		switch (wave)
 		{
@@ -144,7 +148,7 @@ public partial class LevelManager
 				break;
 		};
 		var spawns = poissonDiskSampling(spawnCount, minDistance);
-		var rndEnemy = 0;
+		int rndEnemy;
 		foreach (var s in spawns)
 		{
 			if (wave == 1)
@@ -161,14 +165,22 @@ public partial class LevelManager
 			}
 			var enemy = enemyScenes[rndEnemy].Instantiate<Enemy>();
 			enemy.GlobalPosition = layers[0].MapToLocal(s);
-			// layers[0].GetParent().AddChild(enemy);
 			layers[0].GetParent().CallDeferred("add_child", enemy);
 		}
+		var timer = game.GetTree().CreateTimer(.75f);
+		timer.Timeout += playSpawn;
+
+
+	}
+
+	private void playSpawn()
+	{
+		AssetManager.instance.playSFX("enemySpawn");
 	}
 
 	private void generateTerrain()
 	{
-		var cellPos = new Vector2I();
+		Vector2I cellPos;
 		//Whole Map
 		var mapSize = layers[0].GetUsedRect();
 		for (int i = 0; i < mapSize.Size.X; i++)
@@ -209,23 +221,34 @@ public partial class LevelManager
 			{
 				case < .90f:
 					//Create decoration
-					rand = rnd.RandiRange(0, tilesMap[DECOR].Count - 3);
 					var isSkull = rnd.Randf() > .90f;
-					if (isSkull) rand = rnd.RandiRange(tilesMap[DECOR].Count - 2, tilesMap[DECOR].Count - 1);
+					if (isSkull)
+						rand = rnd.RandiRange(tilesMap[DECOR].Count - 2, tilesMap[DECOR].Count - 1);
+					else
+						rand = rnd.RandiRange(0, tilesMap[DECOR].Count - 3);
 					cellType = tilesMap[DECOR][(int)rand];
 					layers[1].SetCell(x, 6, cellType);
 					break;
 				case < 1f:
 					//Create traps
-					cellType = tilesMap[TRAP][0];
-					layers[1].SetCell(x, 2, cellType);
-					var mapPos = layers[0].MapToLocal(x);
-					trapCells.Add(x, new Rect2(mapPos.X - TILE_SIZE.X / 2, mapPos.Y - TILE_SIZE.Y / 2, TILE_SIZE.X, TILE_SIZE.Y));
+					if (level >= 3)
+					{
+						cellType = tilesMap[TRAP][0];
+						layers[1].SetCell(x, 2, cellType);
+						var mapPos = layers[0].MapToLocal(x);
+						trapCells.Add(x, new Rect2(mapPos.X - TILE_SIZE.X / 2, mapPos.Y - TILE_SIZE.Y / 2, TILE_SIZE.X, TILE_SIZE.Y));
+					}
+					else
+					{
+						rand = rnd.RandiRange(0, tilesMap[DECOR].Count - 3);
+						cellType = tilesMap[DECOR][(int)rand];
+						layers[1].SetCell(x, 6, cellType);
+					}
 					break;
 			}
 		});
-		controller.trapsPosition.ToList().Clear();
-		controller.trapsPosition = (Array<Rect2>)trapCells.Values;
+		game.trapsPosition.ToList().Clear();
+		game.trapsPosition = (Array<Rect2>)trapCells.Values;
 		trapCooldown.Start();
 	}
 
@@ -237,7 +260,7 @@ public partial class LevelManager
 					layers[1].SetCell(x.Key, 2, tilesMap[TRAP][1]);
 				});
 
-		controller.areTrapsActive = true;
+		game.areTrapsActive = true;
 
 		//Reset traps after short delay
 		var node = layers[0];
@@ -246,7 +269,7 @@ public partial class LevelManager
 		{
 			layers[1].SetCell(x.Key, 2, tilesMap[TRAP][0]);
 		});
-		controller.areTrapsActive = false;
+		game.areTrapsActive = false;
 	}
 
 	//DISTRIBUTING EVENLY INTO SPACE, working with some own adjustments
@@ -297,10 +320,22 @@ public partial class LevelManager
 		return points;
 	}
 
-	public void openLevelDoor()
+	public void openLevelDoor(bool opening)
 	{
-		var door = layers[1].GetUsedCellsById(1, tilesMap[DOOR][0]);
-		layers[1].SetCell(door[0], 1, tilesMap[DOOR][1]);
+		Array<Vector2I> door;
+		if (opening)
+		{
+			door = layers[1].GetUsedCellsById(1, tilesMap[DOOR][0]);
+			layers[1].SetCell(door[0], 1, tilesMap[DOOR][1]);
+			AssetManager.instance.playSFX("levelCompleted");
+			showNotification("LEVEL COMPLETED", Colors.Green);
+			AssetManager.instance.playSFX("openDoor");
+		}
+		else
+		{
+			door = layers[1].GetUsedCellsById(1, tilesMap[DOOR][1]);
+			layers[1].SetCell(door[0], 1, tilesMap[DOOR][0]);
+		}
 	}
 
 	private void onEnemyKilled()
@@ -310,8 +345,7 @@ public partial class LevelManager
 		{
 			if (wave == 5)
 			{
-				openLevelDoor();
-
+				openLevelDoor(true);
 			}
 			else
 			{
@@ -323,10 +357,24 @@ public partial class LevelManager
 
 	private void onDoorCrossed(Node2D body)
 	{
-		if (body is Player)
+		if (body is Player p)
 		{
+			AssetManager.instance.playSFX("doorTp");
+			openLevelDoor(false);
 			generateLevel();
-			//TODO new level improvement
+			p.GlobalPosition = game.playerSpawn.Position;
 		}
+	}
+
+	private void showNotification(string message, Color color)
+	{
+		var hud = game.hud;
+		hud.notification.Text = message;
+		var tween = hud.CreateTween();
+		tween.TweenProperty(hud.notification, "visible", true, .75f);
+		tween.TweenProperty(hud.notification, "self_modulate", color, .5f);
+		tween.TweenProperty(hud.notification, "visible", true, 1);
+		tween.TweenProperty(hud.notification, "self_modulate", Color.Color8(1, 1, 1, 0), .5f);
+		tween.TweenProperty(hud.notification, "visible", true, 0);
 	}
 }
