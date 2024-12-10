@@ -75,6 +75,7 @@ public partial class LevelManager
 		{
 			game.GetTree().CallGroup("Enemies", "queue_free");
 			game.GetTree().CallGroup("Projectiles", "queue_free");
+			PoolEngine.instance.projectilePool.Clear();
 		}
 		level++;
 		showNotification($"LEVEL   {level}", Colors.White);
