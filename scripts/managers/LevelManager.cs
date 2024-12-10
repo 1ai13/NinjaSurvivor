@@ -71,6 +71,10 @@ public partial class LevelManager
 
 	public void generateLevel()
 	{
+		//TODO Balance trap numbers and spawns based on level/waves
+		//TODO Biome obstacles?
+
+		//Clear dead enemies and projectiles
 		if (level >= 1)
 		{
 			game.GetTree().CallGroup("Enemies", "queue_free");
@@ -80,6 +84,7 @@ public partial class LevelManager
 		level++;
 		showNotification($"LEVEL   {level}", Colors.White);
 		wave = 0;
+		//Select Biome
 		switch (level)
 		{
 			case <= 5:
@@ -99,6 +104,7 @@ public partial class LevelManager
 				break;
 
 		}
+		//Get biome enemies
 		enemyScenes = new Array<PackedScene>();
 		foreach (var e in biome.enemies)
 		{
@@ -188,6 +194,7 @@ public partial class LevelManager
 		{
 			for (int y = 0; y < mapSize.Size.Y; y++)
 			{
+				//Select Random Terrain Tiles
 				var cellType = rnd.Randf() switch
 				{
 					< .85f => 0,
@@ -273,7 +280,7 @@ public partial class LevelManager
 		game.areTrapsActive = false;
 	}
 
-	//DISTRIBUTING EVENLY INTO SPACE, working with some own adjustments
+	//DISTRIBUTING SPACE EVENLY
 	private List<Vector2I> poissonDiskSampling(int numPoints, float minDistance, int attempts = 50)
 	{
 		List<Vector2I> points = new List<Vector2I>() { };
@@ -321,6 +328,7 @@ public partial class LevelManager
 		return points;
 	}
 
+	//Open or close the Arena Door
 	public void openLevelDoor(bool opening)
 	{
 		Array<Vector2I> door;
@@ -339,6 +347,7 @@ public partial class LevelManager
 		}
 	}
 
+	//Controls if Wave or Level have finished
 	private void onEnemyKilled()
 	{
 		enemiesKilled++;
@@ -356,6 +365,7 @@ public partial class LevelManager
 		}
 	}
 
+	//Next Level
 	private void onDoorCrossed(Node2D body)
 	{
 		if (body is Player p)
@@ -367,6 +377,7 @@ public partial class LevelManager
 		}
 	}
 
+	//Notify player and animates de message
 	private void showNotification(string message, Color color)
 	{
 		var hud = game.hud;

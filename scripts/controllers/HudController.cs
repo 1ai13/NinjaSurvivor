@@ -10,7 +10,7 @@ public partial class HudController : Control
 	{
 		healthBar = GetNode<TextureProgressBar>("HealthBar");
 		notification = GetNode<Label>("NotificationLabel");
-		//TODO Improve HUD with ammo, PJ
+		//TODO Improve HUD with ammo, dynamic healthbar
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.

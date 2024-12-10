@@ -67,9 +67,9 @@ public partial class Projectile : Area2D
 		}
 	}
 
-	//On Wall or Player collision 
 	private void onBodyEntered(Node2D body)
 	{
+		//Player collision
 		if (owner is RangedEnemy o && body is Player p)
 		{
 			EmitSignal(SignalName.projectileHitPlayer);
@@ -78,6 +78,7 @@ public partial class Projectile : Area2D
 			PoolEngine.instance.addToPool(this);
 
 		}
+		//Wall Collision from Enemy
 		else if (owner is RangedEnemy own)
 		{
 			projectileHitPlayer -= own.onPlayerHit;
@@ -85,6 +86,7 @@ public partial class Projectile : Area2D
 			PoolEngine.instance.addToPool(this);
 
 		}
+		//Wall Collision from Player
 		else
 		{
 			SetPhysicsProcess(false);

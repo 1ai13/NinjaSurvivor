@@ -25,6 +25,7 @@ public partial class GameController : Node2D
 		var arena = GetNode<TileMapLayer>("Arena");
 		playerSpawn = GetNode<Marker2D>("Arena/PlayerRespawn");
 		hud = GetNode<HudController>("CanvasLayer/HUD");
+		//Load selected Character
 		foreach (var c in characters)
 		{
 			if (c.name.Equals(characterSelected))
@@ -34,12 +35,14 @@ public partial class GameController : Node2D
 		}
 		trapsPosition = new Array<Rect2>();
 		new LevelManager(this, arena);
-		//TODO Add more Levels
-		//TODO MORE enemies
+		//TODO Add more biomes & enemies
+		//TODO Add BOSS fight
+		//TODO Add game menu & character selection
 	}
 
 	public override void _Process(double delta)
 	{
+		//Hurt player in case standing on Traps
 		if (areTrapsActive)
 		{
 			foreach (var t in trapsPosition)

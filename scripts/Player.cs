@@ -145,6 +145,7 @@ public partial class Player : CharacterBody2D
 		EntityHelper.playAnimation(this, "attack");
 		isAttacking = true;
 		attackCooldown.Start();
+		//Selecting Attack Type
 		if (type == MELEE)
 		{
 			if (currentType != type)
@@ -161,6 +162,7 @@ public partial class Player : CharacterBody2D
 				swapWeaponVisibility(type);
 				currentType = type;
 			}
+			//Creating projectile
 			var rangedWeapon = characterData.rangedWeapon;
 			var projectile = PoolEngine.instance.pullFromPool();
 			projectile.init(GlobalPosition, mouseDirection, mouseDirection.Angle(), this, rangedWeapon.projectileSpeed, rangedWeapon.angularSpeed, rangedWeapon.isProjectile, rangedWeapon.textures[1]);

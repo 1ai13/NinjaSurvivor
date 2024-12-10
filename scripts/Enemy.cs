@@ -59,6 +59,7 @@ public abstract partial class Enemy : Node2D
 
 	private void onAnimationFinished(StringName animName)
 	{
+		//Activating enemy
 		if (animName.ToString().Equals("spawn"))
 		{
 			SetPhysicsProcess(true);
@@ -73,7 +74,7 @@ public abstract partial class Enemy : Node2D
 		if (lerpValue < lerpDuration && baseHealthBar.Value > 0)
 		{
 			lerpValue += (float)delta;
-			var w = lerpValue / lerpDuration; //Normalizing lerpValue to achieve lerpDuration
+			var w = lerpValue / lerpDuration; //Capping lerpValue
 			baseHealthBar.Value = Mathf.Lerp(lastHealth, health, w);
 			if (baseHealthBar.Value == 0)
 			{
@@ -84,16 +85,18 @@ public abstract partial class Enemy : Node2D
 		{
 			return;
 		}
+
 		//Enemy VS Player logic
 		baseHealthBar.Position = Position - healthBarOffset;
 		var distanceToPlayer = player.Position - Position;
 		enemyDirection = distanceToPlayer.Normalized();
-
+		//Not in range to attack
 		if (distanceToPlayer.Length() > attackRange && hitCooldown.IsStopped() && (this is RangedEnemy && !isAttacking || this is MeleeEnemy && attackCooldown.IsStopped()))
 		{
 			Position += enemyDirection * speed * (float)delta;
 			EntityHelper.playAnimation(this, "walk");
 		}
+		//In range
 		else if (distanceToPlayer.Length() <= attackRange && attackCooldown.IsStopped())
 		{
 			performAttack();
@@ -131,6 +134,7 @@ public abstract partial class Enemy : Node2D
 
 		if (health == 0)
 		{
+			//Enemy dead
 			isDead = true;
 			animation.Play("dead");
 			SignalBus.bus.EmitSignal("onEnemyKilled");
@@ -149,8 +153,7 @@ public abstract partial class Enemy : Node2D
 	}
 	private void animateHealthBar(int damage, bool criticalHit)
 	{
-		//Create and animate the HealthBar Labels
-		////Creating
+		//Creating labels
 		var label = healthBarLabel.Instantiate<Label>();
 		label.Position -= healthBarLabelOffset;
 		label.Text = "-" + damage.ToString();
@@ -168,7 +171,7 @@ public abstract partial class Enemy : Node2D
 			offset[1] = rndY;
 		}
 		baseHealthBar.AddChild(label);
-		////Animating
+		//Animating labels
 		var tweenLabel = CreateTween().SetParallel();
 		tweenLabel.TweenProperty(label, "position", label.Position - offset, .3f);
 		tweenLabel.TweenProperty(label, "rotation", Mathf.DegToRad(-5), .1f);

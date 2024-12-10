@@ -19,6 +19,7 @@ public partial class PoolEngine : Node
 
 	public void addToPool(Projectile p)
 	{
+		//Resetting projectile
 		p.SetPhysicsProcess(false);
 		p.Hide();
 		resetProjectile(p);
@@ -27,7 +28,7 @@ public partial class PoolEngine : Node
 
 	public Projectile pullFromPool()
 	{
-
+		//Pulling or creating new Projectile
 		if (projectilePool.Count == 0)
 		{
 			var projectile = projectileScene.Instantiate<Projectile>();
