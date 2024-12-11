@@ -32,10 +32,10 @@ public partial class LevelManager
 	private int level;
 	private int wave;
 	private BiomeConfig biome;
-	private int spawnCount;
 	private Array<PackedScene> enemyScenes;
 	private int enemiesKilled;
 	private Area2D doorArea;
+	private int spawnCount = 0;
 
 	public LevelManager(GameController game, TileMapLayer baseLayer)
 	{
@@ -65,8 +65,8 @@ public partial class LevelManager
 			arenaRect = arenaRect.Expand(c);
 		}
 		generateLevel();
-		SignalBus.bus.onEnemyKilled += onEnemyKilled;
 		doorArea.BodyEntered += onDoorCrossed;
+		SignalBus.bus.onEnemyKilled += onEnemyKilled;
 	}
 
 	public void generateLevel()
@@ -82,7 +82,7 @@ public partial class LevelManager
 			PoolEngine.instance.projectilePool.Clear();
 		}
 		level++;
-		showNotification($"LEVEL   {level}", Colors.White);
+		SignalBus.bus.EmitSignal("onNotifyPlayer", $"LEVEL   {level}", Colors.White);
 		wave = 0;
 		//Select Biome
 		switch (level)
@@ -119,33 +119,27 @@ public partial class LevelManager
 	public void generateSpawns()
 	{
 		wave++;
-		int minDistance;
+		var maxDistance = 9;
+		int minDistance = maxDistance - wave;
+		spawnCount = wave * 2;
 		var enemyTypes = new Array<EnemyType>();
 		switch (wave)
 		{
 			case 1:
-				spawnCount = 3;
-				minDistance = 9;
+				spawnCount++;
+				minDistance++;
 				enemyTypes.Add(biome.enemies[0]);
 				break;
 			case 2:
-				spawnCount = 3;
-				minDistance = 9;
 				enemyTypes.Add(biome.enemies[1]);
 				break;
 			case 3:
-				spawnCount = 5;
-				minDistance = 6;
 				enemyTypes = biome.enemies;
 				break;
 			case 4:
-				spawnCount = 7;
-				minDistance = 5;
 				enemyTypes = biome.enemies;
 				break;
 			case 5:
-				spawnCount = 10;
-				minDistance = 4;
 				enemyTypes = biome.enemies;
 				break;
 			default:
@@ -182,7 +176,7 @@ public partial class LevelManager
 
 	private void playSpawn()
 	{
-		AssetManager.instance.playSFX("enemySpawn");
+		AssetManager.instance.playSFX("enemySpawn", -7.5f);
 	}
 
 	private void generateTerrain()
@@ -337,7 +331,7 @@ public partial class LevelManager
 			door = layers[1].GetUsedCellsById(1, tilesMap[DOOR][0]);
 			layers[1].SetCell(door[0], 1, tilesMap[DOOR][1]);
 			AssetManager.instance.playSFX("levelCompleted");
-			showNotification("LEVEL COMPLETED", Colors.Green);
+			SignalBus.bus.EmitSignal("onNotifyPlayer", $"LEVEL COMPLETED", Colors.Green);
 			AssetManager.instance.playSFX("openDoor");
 		}
 		else
@@ -375,18 +369,5 @@ public partial class LevelManager
 			generateLevel();
 			p.GlobalPosition = game.playerSpawn.Position;
 		}
-	}
-
-	//Notify player and animates de message
-	private void showNotification(string message, Color color)
-	{
-		var hud = game.hud;
-		hud.notification.Text = message;
-		var tween = hud.CreateTween();
-		tween.TweenProperty(hud.notification, "visible", true, .75f);
-		tween.TweenProperty(hud.notification, "self_modulate", color, .5f);
-		tween.TweenProperty(hud.notification, "visible", true, 1);
-		tween.TweenProperty(hud.notification, "self_modulate", Color.Color8(1, 1, 1, 0), .5f);
-		tween.TweenProperty(hud.notification, "visible", true, 0);
 	}
 }

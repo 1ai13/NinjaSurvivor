@@ -9,7 +9,7 @@ public partial class Weapon : Resource
     [Export]
     public int damage { get; set; }
     [Export]
-    public Texture2D[] textures { get; set; }
+    public Texture2D texture { get; set; }
     [Export]
     public bool isProjectile { get; set; }
     [Export]

@@ -50,6 +50,7 @@ public partial class PoolEngine : Node
 		p.Rotation = 0;
 		p.speed = 0;
 		p.angularSpeed = 0;
+		p.sprite.Stop();
 		p.sprite = null;
 	}
 }

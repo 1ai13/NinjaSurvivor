@@ -131,8 +131,8 @@ public partial class Player : CharacterBody2D
 		var melee = c.meleeWeapon;
 		var ranged = c.rangedWeapon;
 		damage = new Vector2I(melee.damage, ranged.damage);
-		meleeWeapon.GetNode<Sprite2D>("MeleeWeapon").Texture = melee.textures[0];
-		rangedWeapon.Texture = c.rangedWeapon.textures[0];
+		meleeWeapon.GetNode<Sprite2D>("MeleeWeapon").Texture = melee.texture;
+		rangedWeapon.Texture = c.rangedWeapon.texture;
 		characterData = c;
 	}
 
@@ -165,7 +165,7 @@ public partial class Player : CharacterBody2D
 			//Creating projectile
 			var rangedWeapon = characterData.rangedWeapon;
 			var projectile = PoolEngine.instance.pullFromPool();
-			projectile.init(GlobalPosition, mouseDirection, mouseDirection.Angle(), this, rangedWeapon.projectileSpeed, rangedWeapon.angularSpeed, rangedWeapon.isProjectile, rangedWeapon.textures[1]);
+			projectile.init(GlobalPosition, mouseDirection, mouseDirection.Angle(), this, rangedWeapon.projectileSpeed, rangedWeapon.angularSpeed, rangedWeapon.isProjectile, rangedWeapon.name);
 			projectile.projectileHitArea += onRangedEnemyHit;
 			AssetManager.instance.playSFX("rangedAttack");
 		}

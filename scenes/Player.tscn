@@ -1486,7 +1486,7 @@ colors = PackedColorArray(0.292, 0.292, 0.292, 0.513, 1, 1, 1, 0.8)
 
 [node name="Player" type="CharacterBody2D"]
 script = ExtResource("1_t7pu8")
-speed = 150.0
+speed = 100.0
 
 [node name="Shadow" type="Sprite2D" parent="."]
 self_modulate = Color(1, 1, 1, 0.5)

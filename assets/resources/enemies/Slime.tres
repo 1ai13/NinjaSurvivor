@@ -1,16 +1,15 @@
-[gd_resource type="Resource" script_class="EnemyData" load_steps=4 format=3 uid="uid://scjbc0p47iab"]
+[gd_resource type="Resource" script_class="EnemyData" load_steps=3 format=3 uid="uid://scjbc0p47iab"]
 
 [ext_resource type="Script" path="res://scripts/resources/EnemyData.cs" id="1_osshk"]
 [ext_resource type="Texture2D" uid="uid://b3sdjvrlk1vns" path="res://assets/textures/enemies/Slime/Faceset.png" id="1_rbmg8"]
-[ext_resource type="Texture2D" uid="uid://dfixpnuiqtoa" path="res://assets/textures/enemies/Slime/Slime4SpriteSheet.png" id="2_scs3w"]
 
 [resource]
 script = ExtResource("1_osshk")
 name = 0
-enemySprites = Array[Texture2D]([ExtResource("1_rbmg8"), ExtResource("2_scs3w")])
+icon = ExtResource("1_rbmg8")
 health = 200
 damage = 10
-speed = 50.0
+speed = 55.0
 range = 18.0
 isProjectile = false
 projectileSpeed = 0.0

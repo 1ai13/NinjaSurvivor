@@ -9,6 +9,8 @@ public partial class SignalBus : Node
 
 	[Signal]
 	public delegate void onEnemyKilledEventHandler();
+	[Signal]
+	public delegate void onNotifyPlayerEventHandler(string message, Color color);
 
 	//Init method
 	public override void _Ready()

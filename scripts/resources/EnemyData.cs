@@ -8,7 +8,7 @@ public partial class EnemyData : Resource
 	[Export]
 	public EnemyType name { get; set; }
 	[Export]
-	public Texture2D[] enemySprites;
+	public Texture2D icon;
 	[ExportGroup("Stats")]
 	[Export]
 	public int health;

@@ -5,4 +5,4 @@
 [resource]
 script = ExtResource("1_3hac4")
 enemies = Array[int]([0, 1])
-type = 2
+name = 2

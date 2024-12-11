@@ -19,9 +19,9 @@ public partial class Projectile : Area2D
 	[Export]
 	public bool isProjectile { get; set; }
 	public Node2D owner;
-	public Sprite2D sprite;
+	public AnimatedSprite2D sprite;
 
-	public void init(Vector2 position, Vector2 vel, float rotation, Node2D owner, float s, float angularS, bool isProjectile, Texture2D texture)
+	public void init(Vector2 position, Vector2 vel, float rotation, Node2D owner, float s, float angularS, bool isProjectile, string sprite)
 	{
 		this.owner = owner;
 		velocity = vel;
@@ -31,11 +31,11 @@ public partial class Projectile : Area2D
 		speed = s;
 		angularSpeed = angularS;
 		this.isProjectile = isProjectile;
-		sprite = GetNode<Sprite2D>("ProjectileSprite");
-		sprite.Texture = texture;
+		this.sprite = GetNode<AnimatedSprite2D>("ProjectileSprite");
+		this.sprite.Animation = sprite;
 		SetPhysicsProcess(true);
 		Show();
-
+		this.sprite.Play();
 	}
 
 	// Called when the node enters the scene tree for the first time.

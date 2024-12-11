@@ -53,8 +53,6 @@ public abstract partial class Enemy : Node2D
 		healthBar.SelfModulate = Colors.Green;
 		lastHealth = health;
 		animation.AnimationFinished += onAnimationFinished;
-		animation.Play("spawn");
-
 	}
 
 	private void onAnimationFinished(StringName animName)

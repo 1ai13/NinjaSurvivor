@@ -4,5 +4,5 @@
 
 [resource]
 script = ExtResource("1_m1uip")
-enemies = Array[int]([0, 1])
-type = 0
+enemies = Array[int]([2, 1])
+name = 0
