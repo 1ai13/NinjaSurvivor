@@ -94,7 +94,7 @@ theme_override_styles/background = SubResource("StyleBoxEmpty_lydwh")
 theme_override_styles/fill = SubResource("StyleBoxFlat_ddimb")
 show_percentage = false
 
-[node name="GPUParticles2D" type="GPUParticles2D" parent="."]
+[node name="SpawnFX" type="GPUParticles2D" parent="."]
 emitting = false
 amount = 75
 process_material = SubResource("ParticleProcessMaterial_jikck")

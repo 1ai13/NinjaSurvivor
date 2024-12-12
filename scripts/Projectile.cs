@@ -102,6 +102,9 @@ public partial class Projectile : Area2D
 			case BAT:
 				AssetManager.instance.playSFX("batAttackHit");
 				break;
+			case BAMBOO:
+				AssetManager.instance.playSFX("bambooAttackHit");
+				break;
 			default:
 				GD.PrintErr("No wall hit sound available for projectile");
 				break;

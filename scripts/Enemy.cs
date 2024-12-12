@@ -32,6 +32,7 @@ public abstract partial class Enemy : Node2D
 	public AudioStream deadSound;
 	protected bool isAttacking = false;
 	protected abstract void performAttack();
+	private bool randomDirection;
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
@@ -53,15 +54,25 @@ public abstract partial class Enemy : Node2D
 		healthBar.SelfModulate = Colors.Green;
 		lastHealth = health;
 		animation.AnimationFinished += onAnimationFinished;
+		enemyArea.BodyEntered += onBodyCollission;
 	}
 
-	private void onAnimationFinished(StringName animName)
+	protected virtual void onAnimationFinished(StringName animName)
 	{
 		//Activating enemy
 		if (animName.ToString().Equals("spawn"))
 		{
 			SetPhysicsProcess(true);
 			enemyArea.Monitorable = true;
+		}
+		else if (animName.ToString().StartsWith("attack"))
+		{
+			if (this is RangedEnemy)
+			{
+				playAttackSound();
+			}
+			isAttacking = false;
+			attackCooldown.Start();
 		}
 	}
 
@@ -87,23 +98,38 @@ public abstract partial class Enemy : Node2D
 		//Enemy VS Player logic
 		baseHealthBar.Position = Position - healthBarOffset;
 		var distanceToPlayer = player.Position - Position;
-		enemyDirection = distanceToPlayer.Normalized();
 		//Not in range to attack
-		if (distanceToPlayer.Length() > attackRange && hitCooldown.IsStopped() && (this is RangedEnemy && !isAttacking || this is MeleeEnemy && attackCooldown.IsStopped()))
+		if (distanceToPlayer.Length() > attackRange && hitCooldown.IsStopped() && !isAttacking)
 		{
+			enemyDirection = distanceToPlayer.Normalized();
 			Position += enemyDirection * speed * (float)delta;
 			EntityHelper.playAnimation(this, "walk");
 		}
 		//In range
-		else if (distanceToPlayer.Length() <= attackRange && attackCooldown.IsStopped())
+		else if (distanceToPlayer.Length() <= attackRange && !isAttacking && attackCooldown.IsStopped())
 		{
+			enemyDirection = distanceToPlayer.Normalized();
 			performAttack();
-			if (this is MeleeEnemy)
-			{
-				playAttackSound();
-			}
+			randomDirection = false;
 		}
-
+		//After attack re-position
+		else if (distanceToPlayer.Length() <= attackRange && !attackCooldown.IsStopped())
+		{
+			if (!randomDirection)
+			{
+				enemyDirection = EntityHelper.rnd.RandiRange(0, 3) switch
+				{
+					0 => Vector2I.Up,
+					1 => Vector2I.Down,
+					2 => Vector2I.Right,
+					3 => Vector2I.Left,
+					_ => Vector2I.Zero
+				};
+				randomDirection = true;
+			}
+			Position += enemyDirection * speed * (float)delta;
+			EntityHelper.playAnimation(this, "walk");
+		}
 	}
 
 	public void takeDamage(int damage, bool criticalHit)
@@ -201,6 +227,9 @@ public abstract partial class Enemy : Node2D
 			case BAT:
 				AssetManager.instance.playSFX("deadBat");
 				break;
+			case BAMBOO:
+				AssetManager.instance.playSFX("deadBamboo");
+				break;
 			default:
 				GD.PrintErr("No dead sound loaded for enemy");
 				break;
@@ -217,9 +246,20 @@ public abstract partial class Enemy : Node2D
 			case BAT:
 				AssetManager.instance.playSFX("batAttack");
 				break;
+			case BAMBOO:
+				AssetManager.instance.playSFX("bambooAttack", -10f);
+				break;
 			default:
 				GD.PrintErr("Unable to load attack sound from enemy");
 				break;
+		}
+	}
+
+	private void onBodyCollission(Node2D body)
+	{
+		if (body is TileMapLayer)
+		{
+			enemyDirection *= -1;
 		}
 	}
 }

@@ -279,7 +279,7 @@ length = 2.0
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("GPUParticles2D:emitting")
+tracks/0/path = NodePath("SpawnFX:emitting")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -564,7 +564,6 @@ libraries = {
 autoplay = "spawn"
 
 [node name="AttackCooldown" type="Timer" parent="." index="2"]
-wait_time = 1.5
 one_shot = true
 
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="onAnimationFinished"]

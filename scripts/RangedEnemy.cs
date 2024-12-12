@@ -22,19 +22,17 @@ public partial class RangedEnemy : Enemy
 	{
 		EntityHelper.playAnimation(this, "attack");
 		isAttacking = true;
-		attackCooldown.Start();
 	}
 
-	private void onAnimationFinished(StringName animationName)
+	protected override void onAnimationFinished(StringName animationName)
 	{
 		if (animationName.ToString().StartsWith("attack"))
 		{
 			var projectile = PoolEngine.instance.pullFromPool();
 			projectile.init(GlobalPosition, enemyDirection, enemyDirection.Angle(), this, data.projectileSpeed, data.angularSpeed, data.isProjectile, type.ToString().Capitalize());
 			projectile.projectileHitPlayer += onPlayerHit;
-			isAttacking = false;
-			playAttackSound();
 		}
+		base.onAnimationFinished(animationName);
 	}
 
 	public void onPlayerHit()

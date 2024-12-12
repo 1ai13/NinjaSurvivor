@@ -22,7 +22,7 @@ public partial class MeleeEnemy : Enemy
 	{
 		EntityHelper.playAnimation(this, "attack");
 		player.takeDamage(damage);
-		attackCooldown.Start();
+		isAttacking = true;
+		playAttackSound();
 	}
-
 }
