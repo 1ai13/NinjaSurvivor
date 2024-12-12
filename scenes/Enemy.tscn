@@ -63,6 +63,7 @@ scale_curve = SubResource("CurveTexture_hcc3s")
 color_ramp = SubResource("GradientTexture1D_5nh64")
 
 [node name="Enemy" type="Node2D" groups=["Enemies"]]
+z_index = 1
 
 [node name="EnemyArea" type="Area2D" parent="."]
 visible = false

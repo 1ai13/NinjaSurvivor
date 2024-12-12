@@ -540,6 +540,10 @@ _data = {
 script = ExtResource("2_od27k")
 data = ExtResource("3_lch3c")
 
+[node name="EnemyArea" parent="." index="0"]
+visible = true
+position = Vector2(0, -15)
+
 [node name="EnemyShape" type="CollisionShape2D" parent="EnemyArea" index="0"]
 position = Vector2(0, 2)
 rotation = -1.57079
@@ -552,7 +556,9 @@ texture = ExtResource("5_ap4rl")
 
 [node name="EnemySprite" type="Sprite2D" parent="EnemyArea" index="2"]
 self_modulate = Color(100, 100, 100, 1)
+position = Vector2(0, 4)
 texture = ExtResource("2_alqno")
+offset = Vector2(0, -2)
 hframes = 5
 vframes = 7
 frame = 4

@@ -33,6 +33,7 @@ public abstract partial class Enemy : Node2D
 	protected bool isAttacking = false;
 	protected abstract void performAttack();
 	private bool randomDirection;
+	protected Vector2 distanceToPlayer;
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
@@ -97,7 +98,7 @@ public abstract partial class Enemy : Node2D
 
 		//Enemy VS Player logic
 		baseHealthBar.Position = Position - healthBarOffset;
-		var distanceToPlayer = player.Position - Position;
+		distanceToPlayer = player.Position - Position;
 		//Not in range to attack
 		if (distanceToPlayer.Length() > attackRange && hitCooldown.IsStopped() && !isAttacking)
 		{

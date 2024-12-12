@@ -28,6 +28,7 @@ public partial class RangedEnemy : Enemy
 	{
 		if (animationName.ToString().StartsWith("attack"))
 		{
+			enemyDirection = distanceToPlayer.Normalized();
 			var projectile = PoolEngine.instance.pullFromPool();
 			projectile.init(GlobalPosition, enemyDirection, enemyDirection.Angle(), this, data.projectileSpeed, data.angularSpeed, data.isProjectile, type.ToString().Capitalize());
 			projectile.projectileHitPlayer += onPlayerHit;

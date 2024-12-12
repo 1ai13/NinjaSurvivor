@@ -216,7 +216,8 @@ script = ExtResource("2_1bbre")
 data = ExtResource("3_f1qk1")
 
 [node name="EnemyArea" parent="." index="0"]
-position = Vector2(0, -1)
+visible = true
+position = Vector2(0, 2)
 
 [node name="EnemySprite" type="Sprite2D" parent="EnemyArea" index="0"]
 self_modulate = Color(100, 100, 100, 1)

@@ -14,6 +14,14 @@ height = 14.0
 radius = 3.5
 height = 12.0
 
+[sub_resource type="Curve" id="Curve_52bsn"]
+_data = [Vector2(0, 0.423239), 0.0, 0.0, 0, 0, Vector2(1e-05, 1), 0.0, 0.0, 0, 0, Vector2(1, 0.0112677), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="Gradient" id="Gradient_5n1v0"]
+offsets = PackedFloat32Array(0, 0.565385)
+colors = PackedColorArray(0.292, 0.292, 0.292, 0.513, 1, 1, 1, 0.8)
+
 [sub_resource type="Animation" id="Animation_wsg4a"]
 length = 0.001
 tracks/0/type = "value"
@@ -27,6 +35,114 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 0,
 "values": [Vector2(-3, 10)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Area2D/MeleeWeapon:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [3.81178]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Area2D/MeleeWeapon:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(9, 2)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Area2D/WeaponShape:rotation")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.896564]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Area2D/WeaponShape:position")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-11, 11)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("Body:frame")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [3]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("Area2D/MeleeWeapon:z_index")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [-1]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("RangeWeapon:z_index")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [-1]
+}
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("RangeWeapon:rotation")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [-4.10965]
+}
+tracks/9/type = "value"
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/path = NodePath("RangeWeapon:position")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-7, 4)]
 }
 
 [sub_resource type="Animation" id="Animation_h02rd"]
@@ -54,7 +170,7 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0, 0.0333333, 0.0666667),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 1,
-"values": [Vector2(3, 11), Vector2(-1, 14), Vector2(-9, 11)]
+"values": [Vector2(2, 15), Vector2(-1, 18), Vector2(-10, 17)]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
@@ -78,7 +194,7 @@ tracks/3/keys = {
 "times": PackedFloat32Array(0, 0.0333333, 0.0666667),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 1,
-"values": [Vector2(-3, 7), Vector2(-1.90735e-06, 8), Vector2(-4, 7)]
+"values": [Vector2(-3, 6), Vector2(-1, 8), Vector2(-6, 6)]
 }
 tracks/4/type = "value"
 tracks/4/imported = false
@@ -87,10 +203,10 @@ tracks/4/path = NodePath("RangeWeapon:rotation")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
-"times": PackedFloat32Array(0, 0.0666667),
-"transitions": PackedFloat32Array(1, 1),
+"times": PackedFloat32Array(0, 0.0333333, 0.0666667),
+"transitions": PackedFloat32Array(1, 1, 1),
 "update": 1,
-"values": [0.0, 0.523598]
+"values": [0.322595, -0.0102922, 0.670974]
 }
 tracks/5/type = "value"
 tracks/5/imported = false
@@ -102,7 +218,7 @@ tracks/5/keys = {
 "times": PackedFloat32Array(0, 0.0333333, 0.0666667),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 1,
-"values": [Vector2(4, 12), Vector2(-1, 15), Vector2(-10, 12)]
+"values": [Vector2(3, 16), Vector2(-1, 19), Vector2(-10, 17)]
 }
 tracks/6/type = "value"
 tracks/6/imported = false
@@ -114,24 +230,24 @@ tracks/6/keys = {
 "times": PackedFloat32Array(0, 0.0333333, 0.0666667),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 1,
-"values": [-0.971876, -0.0991084, 0.732872]
+"values": [-0.971876, -0.138597, 0.732872]
 }
 tracks/7/type = "value"
 tracks/7/imported = false
 tracks/7/enabled = true
-tracks/7/path = NodePath("Body:z_index")
+tracks/7/path = NodePath("Area2D/MeleeWeapon:flip_v")
 tracks/7/interp = 1
 tracks/7/loop_wrap = true
 tracks/7/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [0]
+"values": [false]
 }
 tracks/8/type = "value"
 tracks/8/imported = false
 tracks/8/enabled = true
-tracks/8/path = NodePath("Area2D/MeleeWeapon:flip_v")
+tracks/8/path = NodePath("Body:flip_h")
 tracks/8/interp = 1
 tracks/8/loop_wrap = true
 tracks/8/keys = {
@@ -143,7 +259,7 @@ tracks/8/keys = {
 tracks/9/type = "value"
 tracks/9/imported = false
 tracks/9/enabled = true
-tracks/9/path = NodePath("Body:flip_h")
+tracks/9/path = NodePath("Area2D/MeleeWeapon:flip_h")
 tracks/9/interp = 1
 tracks/9/loop_wrap = true
 tracks/9/keys = {
@@ -155,38 +271,50 @@ tracks/9/keys = {
 tracks/10/type = "value"
 tracks/10/imported = false
 tracks/10/enabled = true
-tracks/10/path = NodePath("Area2D/MeleeWeapon:flip_h")
+tracks/10/path = NodePath("Area2D/WeaponShape:shape")
 tracks/10/interp = 1
 tracks/10/loop_wrap = true
 tracks/10/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [false]
+"values": [SubResource("CapsuleShape2D_0ii24")]
 }
 tracks/11/type = "value"
 tracks/11/imported = false
 tracks/11/enabled = true
-tracks/11/path = NodePath("Area2D/WeaponShape:shape")
+tracks/11/path = NodePath("Area2D/WeaponShape:disabled")
 tracks/11/interp = 1
 tracks/11/loop_wrap = true
 tracks/11/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [SubResource("CapsuleShape2D_0ii24")]
+"values": [false]
 }
 tracks/12/type = "value"
 tracks/12/imported = false
 tracks/12/enabled = true
-tracks/12/path = NodePath("Area2D/WeaponShape:disabled")
+tracks/12/path = NodePath("Area2D/MeleeWeapon:z_index")
 tracks/12/interp = 1
 tracks/12/loop_wrap = true
 tracks/12/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [false]
+"values": [0]
+}
+tracks/13/type = "value"
+tracks/13/imported = false
+tracks/13/enabled = true
+tracks/13/path = NodePath("RangeWeapon:z_index")
+tracks/13/interp = 1
+tracks/13/loop_wrap = true
+tracks/13/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
 }
 
 [sub_resource type="Animation" id="Animation_qrkyu"]
@@ -202,7 +330,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0, 0.0333333, 0.0666667),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 1,
-"values": [2, 6, 14]
+"values": [2, 14, 6]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -214,7 +342,7 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0, 0.0333333, 0.0666667),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 1,
-"values": [Vector2(-9, 9), Vector2(-11, 2), Vector2(-9, -3)]
+"values": [Vector2(-9, 13), Vector2(-12, 7), Vector2(-10, -1)]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
@@ -226,7 +354,7 @@ tracks/2/keys = {
 "times": PackedFloat32Array(0, 0.0333333, 0.0666667),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 1,
-"values": [-2.35619, -1.43228, -0.844271]
+"values": [-2.25651, -1.4998, -0.844271]
 }
 tracks/3/type = "value"
 tracks/3/imported = false
@@ -238,7 +366,7 @@ tracks/3/keys = {
 "times": PackedFloat32Array(0, 0.0333333, 0.0666667),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 1,
-"values": [Vector2(-1, 4), Vector2(-5, 4), Vector2(-6, 3)]
+"values": [Vector2(-4, 3), Vector2(-6, -2.38419e-07), Vector2(-5, 2)]
 }
 tracks/4/type = "value"
 tracks/4/imported = false
@@ -250,7 +378,7 @@ tracks/4/keys = {
 "times": PackedFloat32Array(0, 0.0333333, 0.0666667),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 1,
-"values": [0.261799, 1.0472, 1.57079]
+"values": [0.261799, 1.56316, 1.09525]
 }
 tracks/5/type = "value"
 tracks/5/imported = false
@@ -262,7 +390,7 @@ tracks/5/keys = {
 "times": PackedFloat32Array(0, 0.0333333, 0.0666667),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 1,
-"values": [Vector2(-9, 9), Vector2(-12, 2), Vector2(-10, -4)]
+"values": [Vector2(-9, 13), Vector2(-12, 7), Vector2(-10, -2)]
 }
 tracks/6/type = "value"
 tracks/6/imported = false
@@ -274,79 +402,91 @@ tracks/6/keys = {
 "times": PackedFloat32Array(0, 0.0333333, 0.0666667),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 1,
-"values": [0.785397, 1.66134, -0.906578]
+"values": [0.896564, 1.62253, -0.887961]
 }
 tracks/7/type = "value"
 tracks/7/imported = false
 tracks/7/enabled = true
-tracks/7/path = NodePath("Body:z_index")
+tracks/7/path = NodePath("Area2D/MeleeWeapon:flip_v")
 tracks/7/interp = 1
 tracks/7/loop_wrap = true
 tracks/7/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [1]
+"values": [true]
 }
 tracks/8/type = "value"
 tracks/8/imported = false
 tracks/8/enabled = true
-tracks/8/path = NodePath("Area2D/MeleeWeapon:flip_v")
+tracks/8/path = NodePath("Body:flip_h")
 tracks/8/interp = 1
 tracks/8/loop_wrap = true
 tracks/8/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [true]
+"values": [false]
 }
 tracks/9/type = "value"
 tracks/9/imported = false
 tracks/9/enabled = true
-tracks/9/path = NodePath("Body:flip_h")
+tracks/9/path = NodePath("Area2D/MeleeWeapon:flip_h")
 tracks/9/interp = 1
 tracks/9/loop_wrap = true
 tracks/9/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [false]
+"values": [true]
 }
 tracks/10/type = "value"
 tracks/10/imported = false
 tracks/10/enabled = true
-tracks/10/path = NodePath("Area2D/MeleeWeapon:flip_h")
+tracks/10/path = NodePath("Area2D/WeaponShape:shape")
 tracks/10/interp = 1
 tracks/10/loop_wrap = true
 tracks/10/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [true]
+"values": [SubResource("CapsuleShape2D_0ii24")]
 }
 tracks/11/type = "value"
 tracks/11/imported = false
 tracks/11/enabled = true
-tracks/11/path = NodePath("Area2D/WeaponShape:shape")
+tracks/11/path = NodePath("Area2D/WeaponShape:disabled")
 tracks/11/interp = 1
 tracks/11/loop_wrap = true
 tracks/11/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [SubResource("CapsuleShape2D_0ii24")]
+"values": [false]
 }
 tracks/12/type = "value"
 tracks/12/imported = false
 tracks/12/enabled = true
-tracks/12/path = NodePath("Area2D/WeaponShape:disabled")
+tracks/12/path = NodePath("Area2D/MeleeWeapon:z_index")
 tracks/12/interp = 1
 tracks/12/loop_wrap = true
 tracks/12/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [false]
+"values": [-1]
+}
+tracks/13/type = "value"
+tracks/13/imported = false
+tracks/13/enabled = true
+tracks/13/path = NodePath("RangeWeapon:z_index")
+tracks/13/interp = 1
+tracks/13/loop_wrap = true
+tracks/13/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [-1]
 }
 
 [sub_resource type="Animation" id="Animation_l4tfw"]
@@ -374,7 +514,7 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0, 0.0333333, 0.0666667),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 1,
-"values": [Vector2(12, -1), Vector2(10, 6), Vector2(5, 11)]
+"values": [Vector2(12, 4), Vector2(10, 11), Vector2(4, 16)]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
@@ -386,7 +526,7 @@ tracks/2/keys = {
 "times": PackedFloat32Array(0, 0.0333333, 0.0666667),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 1,
-"values": [-2.35619, -1.57079, -0.880645]
+"values": [-2.34643, -1.57079, -0.720079]
 }
 tracks/3/type = "value"
 tracks/3/imported = false
@@ -398,7 +538,7 @@ tracks/3/keys = {
 "times": PackedFloat32Array(0, 0.0333333, 0.0666667),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 1,
-"values": [Vector2(5, 5), Vector2(6, 5), Vector2(2, 6)]
+"values": [Vector2(6, 3), Vector2(6, 4), Vector2(1.13687e-13, 6)]
 }
 tracks/4/type = "value"
 tracks/4/imported = false
@@ -422,7 +562,7 @@ tracks/5/keys = {
 "times": PackedFloat32Array(0, 0.0333333, 0.0666667),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 1,
-"values": [Vector2(13, -2), Vector2(11, 6), Vector2(7, 12)]
+"values": [Vector2(13, 3), Vector2(11, 11), Vector2(5, 17)]
 }
 tracks/6/type = "value"
 tracks/6/imported = false
@@ -434,24 +574,24 @@ tracks/6/keys = {
 "times": PackedFloat32Array(0, 0.0333333, 0.0666667),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 1,
-"values": [0.785397, 1.57079, -0.95211]
+"values": [0.821584, 1.57079, -0.669232]
 }
 tracks/7/type = "value"
 tracks/7/imported = false
 tracks/7/enabled = true
-tracks/7/path = NodePath("Body:z_index")
+tracks/7/path = NodePath("Area2D/MeleeWeapon:flip_v")
 tracks/7/interp = 1
 tracks/7/loop_wrap = true
 tracks/7/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [0]
+"values": [false]
 }
 tracks/8/type = "value"
 tracks/8/imported = false
 tracks/8/enabled = true
-tracks/8/path = NodePath("Area2D/MeleeWeapon:flip_v")
+tracks/8/path = NodePath("Body:flip_h")
 tracks/8/interp = 1
 tracks/8/loop_wrap = true
 tracks/8/keys = {
@@ -463,7 +603,7 @@ tracks/8/keys = {
 tracks/9/type = "value"
 tracks/9/imported = false
 tracks/9/enabled = true
-tracks/9/path = NodePath("Body:flip_h")
+tracks/9/path = NodePath("Area2D/MeleeWeapon:flip_h")
 tracks/9/interp = 1
 tracks/9/loop_wrap = true
 tracks/9/keys = {
@@ -475,38 +615,50 @@ tracks/9/keys = {
 tracks/10/type = "value"
 tracks/10/imported = false
 tracks/10/enabled = true
-tracks/10/path = NodePath("Area2D/MeleeWeapon:flip_h")
+tracks/10/path = NodePath("Area2D/WeaponShape:shape")
 tracks/10/interp = 1
 tracks/10/loop_wrap = true
 tracks/10/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [false]
+"values": [SubResource("CapsuleShape2D_0ii24")]
 }
 tracks/11/type = "value"
 tracks/11/imported = false
 tracks/11/enabled = true
-tracks/11/path = NodePath("Area2D/WeaponShape:shape")
+tracks/11/path = NodePath("Area2D/WeaponShape:disabled")
 tracks/11/interp = 1
 tracks/11/loop_wrap = true
 tracks/11/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [SubResource("CapsuleShape2D_0ii24")]
+"values": [false]
 }
 tracks/12/type = "value"
 tracks/12/imported = false
 tracks/12/enabled = true
-tracks/12/path = NodePath("Area2D/WeaponShape:disabled")
+tracks/12/path = NodePath("Area2D/MeleeWeapon:z_index")
 tracks/12/interp = 1
 tracks/12/loop_wrap = true
 tracks/12/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [false]
+"values": [0]
+}
+tracks/13/type = "value"
+tracks/13/imported = false
+tracks/13/enabled = true
+tracks/13/path = NodePath("RangeWeapon:z_index")
+tracks/13/interp = 1
+tracks/13/loop_wrap = true
+tracks/13/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
 }
 
 [sub_resource type="Animation" id="Animation_o71hk"]
@@ -534,7 +686,7 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0, 0.0333333, 0.0666667),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 1,
-"values": [Vector2(-5, -7), Vector2(3, -12), Vector2(10, -4)]
+"values": [Vector2(-6, -3), Vector2(3, -8), Vector2(10, 1)]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
@@ -546,7 +698,7 @@ tracks/2/keys = {
 "times": PackedFloat32Array(0, 0.0333333, 0.0666667),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 1,
-"values": [-3.95881, -3.15956, 3.81754]
+"values": [-3.85072, -3.15956, 3.81754]
 }
 tracks/3/type = "value"
 tracks/3/imported = false
@@ -558,7 +710,7 @@ tracks/3/keys = {
 "times": PackedFloat32Array(0, 0.0333333, 0.0666667),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 1,
-"values": [Vector2(-6, -7), Vector2(3, -13), Vector2(11, -6)]
+"values": [Vector2(-6, -2), Vector2(3, -9), Vector2(11, -0.999999)]
 }
 tracks/4/type = "value"
 tracks/4/imported = false
@@ -570,103 +722,115 @@ tracks/4/keys = {
 "times": PackedFloat32Array(0, 0.0333333, 0.0666667),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 1,
-"values": [-0.75522, -0.00339773, 0.720967]
+"values": [-3.82636, -0.00339773, 0.720967]
 }
 tracks/5/type = "value"
 tracks/5/imported = false
 tracks/5/enabled = true
-tracks/5/path = NodePath("Body:z_index")
+tracks/5/path = NodePath("Area2D/MeleeWeapon:flip_v")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [1]
+"values": [false]
 }
 tracks/6/type = "value"
 tracks/6/imported = false
 tracks/6/enabled = true
-tracks/6/path = NodePath("Area2D/MeleeWeapon:flip_v")
+tracks/6/path = NodePath("Body:flip_h")
 tracks/6/interp = 1
 tracks/6/loop_wrap = true
 tracks/6/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [false]
+"values": [true]
 }
 tracks/7/type = "value"
 tracks/7/imported = false
 tracks/7/enabled = true
-tracks/7/path = NodePath("Body:flip_h")
+tracks/7/path = NodePath("Area2D/MeleeWeapon:flip_h")
 tracks/7/interp = 1
 tracks/7/loop_wrap = true
 tracks/7/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [true]
+"values": [false]
 }
 tracks/8/type = "value"
 tracks/8/imported = false
 tracks/8/enabled = true
-tracks/8/path = NodePath("Area2D/MeleeWeapon:flip_h")
+tracks/8/path = NodePath("RangeWeapon:position")
 tracks/8/interp = 1
 tracks/8/loop_wrap = true
 tracks/8/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
+"times": PackedFloat32Array(0, 0.0333333, 0.0666667),
+"transitions": PackedFloat32Array(1, 1, 1),
 "update": 1,
-"values": [false]
+"values": [Vector2(5, -6), Vector2(1, -7), Vector2(5, -6)]
 }
 tracks/9/type = "value"
 tracks/9/imported = false
 tracks/9/enabled = true
-tracks/9/path = NodePath("RangeWeapon:position")
+tracks/9/path = NodePath("RangeWeapon:rotation")
 tracks/9/interp = 1
 tracks/9/loop_wrap = true
 tracks/9/keys = {
 "times": PackedFloat32Array(0, 0.0333333, 0.0666667),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 1,
-"values": [Vector2(4, -3), Vector2(0, -6), Vector2(5, 3)]
+"values": [-2.56771, 3.156, 4.01471]
 }
 tracks/10/type = "value"
 tracks/10/imported = false
 tracks/10/enabled = true
-tracks/10/path = NodePath("RangeWeapon:rotation")
+tracks/10/path = NodePath("Area2D/WeaponShape:shape")
 tracks/10/interp = 1
 tracks/10/loop_wrap = true
 tracks/10/keys = {
-"times": PackedFloat32Array(0, 0.0333333, 0.0666667),
-"transitions": PackedFloat32Array(1, 1, 1),
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [-2.56771, 3.156, 4.01471]
+"values": [SubResource("CapsuleShape2D_0ii24")]
 }
 tracks/11/type = "value"
 tracks/11/imported = false
 tracks/11/enabled = true
-tracks/11/path = NodePath("Area2D/WeaponShape:shape")
+tracks/11/path = NodePath("Area2D/WeaponShape:disabled")
 tracks/11/interp = 1
 tracks/11/loop_wrap = true
 tracks/11/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [SubResource("CapsuleShape2D_0ii24")]
+"values": [false]
 }
 tracks/12/type = "value"
 tracks/12/imported = false
 tracks/12/enabled = true
-tracks/12/path = NodePath("Area2D/WeaponShape:disabled")
+tracks/12/path = NodePath("Area2D/MeleeWeapon:z_index")
 tracks/12/interp = 1
 tracks/12/loop_wrap = true
 tracks/12/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [false]
+"values": [-1]
+}
+tracks/13/type = "value"
+tracks/13/imported = false
+tracks/13/enabled = true
+tracks/13/path = NodePath("RangeWeapon:z_index")
+tracks/13/interp = 1
+tracks/13/loop_wrap = true
+tracks/13/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [-1]
 }
 
 [sub_resource type="Animation" id="Animation_2maj6"]
@@ -724,46 +888,34 @@ tracks/3/keys = {
 tracks/4/type = "value"
 tracks/4/imported = false
 tracks/4/enabled = true
-tracks/4/path = NodePath("Body:z_index")
+tracks/4/path = NodePath("RangeWeapon:rotation")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
-"times": PackedFloat32Array(0, 0.6, 1.8),
-"transitions": PackedFloat32Array(1, 1, 1),
+"times": PackedFloat32Array(0, 0.6, 1.2, 1.8),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
 "update": 1,
-"values": [0, 1, 0]
+"values": [0.523598, -2.35619, -5.75958, -6.28318]
 }
 tracks/5/type = "value"
 tracks/5/imported = false
 tracks/5/enabled = true
-tracks/5/path = NodePath("RangeWeapon:rotation")
+tracks/5/path = NodePath("RangeWeapon:position")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/keys = {
 "times": PackedFloat32Array(0, 0.6, 1.2, 1.8),
 "transitions": PackedFloat32Array(1, 1, 1, 1),
 "update": 1,
-"values": [0.523598, -2.35619, -5.75958, -6.28318]
+"values": [Vector2(-5.33333, 6), Vector2(4.66667, 4.66667), Vector2(0.666667, 4), Vector2(-1.33333, 6)]
 }
 tracks/6/type = "value"
 tracks/6/imported = false
 tracks/6/enabled = true
-tracks/6/path = NodePath("RangeWeapon:position")
+tracks/6/path = NodePath("Body:flip_h")
 tracks/6/interp = 1
 tracks/6/loop_wrap = true
 tracks/6/keys = {
-"times": PackedFloat32Array(0, 0.6, 1.2, 1.8),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
-"update": 1,
-"values": [Vector2(-5.33333, 6), Vector2(4.66667, 4.66667), Vector2(0.666667, 4), Vector2(-1.33333, 6)]
-}
-tracks/7/type = "value"
-tracks/7/imported = false
-tracks/7/enabled = true
-tracks/7/path = NodePath("Body:flip_h")
-tracks/7/interp = 1
-tracks/7/loop_wrap = true
-tracks/7/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
@@ -796,7 +948,7 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0, 0.2, 0.4, 0.6),
 "transitions": PackedFloat32Array(1, 1, 1, 1),
 "update": 1,
-"values": [Vector2(-6, 12), Vector2(-5.33333, 10.6667), Vector2(-5.33333, 12.6667), Vector2(-3.33333, 14)]
+"values": [Vector2(-5, 17), Vector2(-5, 15), Vector2(-5, 17), Vector2(-2, 18)]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
@@ -805,10 +957,10 @@ tracks/2/path = NodePath("Area2D/MeleeWeapon:rotation")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
+"times": PackedFloat32Array(0, 0.6),
+"transitions": PackedFloat32Array(1, 1),
 "update": 1,
-"values": [0.0]
+"values": [0.0, -0.163361]
 }
 tracks/3/type = "value"
 tracks/3/imported = false
@@ -820,7 +972,7 @@ tracks/3/keys = {
 "times": PackedFloat32Array(0, 0.2, 0.4, 0.6),
 "transitions": PackedFloat32Array(1, 1, 1, 1),
 "update": 1,
-"values": [Vector2(-5.33333, 7.33333), Vector2(-5.33333, 5.33333), Vector2(-4.66667, 7.33333), Vector2(-3.33333, 8.66667)]
+"values": [Vector2(-6, 6), Vector2(-6, 3), Vector2(-5, 5), Vector2(-5, 6)]
 }
 tracks/4/type = "value"
 tracks/4/imported = false
@@ -832,24 +984,24 @@ tracks/4/keys = {
 "times": PackedFloat32Array(0, 0.2, 0.4, 0.6),
 "transitions": PackedFloat32Array(1, 1, 1, 1),
 "update": 1,
-"values": [0.261799, -5.23598, 0.785397, -0.261799]
+"values": [0.261799, -4.61625, 2.12791, 0.845819]
 }
 tracks/5/type = "value"
 tracks/5/imported = false
 tracks/5/enabled = true
-tracks/5/path = NodePath("Body:z_index")
+tracks/5/path = NodePath("Area2D/MeleeWeapon:flip_v")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/keys = {
-"times": PackedFloat32Array(0, 0.2, 0.4),
-"transitions": PackedFloat32Array(1, 1, 1),
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [0, 1, 0]
+"values": [false]
 }
 tracks/6/type = "value"
 tracks/6/imported = false
 tracks/6/enabled = true
-tracks/6/path = NodePath("Area2D/MeleeWeapon:flip_v")
+tracks/6/path = NodePath("Area2D/MeleeWeapon:flip_h")
 tracks/6/interp = 1
 tracks/6/loop_wrap = true
 tracks/6/keys = {
@@ -861,86 +1013,98 @@ tracks/6/keys = {
 tracks/7/type = "value"
 tracks/7/imported = false
 tracks/7/enabled = true
-tracks/7/path = NodePath("Body:flip_h")
+tracks/7/path = NodePath("Area2D/WeaponShape:position")
 tracks/7/interp = 1
 tracks/7/loop_wrap = true
 tracks/7/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [false]
+"update": 0,
+"values": [Vector2(-5, 13)]
 }
 tracks/8/type = "value"
 tracks/8/imported = false
 tracks/8/enabled = true
-tracks/8/path = NodePath("Area2D/MeleeWeapon:flip_h")
+tracks/8/path = NodePath("Area2D/WeaponShape:rotation")
 tracks/8/interp = 1
 tracks/8/loop_wrap = true
 tracks/8/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [false]
+"update": 0,
+"values": [-0.0218304]
 }
 tracks/9/type = "value"
 tracks/9/imported = false
 tracks/9/enabled = true
-tracks/9/path = NodePath("Area2D/WeaponShape:position")
+tracks/9/path = NodePath("Area2D/WeaponShape:disabled")
 tracks/9/interp = 1
 tracks/9/loop_wrap = true
 tracks/9/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(-5, 13)]
+"update": 1,
+"values": [true]
 }
 tracks/10/type = "value"
 tracks/10/imported = false
 tracks/10/enabled = true
-tracks/10/path = NodePath("Area2D/WeaponShape:rotation")
+tracks/10/path = NodePath("CPUParticles2D:position")
 tracks/10/interp = 1
 tracks/10/loop_wrap = true
 tracks/10/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [-0.0218304]
-}
-tracks/11/type = "value"
-tracks/11/imported = false
-tracks/11/enabled = true
-tracks/11/path = NodePath("Area2D/WeaponShape:disabled")
-tracks/11/interp = 1
-tracks/11/loop_wrap = true
-tracks/11/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [true]
-}
-tracks/12/type = "value"
-tracks/12/imported = false
-tracks/12/enabled = true
-tracks/12/path = NodePath("CPUParticles2D:position")
-tracks/12/interp = 1
-tracks/12/loop_wrap = true
-tracks/12/keys = {
 "times": PackedFloat32Array(0.0666667, 0.533333),
 "transitions": PackedFloat32Array(1, 1),
 "update": 1,
 "values": [Vector2(3, -8), Vector2(-3, -8)]
 }
-tracks/13/type = "value"
-tracks/13/imported = false
-tracks/13/enabled = true
-tracks/13/path = NodePath("CPUParticles2D:emitting")
-tracks/13/interp = 1
-tracks/13/loop_wrap = true
-tracks/13/keys = {
+tracks/11/type = "value"
+tracks/11/imported = false
+tracks/11/enabled = true
+tracks/11/path = NodePath("CPUParticles2D:emitting")
+tracks/11/interp = 1
+tracks/11/loop_wrap = true
+tracks/11/keys = {
 "times": PackedFloat32Array(0.0666667, 0.533333),
 "transitions": PackedFloat32Array(1, 1),
 "update": 1,
 "values": [true, true]
+}
+tracks/12/type = "value"
+tracks/12/imported = false
+tracks/12/enabled = true
+tracks/12/path = NodePath("Body:flip_h")
+tracks/12/interp = 1
+tracks/12/loop_wrap = true
+tracks/12/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/13/type = "value"
+tracks/13/imported = false
+tracks/13/enabled = true
+tracks/13/path = NodePath("Area2D/MeleeWeapon:z_index")
+tracks/13/interp = 1
+tracks/13/loop_wrap = true
+tracks/13/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+tracks/14/type = "value"
+tracks/14/imported = false
+tracks/14/enabled = true
+tracks/14/path = NodePath("RangeWeapon:z_index")
+tracks/14/interp = 1
+tracks/14/loop_wrap = true
+tracks/14/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [0, -1, 0]
 }
 
 [sub_resource type="Animation" id="Animation_m3tmd"]
@@ -957,7 +1121,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0, 0.2, 0.4, 0.6),
 "transitions": PackedFloat32Array(1, 1, 1, 1),
 "update": 1,
-"values": [3, 7, 11, 15]
+"values": [2, 6, 10, 14]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -969,7 +1133,7 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0, 0.2, 0.4, 0.6),
 "transitions": PackedFloat32Array(1, 1, 1, 1),
 "update": 1,
-"values": [Vector2(-4.66667, 5.33333), Vector2(-2.66667, 5.33333), Vector2(-5.33333, 5.33333), Vector2(-7.33333, 4.66667)]
+"values": [Vector2(-7, 10), Vector2(-4, 10), Vector2(-6, 10), Vector2(-10, 9)]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
@@ -981,7 +1145,7 @@ tracks/2/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [-1.57079]
+"values": [-1.57398]
 }
 tracks/3/type = "value"
 tracks/3/imported = false
@@ -993,7 +1157,7 @@ tracks/3/keys = {
 "times": PackedFloat32Array(0, 0.2, 0.4, 0.6),
 "transitions": PackedFloat32Array(1, 1, 1, 1),
 "update": 1,
-"values": [Vector2(7.7486e-07, 4.66667), Vector2(2, 4), Vector2(1.33333, 4.66667), Vector2(-2, 3.33333)]
+"values": [Vector2(-1, 4), Vector2(4, 3), Vector2(0, 3), Vector2(-6, 2)]
 }
 tracks/4/type = "value"
 tracks/4/imported = false
@@ -1010,110 +1174,122 @@ tracks/4/keys = {
 tracks/5/type = "value"
 tracks/5/imported = false
 tracks/5/enabled = true
-tracks/5/path = NodePath("Body:z_index")
+tracks/5/path = NodePath("Area2D/MeleeWeapon:flip_v")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [1]
+"values": [true]
 }
 tracks/6/type = "value"
 tracks/6/imported = false
 tracks/6/enabled = true
-tracks/6/path = NodePath("Area2D/MeleeWeapon:flip_v")
+tracks/6/path = NodePath("Body:flip_h")
 tracks/6/interp = 1
 tracks/6/loop_wrap = true
 tracks/6/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [true]
+"values": [false]
 }
 tracks/7/type = "value"
 tracks/7/imported = false
 tracks/7/enabled = true
-tracks/7/path = NodePath("Body:flip_h")
+tracks/7/path = NodePath("Area2D/MeleeWeapon:flip_h")
 tracks/7/interp = 1
 tracks/7/loop_wrap = true
 tracks/7/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [true]
+"values": [false]
 }
 tracks/8/type = "value"
 tracks/8/imported = false
 tracks/8/enabled = true
-tracks/8/path = NodePath("Area2D/MeleeWeapon:flip_h")
+tracks/8/path = NodePath("Area2D/WeaponShape:rotation")
 tracks/8/interp = 1
 tracks/8/loop_wrap = true
 tracks/8/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [false]
+"update": 0,
+"values": [1.56044]
 }
 tracks/9/type = "value"
 tracks/9/imported = false
 tracks/9/enabled = true
-tracks/9/path = NodePath("Area2D/WeaponShape:rotation")
+tracks/9/path = NodePath("Area2D/WeaponShape:position")
 tracks/9/interp = 1
 tracks/9/loop_wrap = true
 tracks/9/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [1.56044]
+"values": [Vector2(-5, 5)]
 }
 tracks/10/type = "value"
 tracks/10/imported = false
 tracks/10/enabled = true
-tracks/10/path = NodePath("Area2D/WeaponShape:position")
+tracks/10/path = NodePath("Area2D/WeaponShape:disabled")
 tracks/10/interp = 1
 tracks/10/loop_wrap = true
 tracks/10/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(-5, 5)]
+"update": 1,
+"values": [true]
 }
 tracks/11/type = "value"
 tracks/11/imported = false
 tracks/11/enabled = true
-tracks/11/path = NodePath("Area2D/WeaponShape:disabled")
+tracks/11/path = NodePath("CPUParticles2D:position")
 tracks/11/interp = 1
 tracks/11/loop_wrap = true
 tracks/11/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
+"times": PackedFloat32Array(0.0666667, 0.533333),
+"transitions": PackedFloat32Array(1, 1),
 "update": 1,
-"values": [true]
+"values": [Vector2(7, 8), Vector2(8, 3)]
 }
 tracks/12/type = "value"
 tracks/12/imported = false
 tracks/12/enabled = true
-tracks/12/path = NodePath("CPUParticles2D:position")
+tracks/12/path = NodePath("CPUParticles2D:emitting")
 tracks/12/interp = 1
 tracks/12/loop_wrap = true
 tracks/12/keys = {
 "times": PackedFloat32Array(0.0666667, 0.533333),
 "transitions": PackedFloat32Array(1, 1),
 "update": 1,
-"values": [Vector2(7, 8), Vector2(8, 3)]
+"values": [true, true]
 }
 tracks/13/type = "value"
 tracks/13/imported = false
 tracks/13/enabled = true
-tracks/13/path = NodePath("CPUParticles2D:emitting")
+tracks/13/path = NodePath("Area2D/MeleeWeapon:z_index")
 tracks/13/interp = 1
 tracks/13/loop_wrap = true
 tracks/13/keys = {
-"times": PackedFloat32Array(0.0666667, 0.533333),
-"transitions": PackedFloat32Array(1, 1),
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [true, true]
+"values": [-1]
+}
+tracks/14/type = "value"
+tracks/14/imported = false
+tracks/14/enabled = true
+tracks/14/path = NodePath("RangeWeapon:z_index")
+tracks/14/interp = 1
+tracks/14/loop_wrap = true
+tracks/14/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [-1]
 }
 
 [sub_resource type="Animation" id="Animation_msixx"]
@@ -1142,7 +1318,7 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0, 0.2, 0.4, 0.6),
 "transitions": PackedFloat32Array(1, 1, 1, 1),
 "update": 1,
-"values": [Vector2(4, 6), Vector2(9.33333, 7.33333), Vector2(5.33333, 7.33333), Vector2(2, 7.33333)]
+"values": [Vector2(5, 11), Vector2(9, 11), Vector2(5, 11), Vector2(2, 11)]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
@@ -1166,7 +1342,7 @@ tracks/3/keys = {
 "times": PackedFloat32Array(0, 0.2, 0.4, 0.6),
 "transitions": PackedFloat32Array(1, 1, 1, 1),
 "update": 1,
-"values": [Vector2(-1.33333, 6.66667), Vector2(3.33333, 6), Vector2(-0.666667, 6.66667), Vector2(-4, 6)]
+"values": [Vector2(-1, 6), Vector2(3, 6), Vector2(-2, 5), Vector2(-5, 4)]
 }
 tracks/4/type = "value"
 tracks/4/imported = false
@@ -1178,24 +1354,24 @@ tracks/4/keys = {
 "times": PackedFloat32Array(0, 0.2, 0.4, 0.6),
 "transitions": PackedFloat32Array(1, 1, 1, 1),
 "update": 1,
-"values": [0.0, -0.523598, 0.261799, 1.309]
+"values": [0.0, -0.523598, 0.261799, 0.849761]
 }
 tracks/5/type = "value"
 tracks/5/imported = false
 tracks/5/enabled = true
-tracks/5/path = NodePath("Body:z_index")
+tracks/5/path = NodePath("Area2D/MeleeWeapon:flip_v")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [0]
+"values": [false]
 }
 tracks/6/type = "value"
 tracks/6/imported = false
 tracks/6/enabled = true
-tracks/6/path = NodePath("Area2D/MeleeWeapon:flip_v")
+tracks/6/path = NodePath("Body:flip_h")
 tracks/6/interp = 1
 tracks/6/loop_wrap = true
 tracks/6/keys = {
@@ -1207,7 +1383,7 @@ tracks/6/keys = {
 tracks/7/type = "value"
 tracks/7/imported = false
 tracks/7/enabled = true
-tracks/7/path = NodePath("Body:flip_h")
+tracks/7/path = NodePath("Area2D/MeleeWeapon:flip_h")
 tracks/7/interp = 1
 tracks/7/loop_wrap = true
 tracks/7/keys = {
@@ -1219,74 +1395,86 @@ tracks/7/keys = {
 tracks/8/type = "value"
 tracks/8/imported = false
 tracks/8/enabled = true
-tracks/8/path = NodePath("Area2D/MeleeWeapon:flip_h")
+tracks/8/path = NodePath("Area2D/WeaponShape:position")
 tracks/8/interp = 1
 tracks/8/loop_wrap = true
 tracks/8/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [false]
+"update": 0,
+"values": [Vector2(6, 7)]
 }
 tracks/9/type = "value"
 tracks/9/imported = false
 tracks/9/enabled = true
-tracks/9/path = NodePath("Area2D/WeaponShape:position")
+tracks/9/path = NodePath("Area2D/WeaponShape:rotation")
 tracks/9/interp = 1
 tracks/9/loop_wrap = true
 tracks/9/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(6, 7)]
+"values": [1.56044]
 }
 tracks/10/type = "value"
 tracks/10/imported = false
 tracks/10/enabled = true
-tracks/10/path = NodePath("Area2D/WeaponShape:rotation")
+tracks/10/path = NodePath("Area2D/WeaponShape:disabled")
 tracks/10/interp = 1
 tracks/10/loop_wrap = true
 tracks/10/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [1.56044]
+"update": 1,
+"values": [true]
 }
 tracks/11/type = "value"
 tracks/11/imported = false
 tracks/11/enabled = true
-tracks/11/path = NodePath("Area2D/WeaponShape:disabled")
+tracks/11/path = NodePath("CPUParticles2D:position")
 tracks/11/interp = 1
 tracks/11/loop_wrap = true
 tracks/11/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
+"times": PackedFloat32Array(0.0666667, 0.533333),
+"transitions": PackedFloat32Array(1, 1),
 "update": 1,
-"values": [true]
+"values": [Vector2(-8, 8), Vector2(-9, 3)]
 }
 tracks/12/type = "value"
 tracks/12/imported = false
 tracks/12/enabled = true
-tracks/12/path = NodePath("CPUParticles2D:position")
+tracks/12/path = NodePath("CPUParticles2D:emitting")
 tracks/12/interp = 1
 tracks/12/loop_wrap = true
 tracks/12/keys = {
 "times": PackedFloat32Array(0.0666667, 0.533333),
 "transitions": PackedFloat32Array(1, 1),
 "update": 1,
-"values": [Vector2(-8, 8), Vector2(-9, 3)]
+"values": [true, true]
 }
 tracks/13/type = "value"
 tracks/13/imported = false
 tracks/13/enabled = true
-tracks/13/path = NodePath("CPUParticles2D:emitting")
+tracks/13/path = NodePath("Area2D/MeleeWeapon:z_index")
 tracks/13/interp = 1
 tracks/13/loop_wrap = true
 tracks/13/keys = {
-"times": PackedFloat32Array(0.0666667, 0.533333),
-"transitions": PackedFloat32Array(1, 1),
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [true, true]
+"values": [0]
+}
+tracks/14/type = "value"
+tracks/14/imported = false
+tracks/14/enabled = true
+tracks/14/path = NodePath("RangeWeapon:z_index")
+tracks/14/interp = 1
+tracks/14/loop_wrap = true
+tracks/14/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
 }
 
 [sub_resource type="Animation" id="Animation_ka8fq"]
@@ -1315,7 +1503,7 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0, 0.2, 0.4, 0.6),
 "transitions": PackedFloat32Array(1, 1, 1, 1),
 "update": 1,
-"values": [Vector2(5.33333, -7.15256e-07), Vector2(4.66667, -3.33333), Vector2(4.66667, -0.666668), Vector2(4.66667, -1.33333)]
+"values": [Vector2(5, 4), Vector2(5, 1), Vector2(6, 5), Vector2(8, 5)]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
@@ -1324,10 +1512,10 @@ tracks/2/path = NodePath("Area2D/MeleeWeapon:rotation")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
+"times": PackedFloat32Array(0, 0.4, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1),
 "update": 1,
-"values": [3.14159]
+"values": [3.16053, 3.27764, 3.67748]
 }
 tracks/3/type = "value"
 tracks/3/imported = false
@@ -1339,7 +1527,7 @@ tracks/3/keys = {
 "times": PackedFloat32Array(0, 0.2, 0.4, 0.6),
 "transitions": PackedFloat32Array(1, 1, 1, 1),
 "update": 1,
-"values": [Vector2(6, 6.66667), Vector2(4.66667, 4.66667), Vector2(6, 6), Vector2(4.66667, 6)]
+"values": [Vector2(6, 4), Vector2(6, 1), Vector2(6, 4), Vector2(5, 5)]
 }
 tracks/4/type = "value"
 tracks/4/imported = false
@@ -1356,19 +1544,19 @@ tracks/4/keys = {
 tracks/5/type = "value"
 tracks/5/imported = false
 tracks/5/enabled = true
-tracks/5/path = NodePath("Body:z_index")
+tracks/5/path = NodePath("Area2D/MeleeWeapon:flip_v")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [1]
+"values": [false]
 }
 tracks/6/type = "value"
 tracks/6/imported = false
 tracks/6/enabled = true
-tracks/6/path = NodePath("Area2D/MeleeWeapon:flip_v")
+tracks/6/path = NodePath("Body:flip_h")
 tracks/6/interp = 1
 tracks/6/loop_wrap = true
 tracks/6/keys = {
@@ -1380,7 +1568,7 @@ tracks/6/keys = {
 tracks/7/type = "value"
 tracks/7/imported = false
 tracks/7/enabled = true
-tracks/7/path = NodePath("Body:flip_h")
+tracks/7/path = NodePath("Area2D/MeleeWeapon:flip_h")
 tracks/7/interp = 1
 tracks/7/loop_wrap = true
 tracks/7/keys = {
@@ -1392,74 +1580,86 @@ tracks/7/keys = {
 tracks/8/type = "value"
 tracks/8/imported = false
 tracks/8/enabled = true
-tracks/8/path = NodePath("Area2D/MeleeWeapon:flip_h")
+tracks/8/path = NodePath("Area2D/WeaponShape:rotation")
 tracks/8/interp = 1
 tracks/8/loop_wrap = true
 tracks/8/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [false]
+"update": 0,
+"values": [0.0]
 }
 tracks/9/type = "value"
 tracks/9/imported = false
 tracks/9/enabled = true
-tracks/9/path = NodePath("Area2D/WeaponShape:rotation")
+tracks/9/path = NodePath("Area2D/WeaponShape:position")
 tracks/9/interp = 1
 tracks/9/loop_wrap = true
 tracks/9/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [0.0]
+"values": [Vector2(5, 0)]
 }
 tracks/10/type = "value"
 tracks/10/imported = false
 tracks/10/enabled = true
-tracks/10/path = NodePath("Area2D/WeaponShape:position")
+tracks/10/path = NodePath("Area2D/WeaponShape:disabled")
 tracks/10/interp = 1
 tracks/10/loop_wrap = true
 tracks/10/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(5, 0)]
+"update": 1,
+"values": [true]
 }
 tracks/11/type = "value"
 tracks/11/imported = false
 tracks/11/enabled = true
-tracks/11/path = NodePath("Area2D/WeaponShape:disabled")
+tracks/11/path = NodePath("CPUParticles2D:position")
 tracks/11/interp = 1
 tracks/11/loop_wrap = true
 tracks/11/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
+"times": PackedFloat32Array(0.0666667, 0.533333),
+"transitions": PackedFloat32Array(1, 1),
 "update": 1,
-"values": [true]
+"values": [Vector2(-3, 10), Vector2(3, 10)]
 }
 tracks/12/type = "value"
 tracks/12/imported = false
 tracks/12/enabled = true
-tracks/12/path = NodePath("CPUParticles2D:position")
+tracks/12/path = NodePath("CPUParticles2D:emitting")
 tracks/12/interp = 1
 tracks/12/loop_wrap = true
 tracks/12/keys = {
 "times": PackedFloat32Array(0.0666667, 0.533333),
 "transitions": PackedFloat32Array(1, 1),
 "update": 1,
-"values": [Vector2(-3, 10), Vector2(3, 10)]
+"values": [true, true]
 }
 tracks/13/type = "value"
 tracks/13/imported = false
 tracks/13/enabled = true
-tracks/13/path = NodePath("CPUParticles2D:emitting")
+tracks/13/path = NodePath("Area2D/MeleeWeapon:z_index")
 tracks/13/interp = 1
 tracks/13/loop_wrap = true
 tracks/13/keys = {
-"times": PackedFloat32Array(0.0666667, 0.533333),
-"transitions": PackedFloat32Array(1, 1),
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [true, true]
+"values": [-1]
+}
+tracks/14/type = "value"
+tracks/14/imported = false
+tracks/14/enabled = true
+tracks/14/path = NodePath("RangeWeapon:z_index")
+tracks/14/interp = 1
+tracks/14/loop_wrap = true
+tracks/14/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [-1]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_43gym"]
@@ -1476,71 +1676,53 @@ _data = {
 "walk_up": SubResource("Animation_ka8fq")
 }
 
-[sub_resource type="Curve" id="Curve_52bsn"]
-_data = [Vector2(0, 0.423239), 0.0, 0.0, 0, 0, Vector2(1e-05, 1), 0.0, 0.0, 0, 0, Vector2(1, 0.0112677), 0.0, 0.0, 0, 0]
-point_count = 3
-
-[sub_resource type="Gradient" id="Gradient_5n1v0"]
-offsets = PackedFloat32Array(0, 0.565385)
-colors = PackedColorArray(0.292, 0.292, 0.292, 0.513, 1, 1, 1, 0.8)
-
 [node name="Player" type="CharacterBody2D"]
+z_index = 1
 script = ExtResource("1_t7pu8")
 speed = 100.0
 
 [node name="Shadow" type="Sprite2D" parent="."]
 self_modulate = Color(1, 1, 1, 0.5)
-position = Vector2(0, 8)
+z_index = -1
+position = Vector2(-0.127701, 7)
 texture = ExtResource("2_3a80c")
 
 [node name="Body" type="Sprite2D" parent="."]
-z_index = 1
+position = Vector2(-0.127701, -1)
 texture = ExtResource("1_dlb78")
-flip_h = true
 hframes = 4
 vframes = 7
-frame = 11
+frame = 3
 
 [node name="PlayerShape" type="CollisionShape2D" parent="."]
-position = Vector2(0, 1)
+position = Vector2(-0.127701, 0)
 shape = SubResource("CapsuleShape2D_qdg2v")
 
 [node name="Area2D" type="Area2D" parent="."]
-position = Vector2(1, 0)
+position = Vector2(0, -6)
 
 [node name="MeleeWeapon" type="Sprite2D" parent="Area2D"]
-position = Vector2(-5.33333, 5.33333)
-rotation = -1.57079
+z_index = -1
+position = Vector2(9, 2)
+rotation = 3.81178
 texture = ExtResource("4_2mbj4")
-flip_v = true
 
 [node name="WeaponShape" type="CollisionShape2D" parent="Area2D"]
-position = Vector2(-5, 5)
-rotation = 1.56044
+position = Vector2(-11, 11)
+rotation = 0.896564
 shape = SubResource("CapsuleShape2D_0ii24")
 disabled = true
 
 [node name="RangeWeapon" type="Sprite2D" parent="."]
 visible = false
-position = Vector2(1.33333, 4.66667)
+z_index = -1
+position = Vector2(-7, 4)
+rotation = -4.10965
 scale = Vector2(0.9, 0.9)
 texture = ExtResource("5_iqmla")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-libraries = {
-"": SubResource("AnimationLibrary_43gym")
-}
-
-[node name="AttackCooldown" type="Timer" parent="."]
-wait_time = 0.5
-one_shot = true
-
-[node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2(-1, 0)
-position_smoothing_enabled = true
-position_smoothing_speed = 4.0
-
 [node name="CPUParticles2D" type="CPUParticles2D" parent="."]
+z_index = -1
 position = Vector2(-3, 10)
 emitting = false
 amount = 20
@@ -1555,6 +1737,22 @@ angular_velocity_max = 158.96
 radial_accel_max = 5.0
 scale_amount_curve = SubResource("Curve_52bsn")
 color_ramp = SubResource("Gradient_5n1v0")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(-0.127701, -1)
+position_smoothing_enabled = true
+position_smoothing_speed = 4.0
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_43gym")
+}
+
+[node name="AttackCooldown" type="Timer" parent="."]
+wait_time = 0.5
+one_shot = true
+
+[node name="Node2D" type="Node2D" parent="."]
 
 [connection signal="area_entered" from="Area2D" to="." method="onMeleeAttackHit"]
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="onAnimationFinished"]
