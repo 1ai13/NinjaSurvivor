@@ -10,6 +10,7 @@ public partial class AssetManager : Node
 	private AudioStreamPlayer musicPlayer;
 	public PackedScene projectileScene;
 	public PackedScene enemyHealthBarLabel;
+	public PackedScene playerHealthBarScene;
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
@@ -19,6 +20,7 @@ public partial class AssetManager : Node
 
 		projectileScene = GD.Load<PackedScene>("res://scenes/Projectile.tscn");
 		enemyHealthBarLabel = GD.Load<PackedScene>("res://scenes/HealthBarLabel.tscn");
+		playerHealthBarScene = GD.Load<PackedScene>("res://scenes/PlayerHealthBar.tscn");
 
 		//Audio Manager
 		SFXAudios = new Dictionary<string, List<AudioStream>>();

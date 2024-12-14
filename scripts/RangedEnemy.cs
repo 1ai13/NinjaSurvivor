@@ -4,6 +4,7 @@ using System;
 public partial class RangedEnemy : Enemy
 {
 	private PackedScene projectileScene;
+	private bool projectileDone;
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
@@ -16,6 +17,10 @@ public partial class RangedEnemy : Enemy
 	public override void _PhysicsProcess(double delta)
 	{
 		base._PhysicsProcess(delta);
+		if (attackCooldown.IsStopped() && projectileDone)
+		{
+			projectileDone = false;
+		}
 	}
 
 	protected override void performAttack()
@@ -26,8 +31,9 @@ public partial class RangedEnemy : Enemy
 
 	protected override void onAnimationFinished(StringName animationName)
 	{
-		if (animationName.ToString().StartsWith("attack"))
+		if (animationName.ToString().StartsWith("attack") && !projectileDone)
 		{
+			projectileDone = true;
 			enemyDirection = distanceToPlayer.Normalized();
 			var projectile = PoolEngine.instance.pullFromPool();
 			projectile.init(GlobalPosition, enemyDirection, enemyDirection.Angle(), this, data.projectileSpeed, data.angularSpeed, data.isProjectile, type.ToString().Capitalize());

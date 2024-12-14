@@ -1,7 +1,6 @@
 using Godot;
 using Godot.Collections;
 using System;
-using System.Collections.Generic;
 
 public partial class BufferController : Node2D
 {
@@ -29,11 +28,13 @@ public partial class BufferController : Node2D
 
 	public void onPlayerNear(Node2D body)
 	{
+		//Generate a Random buff from Buffs Pool
 		if (body is Player p)
 		{
-			GD.Print("Choose a random buff");
+			bool removeBuff = false;
 			var randomBuffs = new Array<Buff>();
 			var currentBuffs = buffs.Duplicate();
+			//Generating 3 random buffs
 			for (int i = 0; i < 3; i++)
 			{
 				var rndBuff = currentBuffs.PickRandom();
@@ -41,16 +42,25 @@ public partial class BufferController : Node2D
 				randomBuffs.Add(rndBuff);
 				currentBuffs.Remove(rndBuff);
 			}
-			GD.Print("number of buffs to choose " + randomBuffs.Count);
+			//Showing random buffs
 			for (int i = 0; i < randomBuffs.Count; i++)
 			{
 				var buff = randomBuffs[i];
 				GD.Print($"{i + 1} - {buff.type} -> {buff.description}");
 			}
+			//Applying selected buff
 			GD.Print("Buff SELECTED " + randomBuffs[0].type);
 			if (randomBuffs[0].isDirect)
 			{
-				randomBuffs[0].applyBuff(p);
+				removeBuff = randomBuffs[0].applyBuff(p);
+			}
+			else
+			{
+				p.buffPool.Add(randomBuffs[0]);
+			}
+			if (removeBuff)
+			{
+				buffs.Remove(randomBuffs[0]);
 			}
 		}
 	}

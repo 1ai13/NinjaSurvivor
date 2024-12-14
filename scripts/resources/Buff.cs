@@ -15,22 +15,26 @@ public partial class Buff : Resource
     [Export]
     public bool isDirect;
 
-    public void applyBuff(Player p)
+    public bool applyBuff(Player p)
     {
         switch (type)
         {
             case HEALTH:
                 p.maxHealth += 100;
-                p.health += p.maxHealth;
-                SignalBus.bus.EmitSignal("onHealthChanged", p.health);
+                p.health = p.maxHealth;
+                SignalBus.bus.EmitSignal("onPlayerHealthBarUpdate", p.health);
                 break;
             case DAMAGE:
                 p.damage *= 1.1f;
                 break;
             case ATTACK_SPEED:
-                var attackSpeed = p.attackCooldown.WaitTime;
-                p.attackCooldown.WaitTime = Mathf.Max(0.2f, attackSpeed - .1f);
+                p.attackCooldown.WaitTime = p.attackCooldown.WaitTime - .1f;
+                if (p.attackCooldown.WaitTime == .2f)
+                {
+                    return true;
+                }
                 break;
         }
+        return false;
     }
 }

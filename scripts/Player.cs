@@ -1,5 +1,6 @@
 using Enums;
 using Godot;
+using Godot.Collections;
 using System;
 using System.Collections.Generic;
 using static Enums.WeaponType;
@@ -8,8 +9,7 @@ public partial class Player : CharacterBody2D
 {
 	[Export]
 	private float speed = 60f;
-	[Export]
-	public int health { get; set; } = 100;
+	public int health { get; set; }
 	public int maxHealth;
 	public AnimationPlayer animation;
 	private PackedScene projectileScene;
@@ -24,6 +24,7 @@ public partial class Player : CharacterBody2D
 	private WeaponType currentType = MELEE;
 	private Character characterData;
 	private Camera2D camera;
+	public Array<Buff> buffPool;
 
 	public override void _Ready()
 	{
@@ -35,7 +36,7 @@ public partial class Player : CharacterBody2D
 		attackCooldown = GetNode<Timer>("AttackCooldown");
 		attackCooldown.Timeout += onAttackCooldownTimeout;
 		camera = GetNode<Camera2D>("Camera2D");
-
+		buffPool = new Array<Buff>();
 		//TODO Create Dash behaviour (maybe not)
 		//TODO Add random buffs after finishing level
 		//TODO Add items (ammo?) from monsters + coins for shop?
@@ -131,8 +132,8 @@ public partial class Player : CharacterBody2D
 		rangedWeapon.Texture = c.rangedWeapon.texture;
 		health = c.health;
 		maxHealth = health;
-		SignalBus.bus.EmitSignal("onHealthChanged", health);
 		characterData = c;
+		SignalBus.bus.EmitSignal("onPlayerHealthBarUpdate", health);
 	}
 
 	private void makeAttack(WeaponType type)
@@ -210,13 +211,14 @@ public partial class Player : CharacterBody2D
 	public void takeDamage(int damage)
 	{
 		health -= damage;
+		health = Math.Max(0, health);
 		//Hurt animation
 		var tween = CreateTween();
 		tween.TweenProperty(playerSprite, "self_modulate", Colors.DarkRed, .2f);
 		tween.TweenProperty(playerSprite, "self_modulate", Colors.White, 0f);
 		AssetManager.instance.playSFX("playerHit");
 		SignalBus.bus.EmitSignal("onHealthChanged", health);
-
+		GD.Print("takiong damage player" + health);
 	}
 
 	private void onAttackCooldownTimeout()
