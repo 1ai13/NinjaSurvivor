@@ -69,11 +69,7 @@ z_index = 1
 visible = false
 monitorable = false
 
-[node name="HitCooldown" type="Timer" parent="."]
-wait_time = 0.2
-one_shot = true
-
-[node name="BaseHealthBar" type="ProgressBar" parent="."]
+[node name="BaseHealthBar" type="ProgressBar" parent="EnemyArea"]
 visible = false
 top_level = true
 offset_left = -8.0
@@ -84,7 +80,7 @@ theme_override_styles/background = SubResource("StyleBoxFlat_uprsn")
 theme_override_styles/fill = SubResource("StyleBoxFlat_0fxst")
 show_percentage = false
 
-[node name="HealthBar" type="ProgressBar" parent="BaseHealthBar"]
+[node name="HealthBar" type="ProgressBar" parent="EnemyArea/BaseHealthBar"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -95,7 +91,7 @@ theme_override_styles/background = SubResource("StyleBoxEmpty_lydwh")
 theme_override_styles/fill = SubResource("StyleBoxFlat_ddimb")
 show_percentage = false
 
-[node name="SpawnFX" type="GPUParticles2D" parent="."]
+[node name="SpawnFX" type="GPUParticles2D" parent="EnemyArea"]
 emitting = false
 amount = 75
 process_material = SubResource("ParticleProcessMaterial_jikck")
@@ -103,3 +99,7 @@ one_shot = true
 local_coords = true
 trail_enabled = true
 trail_lifetime = 0.32
+
+[node name="HitCooldown" type="Timer" parent="."]
+wait_time = 0.2
+one_shot = true

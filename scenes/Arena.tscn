@@ -1595,7 +1595,7 @@ tile_map_data = PackedByteArray("AAArAA0AAQAWABQAABArAA4AAQAWABUAABAnAA0AAQAWABQ
 tile_set = ExtResource("3_n77vk")
 
 [node name="PlayerRespawn" type="Marker2D" parent="."]
-position = Vector2(664, 504)
+position = Vector2(667, 506)
 
 [node name="DoorArea" type="Area2D" parent="."]
 position = Vector2(664, 240)

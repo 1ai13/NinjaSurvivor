@@ -15,6 +15,7 @@ public partial class GameController : Node2D
 	[Export]
 	public Array<BiomeConfig> biomeConfigs;
 	public Array<Rect2> trapsPosition;
+	public BufferController buffer;
 	Vector2I playerFeetOffset = new Vector2I(0, 7);
 	public bool areTrapsActive = false;
 
@@ -23,6 +24,7 @@ public partial class GameController : Node2D
 		player = GetNode<Player>("Player");
 		var arena = GetNode<TileMapLayer>("Arena");
 		playerSpawn = GetNode<Marker2D>("Arena/PlayerRespawn");
+		buffer = GetNode<BufferController>("Buffer");
 		//Load selected Character
 		foreach (var c in characters)
 		{

@@ -30,6 +30,7 @@ offset_left = 10.0
 offset_top = 10.0
 offset_right = 26.0
 offset_bottom = 23.0
+allow_greater = true
 fill_mode = 5
 texture_under = ExtResource("1_7bmn5")
 texture_over = ExtResource("2_t3ldn")

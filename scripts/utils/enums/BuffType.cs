@@ -1,0 +1,10 @@
+namespace Enums
+{
+    public enum BuffType
+    {
+        FRONTAL,
+        DAMAGE,
+        ATTACK_SPEED,
+        HEALTH
+    }
+}

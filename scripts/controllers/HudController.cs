@@ -11,6 +11,7 @@ public partial class HudController : Control
 		healthBar = GetNode<TextureProgressBar>("HealthBar");
 		notification = GetNode<Label>("NotificationLabel");
 		SignalBus.bus.onNotifyPlayer += showNotification;
+		SignalBus.bus.onHealthChanged += healthChanged;
 		//TODO Improve HUD with ammo, dynamic healthbar
 	}
 
@@ -19,7 +20,7 @@ public partial class HudController : Control
 	{
 	}
 
-	private void onHealthChanged(int health)
+	private void healthChanged(int health)
 	{
 		healthBar.Value = health;
 	}

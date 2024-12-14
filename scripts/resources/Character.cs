@@ -12,4 +12,6 @@ public partial class Character : Resource
     public Weapon meleeWeapon;
     [Export]
     public Weapon rangedWeapon;
+    [Export]
+    public int health;
 }

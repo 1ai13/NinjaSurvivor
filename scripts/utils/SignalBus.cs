@@ -1,5 +1,4 @@
 using Godot;
-using Godot.Collections;
 using System;
 
 public partial class SignalBus : Node
@@ -11,7 +10,8 @@ public partial class SignalBus : Node
 	public delegate void onEnemyKilledEventHandler();
 	[Signal]
 	public delegate void onNotifyPlayerEventHandler(string message, Color color);
-
+	[Signal]
+	public delegate void onHealthChangedEventHandler(int health);
 	//Init method
 	public override void _Ready()
 	{

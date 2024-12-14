@@ -34,6 +34,7 @@ public abstract partial class Enemy : Node2D
 	protected abstract void performAttack();
 	private bool randomDirection;
 	protected Vector2 distanceToPlayer;
+	private Vector2 initialHealthBarPos;
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
@@ -45,8 +46,9 @@ public abstract partial class Enemy : Node2D
 		enemyArea = GetNode<Area2D>("EnemyArea");
 		attackCooldown = GetNode<Timer>("AttackCooldown");
 		hitCooldown = GetNode<Timer>("HitCooldown");
-		baseHealthBar = GetNode<ProgressBar>("BaseHealthBar");
-		healthBar = GetNode<ProgressBar>("BaseHealthBar/HealthBar");
+		baseHealthBar = GetNode<ProgressBar>("EnemyArea/BaseHealthBar");
+		initialHealthBarPos = baseHealthBar.Position;
+		healthBar = GetNode<ProgressBar>("EnemyArea/BaseHealthBar/HealthBar");
 		healthBarLabel = AssetManager.instance.enemyHealthBarLabel;
 		baseHealthBar.Value = health;
 		baseHealthBar.MaxValue = health;
@@ -97,7 +99,7 @@ public abstract partial class Enemy : Node2D
 		}
 
 		//Enemy VS Player logic
-		baseHealthBar.Position = Position - healthBarOffset;
+		baseHealthBar.Position = Position + initialHealthBarPos;
 		distanceToPlayer = player.Position - Position;
 		//Not in range to attack
 		if (distanceToPlayer.Length() > attackRange && hitCooldown.IsStopped() && !isAttacking)
@@ -118,14 +120,9 @@ public abstract partial class Enemy : Node2D
 		{
 			if (!randomDirection)
 			{
-				enemyDirection = EntityHelper.rnd.RandiRange(0, 3) switch
-				{
-					0 => Vector2I.Up,
-					1 => Vector2I.Down,
-					2 => Vector2I.Right,
-					3 => Vector2I.Left,
-					_ => Vector2I.Zero
-				};
+				var rndX = EntityHelper.rnd.RandfRange(-1, 1);
+				var rndY = EntityHelper.rnd.RandfRange(-1, 1);
+				enemyDirection = new Vector2(rndX, rndY);
 				randomDirection = true;
 			}
 			Position += enemyDirection * speed * (float)delta;

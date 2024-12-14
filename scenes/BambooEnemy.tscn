@@ -23,6 +23,18 @@ tracks/0/keys = {
 "update": 1,
 "values": [4]
 }
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("EnemyArea/EnemySprite:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
 
 [sub_resource type="Animation" id="Animation_1c8kk"]
 resource_name = "attack_down"
@@ -110,7 +122,7 @@ length = 2.0
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("SpawnFX:emitting")
+tracks/0/path = NodePath("EnemyArea/SpawnFX:emitting")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -122,26 +134,26 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("EnemyArea:visible")
+tracks/1/path = NodePath("EnemyArea/EnemySprite:self_modulate")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0, 1.26667),
-"transitions": PackedFloat32Array(1, 1),
-"update": 1,
-"values": [false, true]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("EnemyArea/EnemySprite:self_modulate")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
 "times": PackedFloat32Array(1.26667, 2),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
 "values": [Color(100, 100, 100, 1), Color(1, 1, 1, 1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("EnemyArea/EnemySprite:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 1.26667),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
 }
 
 [sub_resource type="Animation" id="Animation_fh3cq"]
@@ -227,12 +239,16 @@ _data = {
 script = ExtResource("2_1ungy")
 data = ExtResource("3_f8vlm")
 
+[node name="EnemyArea" parent="." index="0"]
+visible = true
+
 [node name="EnemyShape" type="CollisionShape2D" parent="EnemyArea" index="0"]
 position = Vector2(0, 1)
 rotation = -3.14159
 shape = SubResource("CapsuleShape2D_5vx44")
 
 [node name="EnemySprite" type="Sprite2D" parent="EnemyArea" index="1"]
+visible = false
 self_modulate = Color(100, 100, 100, 1)
 texture = ExtResource("5_pvu3v")
 hframes = 4

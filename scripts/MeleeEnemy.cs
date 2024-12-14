@@ -1,6 +1,3 @@
-using Godot;
-using System;
-using static Enums.EnemyType;
 
 public partial class MeleeEnemy : Enemy
 {

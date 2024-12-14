@@ -11,3 +11,4 @@ name = "Masked"
 body = ExtResource("1_i1sp5")
 meleeWeapon = ExtResource("2_d336l")
 rangedWeapon = ExtResource("3_r1s26")
+health = 200

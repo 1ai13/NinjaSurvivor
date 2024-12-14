@@ -6,13 +6,10 @@ using static Enums.WeaponType;
 
 public partial class Player : CharacterBody2D
 {
-
-	[Signal]
-	public delegate void healthChangedEventHandler(int health);
 	[Export]
 	private float speed = 60f;
 	[Export]
-	private int health { get; set; } = 100;
+	public int health { get; set; } = 100;
 	public int maxHealth;
 	public AnimationPlayer animation;
 	private PackedScene projectileScene;
@@ -20,9 +17,9 @@ public partial class Player : CharacterBody2D
 	private Sprite2D rangedWeapon { get; set; }
 	private bool isAttacking = false;
 	public Vector2 mouseDirection { get; set; }
-	private Vector2I damage { get; set; }
+	public Vector2 damage { get; set; }
 	private Sprite2D playerSprite;
-	private Timer attackCooldown;
+	public Timer attackCooldown;
 	private HashSet<Enemy> enemiesMeleeTargeted;
 	private WeaponType currentType = MELEE;
 	private Character characterData;
@@ -37,9 +34,8 @@ public partial class Player : CharacterBody2D
 		enemiesMeleeTargeted = new HashSet<Enemy>();
 		attackCooldown = GetNode<Timer>("AttackCooldown");
 		attackCooldown.Timeout += onAttackCooldownTimeout;
-		EmitSignal(SignalName.healthChanged, health);
 		camera = GetNode<Camera2D>("Camera2D");
-		maxHealth = health;
+
 		//TODO Create Dash behaviour (maybe not)
 		//TODO Add random buffs after finishing level
 		//TODO Add items (ammo?) from monsters + coins for shop?
@@ -133,6 +129,9 @@ public partial class Player : CharacterBody2D
 		damage = new Vector2I(melee.damage, ranged.damage);
 		meleeWeapon.GetNode<Sprite2D>("MeleeWeapon").Texture = melee.texture;
 		rangedWeapon.Texture = c.rangedWeapon.texture;
+		health = c.health;
+		maxHealth = health;
+		SignalBus.bus.EmitSignal("onHealthChanged", health);
 		characterData = c;
 	}
 
@@ -184,7 +183,7 @@ public partial class Player : CharacterBody2D
 			}
 			else
 			{
-				dmg = EntityHelper.getVariableDamage(damage.X);
+				dmg = EntityHelper.getVariableDamage((int)damage.X);
 			}
 			e.takeDamage(dmg, isCrit);
 			enemiesMeleeTargeted.Add(e);
@@ -202,7 +201,7 @@ public partial class Player : CharacterBody2D
 			}
 			else
 			{
-				dmg = EntityHelper.getVariableDamage(damage.Y);
+				dmg = EntityHelper.getVariableDamage((int)damage.Y);
 			}
 			e.takeDamage(dmg, isCrit);
 		}
@@ -216,7 +215,8 @@ public partial class Player : CharacterBody2D
 		tween.TweenProperty(playerSprite, "self_modulate", Colors.DarkRed, .2f);
 		tween.TweenProperty(playerSprite, "self_modulate", Colors.White, 0f);
 		AssetManager.instance.playSFX("playerHit");
-		EmitSignal(SignalName.healthChanged, health);
+		SignalBus.bus.EmitSignal("onHealthChanged", health);
+
 	}
 
 	private void onAttackCooldownTimeout()

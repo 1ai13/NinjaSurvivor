@@ -66,7 +66,7 @@ public partial class LevelManager
 		}
 		generateLevel();
 		doorArea.BodyEntered += onDoorCrossed;
-		SignalBus.bus.onEnemyKilled += onEnemyKilled;
+		SignalBus.bus.onEnemyKilled += enemyKilled;
 	}
 
 	public void generateLevel()
@@ -80,6 +80,7 @@ public partial class LevelManager
 			game.GetTree().CallGroup("Enemies", "queue_free");
 			game.GetTree().CallGroup("Projectiles", "queue_free");
 			PoolEngine.instance.projectilePool.Clear();
+			game.buffer.resetBufferPosition();
 		}
 		level++;
 		SignalBus.bus.EmitSignal("onNotifyPlayer", $"LEVEL   {level}", Colors.White);
@@ -118,10 +119,10 @@ public partial class LevelManager
 
 	public void generateSpawns()
 	{
-		wave++;
+		wave = 5;
 		var maxDistance = 9;
 		int minDistance = maxDistance - wave;
-		spawnCount = wave * 2;
+		spawnCount = 1;
 		var enemyTypes = new Array<EnemyType>();
 		switch (wave)
 		{
@@ -166,7 +167,7 @@ public partial class LevelManager
 			}
 			var enemy = enemyScenes[rndEnemy].Instantiate<Enemy>();
 			enemy.GlobalPosition = layers[0].MapToLocal(s);
-			layers[0].GetParent().CallDeferred("add_child", enemy);
+			game.CallDeferred("add_child", enemy);
 		}
 		var timer = game.GetTree().CreateTimer(.75f);
 		timer.Timeout += playSpawn;
@@ -265,8 +266,7 @@ public partial class LevelManager
 		game.areTrapsActive = true;
 
 		//Reset traps after short delay
-		var node = layers[0];
-		await node.ToSignal(node.GetTree().CreateTimer(.75f), "timeout");
+		await game.ToSignal(game.GetTree().CreateTimer(.75f), "timeout");
 		trapCells.ToList().ForEach(x =>
 		{
 			layers[1].SetCell(x.Key, 2, tilesMap[TRAP][0]);
@@ -333,6 +333,7 @@ public partial class LevelManager
 			AssetManager.instance.playSFX("levelCompleted");
 			SignalBus.bus.EmitSignal("onNotifyPlayer", $"LEVEL COMPLETED", Colors.Green);
 			AssetManager.instance.playSFX("openDoor");
+			game.buffer.animation.Play("drop");
 		}
 		else
 		{
@@ -342,7 +343,7 @@ public partial class LevelManager
 	}
 
 	//Controls if Wave or Level have finished
-	private void onEnemyKilled()
+	private void enemyKilled()
 	{
 		enemiesKilled++;
 		if (enemiesKilled == spawnCount)

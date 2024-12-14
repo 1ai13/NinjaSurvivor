@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="Buff" load_steps=3 format=3 uid="uid://dua4dkhk4mxqi"]
+
+[ext_resource type="Texture2D" uid="uid://5ko0p0taciky" path="res://assets/textures/buffer/icons/heartBuff.png" id="1_cthxm"]
+[ext_resource type="Script" path="res://scripts/resources/Buff.cs" id="2_y88q7"]
+
+[resource]
+script = ExtResource("2_y88q7")
+type = 3
+icon = ExtResource("1_cthxm")
+description = "Add 1 Health Heart"
+isDirect = true
