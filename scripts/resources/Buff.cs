@@ -12,11 +12,10 @@ public partial class Buff : Resource
     public Texture2D icon;
     [Export]
     public string description;
-    [Export]
-    public bool isDirect;
 
     public bool applyBuff(Player p)
     {
+        var maxed = false;
         switch (type)
         {
             case HEALTH:
@@ -28,13 +27,29 @@ public partial class Buff : Resource
                 p.damage *= 1.1f;
                 break;
             case ATTACK_SPEED:
-                p.attackCooldown.WaitTime = p.attackCooldown.WaitTime - .1f;
-                if (p.attackCooldown.WaitTime == .2f)
+                p.attackCooldown.WaitTime -= .1f;
+                GD.Print("Current AS" + p.attackCooldown.WaitTime);
+                if (p.attackCooldown.WaitTime <= .2f)
                 {
-                    return true;
+                    p.attackCooldown.WaitTime = .2f;
+                    GD.Print("Maxed");
+                    maxed = true;
+                }
+                break;
+            case FRONTAL:
+                if (!p.buffPool.ContainsKey(this))
+                {
+                    p.buffPool.Add(this, 1);
+
+                }
+                else
+                {
+                    GD.Print("Maxed");
+                    maxed = true;
+                    p.buffPool[this] = 2;
                 }
                 break;
         }
-        return false;
+        return maxed;
     }
 }

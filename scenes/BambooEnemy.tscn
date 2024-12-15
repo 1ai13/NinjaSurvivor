@@ -249,7 +249,6 @@ shape = SubResource("CapsuleShape2D_5vx44")
 
 [node name="EnemySprite" type="Sprite2D" parent="EnemyArea" index="1"]
 visible = false
-self_modulate = Color(100, 100, 100, 1)
 texture = ExtResource("5_pvu3v")
 hframes = 4
 vframes = 9

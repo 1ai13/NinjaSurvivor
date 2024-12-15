@@ -28,10 +28,11 @@ public partial class BufferController : Node2D
 
 	public void onPlayerNear(Node2D body)
 	{
+		GetNode<AnimatedSprite2D>("BufferBody/Bubble").Visible = false;
 		//Generate a Random buff from Buffs Pool
 		if (body is Player p)
 		{
-			bool removeBuff = false;
+			bool maxedBuff = false;
 			var randomBuffs = new Array<Buff>();
 			var currentBuffs = buffs.Duplicate();
 			//Generating 3 random buffs
@@ -50,15 +51,9 @@ public partial class BufferController : Node2D
 			}
 			//Applying selected buff
 			GD.Print("Buff SELECTED " + randomBuffs[0].type);
-			if (randomBuffs[0].isDirect)
-			{
-				removeBuff = randomBuffs[0].applyBuff(p);
-			}
-			else
-			{
-				p.buffPool.Add(randomBuffs[0]);
-			}
-			if (removeBuff)
+			maxedBuff = randomBuffs[0].applyBuff(p);
+			//Maxed buff
+			if (maxedBuff)
 			{
 				buffs.Remove(randomBuffs[0]);
 			}

@@ -591,7 +591,6 @@ position = Vector2(0, 18)
 texture = ExtResource("5_ap4rl")
 
 [node name="EnemySprite" type="Sprite2D" parent="EnemyArea" index="2"]
-self_modulate = Color(100, 100, 100, 1)
 texture = ExtResource("2_alqno")
 offset = Vector2(0, -2)
 hframes = 5

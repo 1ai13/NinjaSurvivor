@@ -4,6 +4,7 @@ using Godot.Collections;
 using System;
 using System.Collections.Generic;
 using static Enums.WeaponType;
+using static Enums.BuffType;
 
 public partial class Player : CharacterBody2D
 {
@@ -24,7 +25,7 @@ public partial class Player : CharacterBody2D
 	private WeaponType currentType = MELEE;
 	private Character characterData;
 	private Camera2D camera;
-	public Array<Buff> buffPool;
+	public Godot.Collections.Dictionary<Buff, int> buffPool;
 
 	public override void _Ready()
 	{
@@ -36,7 +37,7 @@ public partial class Player : CharacterBody2D
 		attackCooldown = GetNode<Timer>("AttackCooldown");
 		attackCooldown.Timeout += onAttackCooldownTimeout;
 		camera = GetNode<Camera2D>("Camera2D");
-		buffPool = new Array<Buff>();
+		buffPool = new Godot.Collections.Dictionary<Buff, int>();
 		//TODO Create Dash behaviour (maybe not)
 		//TODO Add random buffs after finishing level
 		//TODO Add items (ammo?) from monsters + coins for shop?
@@ -162,11 +163,34 @@ public partial class Player : CharacterBody2D
 				swapWeaponVisibility(type);
 				currentType = type;
 			}
-			//Creating projectile
 			var rangedWeapon = characterData.rangedWeapon;
-			var projectile = PoolEngine.instance.pullFromPool();
-			projectile.init(GlobalPosition, mouseDirection, mouseDirection.Angle(), this, rangedWeapon.projectileSpeed, rangedWeapon.angularSpeed, rangedWeapon.isProjectile, rangedWeapon.name);
-			projectile.projectileHitArea += onRangedEnemyHit;
+
+			//Creating projectile
+			if (buffPool.Count == 0)
+			{
+				var projectile = PoolEngine.instance.pullFromPool();
+				projectile.init(GlobalPosition, mouseDirection, mouseDirection.Angle(), this, rangedWeapon.projectileSpeed, rangedWeapon.angularSpeed, rangedWeapon.isProjectile, rangedWeapon.name);
+				projectile.projectileHitArea += onRangedEnemyHit;
+			}
+			//Buffing projectile
+			foreach (var b in buffPool)
+			{
+				switch (b.Key.type)
+				{
+					case FRONTAL:
+						//Adjusting projectile offsets based on the number of projectiles
+						for (int i = -5 * b.Value; i <= 5 * b.Value; i += 10)
+						{
+							var projectile = PoolEngine.instance.pullFromPool();
+							var offset = new Vector2();
+							//Perpendicular vector for offset
+							offset = new Vector2(mouseDirection.Y, -mouseDirection.X) * i;
+							projectile.init(GlobalPosition + offset, mouseDirection, mouseDirection.Angle(), this, rangedWeapon.projectileSpeed, rangedWeapon.angularSpeed, rangedWeapon.isProjectile, rangedWeapon.name);
+							projectile.projectileHitArea += onRangedEnemyHit;
+						}
+						break;
+				}
+			}
 			AssetManager.instance.playSFX("rangedAttack");
 		}
 	}
