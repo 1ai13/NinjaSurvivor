@@ -1678,6 +1678,7 @@ _data = {
 
 [node name="Player" type="CharacterBody2D"]
 z_index = 1
+collision_mask = 2
 script = ExtResource("1_t7pu8")
 speed = 100.0
 

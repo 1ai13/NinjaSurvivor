@@ -7,4 +7,4 @@
 script = ExtResource("1_ldmht")
 type = 2
 icon = ExtResource("1_wtitu")
-description = "Increase your Attack Speed!"
+description = "Increase the attack speed!"

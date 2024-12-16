@@ -7,5 +7,4 @@
 script = ExtResource("1_g4pyi")
 type = 1
 icon = ExtResource("1_hxw6t")
-description = "Boost your Damage!"
-isDirect = true
+description = "Boost both weapons damage!"

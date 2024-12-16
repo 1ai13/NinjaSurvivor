@@ -5,6 +5,8 @@ namespace Enums
         FRONTAL,
         DAMAGE,
         ATTACK_SPEED,
-        HEALTH
+        HEALTH,
+        DIAGONAL,
+        WALL_RICHOCHET
     }
 }

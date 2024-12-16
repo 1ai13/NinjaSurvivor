@@ -7,5 +7,4 @@
 script = ExtResource("2_wx5yp")
 type = 0
 icon = ExtResource("1_qqbh8")
-description = "Add 1 frontal projectile"
-isDirect = false
+description = "Add 1 frontal projectile!"

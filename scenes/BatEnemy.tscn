@@ -577,7 +577,6 @@ script = ExtResource("2_od27k")
 data = ExtResource("3_lch3c")
 
 [node name="EnemyArea" parent="." index="0"]
-visible = true
 position = Vector2(0, -9)
 
 [node name="EnemyShape" type="CollisionShape2D" parent="EnemyArea" index="0"]

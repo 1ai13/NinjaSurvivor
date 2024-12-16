@@ -37,16 +37,28 @@ public partial class Buff : Resource
                 }
                 break;
             case FRONTAL:
-                if (!p.buffPool.ContainsKey(this))
+                if (!p.buffPool.ContainsKey(type))
                 {
-                    p.buffPool.Add(this, 1);
+                    p.buffPool.Add(type, 1);
 
                 }
                 else
                 {
                     GD.Print("Maxed");
                     maxed = true;
-                    p.buffPool[this] = 2;
+                    p.buffPool[type] = 2;
+                }
+                break;
+            case WALL_RICHOCHET:
+                if (!p.buffPool.ContainsKey(type))
+                {
+                    p.buffPool.Add(type, 1);
+
+                }
+                else
+                {
+                    p.buffPool[type]++;
+                    if (p.buffPool[type] == 3) maxed = true;
                 }
                 break;
         }

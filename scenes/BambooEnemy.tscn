@@ -239,9 +239,6 @@ _data = {
 script = ExtResource("2_1ungy")
 data = ExtResource("3_f8vlm")
 
-[node name="EnemyArea" parent="." index="0"]
-visible = true
-
 [node name="EnemyShape" type="CollisionShape2D" parent="EnemyArea" index="0"]
 position = Vector2(0, 1)
 rotation = -3.14159

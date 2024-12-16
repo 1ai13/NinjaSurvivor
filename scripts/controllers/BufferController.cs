@@ -35,8 +35,13 @@ public partial class BufferController : Node2D
 			bool maxedBuff = false;
 			var randomBuffs = new Array<Buff>();
 			var currentBuffs = buffs.Duplicate();
+			var buffMinSize = 3;
+			if (buffs.Count < buffMinSize)
+			{
+				buffMinSize = buffs.Count;
+			}
 			//Generating 3 random buffs
-			for (int i = 0; i < 3; i++)
+			for (int i = 0; i < buffMinSize; i++)
 			{
 				var rndBuff = currentBuffs.PickRandom();
 				GD.Print("Inserting buff" + rndBuff.type);

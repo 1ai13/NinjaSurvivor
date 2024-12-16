@@ -66,6 +66,7 @@ color_ramp = SubResource("GradientTexture1D_5nh64")
 z_index = 1
 
 [node name="EnemyArea" type="Area2D" parent="."]
+collision_mask = 3
 monitorable = false
 
 [node name="BaseHealthBar" type="ProgressBar" parent="EnemyArea"]

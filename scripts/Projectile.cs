@@ -12,7 +12,7 @@ public partial class Projectile : Area2D
 	[Export]
 	public float speed = 200f;
 	public float angularSpeed = 500f;
-	private const int offset = 15;
+	private int offset = 10;
 	private Vector2 initialPosition { get; set; }
 	private float initialRotation { get; set; }
 	public Vector2 velocity { get; set; } = Vector2.Zero;
@@ -20,19 +20,30 @@ public partial class Projectile : Area2D
 	public bool isProjectile { get; set; }
 	public Node2D owner;
 	public AnimatedSprite2D sprite;
+	public int ricochets;
+	private RayCast2D rayCast;
 
-	public void init(Vector2 position, Vector2 vel, float rotation, Node2D owner, float s, float angularS, bool isProjectile, string sprite)
+	public void init(Vector2 position, Vector2 vel, float rotation, Node2D owner, float s, float angularS, bool isProjectile, string sprite, int ricochets)
 	{
 		this.owner = owner;
 		velocity = vel;
 		// Sets the bullet away from the entity
-		Position = position + velocity * offset;
+		if (owner is Player)
+		{
+			Position = position + velocity;
+		}
+		else
+		{
+			Position = position + velocity * offset;
+		}
 		Rotation = rotation;
 		speed = s;
 		angularSpeed = angularS;
 		this.isProjectile = isProjectile;
 		this.sprite = GetNode<AnimatedSprite2D>("ProjectileSprite");
+		rayCast = GetNode<RayCast2D>("RayCastFront");
 		this.sprite.Animation = sprite;
+		this.ricochets = ricochets;
 		SetPhysicsProcess(true);
 		Show();
 		this.sprite.Play();
@@ -48,9 +59,34 @@ public partial class Projectile : Area2D
 	{
 		if (IsPhysicsProcessing())
 		{
+			//Check for RayCast collisions
+			if (rayCast.IsColliding() && owner is Player)
+			{
+				//Reflection formula for V and Normal (perpendicular vector against surface) Rv = 2 - (V*N)*N [Vector2.Bounce()]
+				if (ricochets > 0)
+				{
+					velocity = velocity - 2 * velocity.Dot(rayCast.GetCollisionNormal()) * rayCast.GetCollisionNormal();
+					ricochets--;
+					if (isProjectile)
+					{
+						Rotation = velocity.Angle();
+					}
+					else
+					{
+						rayCast.Rotation = velocity.Angle();
+					}
+				}
+				else
+				{
+					SetPhysicsProcess(false);
+				}
+				AssetManager.instance.playSFX("rangedWallHit", -5f);
+			}
+			//Update movement
 			Position += velocity * speed * (float)delta;
 			if (!isProjectile)
 			{
+				rayCast.Rotation -= angularSpeed * (float)delta;
 				Rotation += angularSpeed * (float)delta;
 			}
 		}
@@ -67,6 +103,7 @@ public partial class Projectile : Area2D
 		}
 	}
 
+	//Area Collisions
 	private void onBodyEntered(Node2D body)
 	{
 		//Player collision
@@ -86,13 +123,6 @@ public partial class Projectile : Area2D
 			PoolEngine.instance.addToPool(this);
 
 		}
-		//Wall Collision from Player
-		else
-		{
-			SetPhysicsProcess(false);
-			AssetManager.instance.playSFX("rangedWallHit", -5f);
-		}
-
 	}
 
 	private void playHitSound(EnemyType type)

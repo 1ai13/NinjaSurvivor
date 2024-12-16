@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="Buff" load_steps=3 format=3 uid="uid://dd10my8gs55ho"]
+
+[ext_resource type="Texture2D" uid="uid://ugd2apl8f47m" path="res://assets/textures/buffer/icons/wallRicochetBuff.png" id="1_dqssj"]
+[ext_resource type="Script" path="res://scripts/resources/Buff.cs" id="2_bdtoq"]
+
+[resource]
+script = ExtResource("2_bdtoq")
+type = 5
+icon = ExtResource("1_dqssj")
+description = "Projectiles bounce one more time in walls!"

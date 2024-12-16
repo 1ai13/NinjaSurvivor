@@ -26,6 +26,10 @@ AssetManager="*res://scripts/managers/AssetManager.cs"
 SignalBus="*res://scripts/utils/SignalBus.cs"
 PoolEngine="*res://scripts/engines/PoolEngine.cs"
 
+[debug]
+
+settings/stdout/print_fps=true
+
 [display]
 
 window/size/viewport_width=640

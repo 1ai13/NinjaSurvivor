@@ -25,7 +25,7 @@ public partial class Player : CharacterBody2D
 	private WeaponType currentType = MELEE;
 	private Character characterData;
 	private Camera2D camera;
-	public Godot.Collections.Dictionary<Buff, int> buffPool;
+	public Godot.Collections.Dictionary<BuffType, int> buffPool;
 
 	public override void _Ready()
 	{
@@ -37,7 +37,7 @@ public partial class Player : CharacterBody2D
 		attackCooldown = GetNode<Timer>("AttackCooldown");
 		attackCooldown.Timeout += onAttackCooldownTimeout;
 		camera = GetNode<Camera2D>("Camera2D");
-		buffPool = new Godot.Collections.Dictionary<Buff, int>();
+		buffPool = new Godot.Collections.Dictionary<BuffType, int>();
 		//TODO Create Dash behaviour (maybe not)
 		//TODO Add random buffs after finishing level
 		//TODO Add items (ammo?) from monsters + coins for shop?
@@ -165,17 +165,25 @@ public partial class Player : CharacterBody2D
 			}
 			var rangedWeapon = characterData.rangedWeapon;
 
-			//Creating projectile
-			if (buffPool.Count == 0)
+			//Wall ricochets buff
+			var ricochets = 0;
+			if (buffPool.ContainsKey(WALL_RICHOCHET))
+			{
+				ricochets = buffPool[WALL_RICHOCHET];
+			}
+
+			//Creating Unbuffed projectile
+			if (!buffPool.ContainsKey(FRONTAL))
 			{
 				var projectile = PoolEngine.instance.pullFromPool();
-				projectile.init(GlobalPosition, mouseDirection, mouseDirection.Angle(), this, rangedWeapon.projectileSpeed, rangedWeapon.angularSpeed, rangedWeapon.isProjectile, rangedWeapon.name);
+				projectile.init(GlobalPosition, mouseDirection, mouseDirection.Angle(), this, rangedWeapon.projectileSpeed, rangedWeapon.angularSpeed, rangedWeapon.isProjectile, rangedWeapon.name, ricochets);
 				projectile.projectileHitArea += onRangedEnemyHit;
 			}
-			//Buffing projectile
+
+			//Creating Buffed projectile
 			foreach (var b in buffPool)
 			{
-				switch (b.Key.type)
+				switch (b.Key)
 				{
 					case FRONTAL:
 						//Adjusting projectile offsets based on the number of projectiles
@@ -185,7 +193,7 @@ public partial class Player : CharacterBody2D
 							var offset = new Vector2();
 							//Perpendicular vector for offset
 							offset = new Vector2(mouseDirection.Y, -mouseDirection.X) * i;
-							projectile.init(GlobalPosition + offset, mouseDirection, mouseDirection.Angle(), this, rangedWeapon.projectileSpeed, rangedWeapon.angularSpeed, rangedWeapon.isProjectile, rangedWeapon.name);
+							projectile.init(GlobalPosition + offset, mouseDirection, mouseDirection.Angle(), this, rangedWeapon.projectileSpeed, rangedWeapon.angularSpeed, rangedWeapon.isProjectile, rangedWeapon.name, ricochets);
 							projectile.projectileHitArea += onRangedEnemyHit;
 						}
 						break;
