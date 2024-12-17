@@ -166,17 +166,22 @@ public partial class Player : CharacterBody2D
 			var rangedWeapon = characterData.rangedWeapon;
 
 			//Wall ricochets buff
-			var ricochets = 0;
+			var wallRicochet = 0;
+			var hitRicochet = 0;
 			if (buffPool.ContainsKey(WALL_RICHOCHET))
 			{
-				ricochets = buffPool[WALL_RICHOCHET];
+				wallRicochet = buffPool[WALL_RICHOCHET];
+			}
+			if (buffPool.ContainsKey(HIT_RICOCHET))
+			{
+				hitRicochet = buffPool[HIT_RICOCHET];
 			}
 
 			//Creating Unbuffed projectile
 			if (!buffPool.ContainsKey(FRONTAL))
 			{
 				var projectile = PoolEngine.instance.pullFromPool();
-				projectile.init(GlobalPosition, mouseDirection, mouseDirection.Angle(), this, rangedWeapon.projectileSpeed, rangedWeapon.angularSpeed, rangedWeapon.isProjectile, rangedWeapon.name, ricochets);
+				projectile.init(GlobalPosition, mouseDirection, mouseDirection.Angle(), this, rangedWeapon.projectileSpeed, rangedWeapon.angularSpeed, rangedWeapon.isProjectile, rangedWeapon.name, wallRicochet, hitRicochet);
 				projectile.projectileHitArea += onRangedEnemyHit;
 			}
 
@@ -193,7 +198,7 @@ public partial class Player : CharacterBody2D
 							var offset = new Vector2();
 							//Perpendicular vector for offset
 							offset = new Vector2(mouseDirection.Y, -mouseDirection.X) * i;
-							projectile.init(GlobalPosition + offset, mouseDirection, mouseDirection.Angle(), this, rangedWeapon.projectileSpeed, rangedWeapon.angularSpeed, rangedWeapon.isProjectile, rangedWeapon.name, ricochets);
+							projectile.init(GlobalPosition + offset, mouseDirection, mouseDirection.Angle(), this, rangedWeapon.projectileSpeed, rangedWeapon.angularSpeed, rangedWeapon.isProjectile, rangedWeapon.name, wallRicochet, hitRicochet);
 							projectile.projectileHitArea += onRangedEnemyHit;
 						}
 						break;
@@ -205,10 +210,10 @@ public partial class Player : CharacterBody2D
 							{
 								var projectile = PoolEngine.instance.pullFromPool();
 								//Creating new offsets based on current mouse direction angle
-								var diagonal = mouseDirection.Angle() + Mathf.Pi / (i * 6);
+								var diagonal = mouseDirection.Angle() + Mathf.Pi / (i * 4 / b.Value);
 								//Using COS and SIN to convert new Offset Angle to new vector X,Y
 								var newDirection = new Vector2(Mathf.Cos(diagonal), Mathf.Sin(diagonal));
-								projectile.init(GlobalPosition, newDirection, mouseDirection.Angle(), this, rangedWeapon.projectileSpeed, rangedWeapon.angularSpeed, rangedWeapon.isProjectile, rangedWeapon.name, ricochets);
+								projectile.init(GlobalPosition, newDirection, newDirection.Angle(), this, rangedWeapon.projectileSpeed, rangedWeapon.angularSpeed, rangedWeapon.isProjectile, rangedWeapon.name, wallRicochet, hitRicochet);
 								projectile.projectileHitArea += onRangedEnemyHit;
 							}
 						}

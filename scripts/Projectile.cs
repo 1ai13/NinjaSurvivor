@@ -1,6 +1,7 @@
 using Enums;
 using Godot;
 using System;
+using System.Linq;
 using static Enums.EnemyType;
 
 public partial class Projectile : Area2D
@@ -20,10 +21,11 @@ public partial class Projectile : Area2D
 	public bool isProjectile { get; set; }
 	public Node2D owner;
 	public AnimatedSprite2D sprite;
-	public int ricochets;
+	public int wallRicochet;
+	public int hitRicochet;
 	public RayCast2D rayCast;
 
-	public void init(Vector2 position, Vector2 vel, float rotation, Node2D owner, float s, float angularS, bool isProjectile, string sprite, int ricochets)
+	public void init(Vector2 position, Vector2 vel, float rotation, Node2D owner, float s, float angularS, bool isProjectile, string sprite, int wallRicochet, int hitRicochet)
 	{
 		this.owner = owner;
 		velocity = vel;
@@ -41,9 +43,10 @@ public partial class Projectile : Area2D
 		angularSpeed = angularS;
 		this.isProjectile = isProjectile;
 		this.sprite = GetNode<AnimatedSprite2D>("ProjectileSprite");
-		rayCast = GetNode<RayCast2D>("RayCastFront");
+		rayCast = GetNode<RayCast2D>("RayCast");
 		this.sprite.Animation = sprite;
-		this.ricochets = ricochets;
+		this.wallRicochet = wallRicochet;
+		this.hitRicochet = hitRicochet;
 		SetPhysicsProcess(true);
 		Show();
 		this.sprite.Play();
@@ -70,19 +73,11 @@ public partial class Projectile : Area2D
 			if (rayCast.IsColliding() && owner is Player)
 			{
 				//Reflection formula for V and Normal (perpendicular vector against surface) Rv = 2 - (V*N)*N [Vector2.Bounce()]
-				if (ricochets > 0)
+				if (wallRicochet > 0)
 				{
 					velocity = velocity - 2 * velocity.Dot(rayCast.GetCollisionNormal()) * rayCast.GetCollisionNormal();
-					ricochets--;
-					if (!isProjectile)
-					{
-						Rotation = 0;
-						rayCast.Rotation = velocity.Angle();
-					}
-					else
-					{
-						Rotation = velocity.Angle();
-					}
+					wallRicochet--;
+					rotateProjectile();
 				}
 				else
 				{
@@ -100,8 +95,46 @@ public partial class Projectile : Area2D
 		if (owner is Player o && area.GetParent() is Enemy e)
 		{
 			EmitSignal(SignalName.projectileHitArea, area);
-			projectileHitArea -= o.onRangedEnemyHit;
-			PoolEngine.instance.addToPool(this);
+			//Enemy hit ricochet
+			if (hitRicochet > 0)
+			{
+				//Querying all enemies
+				var enemies = GetTree().GetNodesInGroup("Enemies");
+				var nearestDirection = Vector2.Inf;
+				foreach (var enemy in enemies.Cast<Enemy>())
+				{
+					if (enemy.isDead)
+						continue;
+
+					//Searching for nearest one
+					var direction = enemy.GlobalPosition - GlobalPosition;
+					if (nearestDirection.Length() > direction.Length())
+					{
+						nearestDirection = direction;
+					}
+				}
+				velocity = nearestDirection.Normalized();
+				hitRicochet--;
+				rotateProjectile();
+			}
+			else
+			{
+				projectileHitArea -= o.onRangedEnemyHit;
+				PoolEngine.instance.addToPool(this);
+			}
+		}
+	}
+
+	private void rotateProjectile()
+	{
+		if (!isProjectile)
+		{
+			Rotation = 0;
+			rayCast.Rotation = velocity.Angle();
+		}
+		else
+		{
+			Rotation = velocity.Angle();
 		}
 	}
 

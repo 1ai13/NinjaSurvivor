@@ -7,6 +7,7 @@ namespace Enums
         ATTACK_SPEED,
         HEALTH,
         DIAGONAL,
-        WALL_RICHOCHET
+        WALL_RICHOCHET,
+        HIT_RICOCHET
     }
 }

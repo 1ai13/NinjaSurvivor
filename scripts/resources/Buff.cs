@@ -58,8 +58,11 @@ public partial class Buff : Resource
                 else
                 {
                     p.buffPool[type]++;
-                    GD.Print("Maxed");
-                    if (p.buffPool[type] == 3) maxed = true;
+                    if (p.buffPool[type] == 3)
+                    {
+                        maxed = true;
+                        GD.Print("Maxed");
+                    }
                 }
                 break;
             case DIAGONAL:
@@ -72,6 +75,22 @@ public partial class Buff : Resource
                     GD.Print("Maxed");
                     p.buffPool[type] = 2;
                     maxed = true;
+                }
+                break;
+            case HIT_RICOCHET:
+                if (!p.buffPool.ContainsKey(type))
+                {
+                    p.buffPool.Add(type, 1);
+
+                }
+                else
+                {
+                    p.buffPool[type]++;
+                    if (p.buffPool[type] == 3)
+                    {
+                        maxed = true;
+                        GD.Print("Maxed");
+                    }
                 }
                 break;
         }

@@ -28,7 +28,7 @@ public abstract partial class Enemy : Node2D
 	private float lerpValue = 0f;
 	private const float lerpDuration = .5f;
 	private int lastHealth;
-	private bool isDead = false;
+	public bool isDead = false;
 	public AudioStream deadSound;
 	protected bool isAttacking = false;
 	protected abstract void performAttack();

@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="Buff" load_steps=3 format=3 uid="uid://hx0mc5pg8u3d"]
+
+[ext_resource type="Texture2D" uid="uid://danpo6en5lnkj" path="res://assets/textures/buffer/icons/enemyHitRicochet.png" id="1_5htb7"]
+[ext_resource type="Script" path="res://scripts/resources/Buff.cs" id="2_ocf3c"]
+
+[resource]
+script = ExtResource("2_ocf3c")
+type = 6
+icon = ExtResource("1_5htb7")
+description = "Projectiles bounce one more time after hitting an enemy!"

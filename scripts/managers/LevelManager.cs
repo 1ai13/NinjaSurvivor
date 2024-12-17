@@ -122,7 +122,7 @@ public partial class LevelManager
 		wave = 5;
 		var maxDistance = 9;
 		int minDistance = maxDistance - wave;
-		spawnCount = 1;
+		spawnCount = 8;
 		var enemyTypes = new Array<EnemyType>();
 		switch (wave)
 		{
