@@ -1,6 +1,6 @@
 [gd_scene load_steps=18 format=3 uid="uid://xn0kgb7yjueu"]
 
-[ext_resource type="PackedScene" uid="uid://copbpawgnmm4p" path="res://scenes/Enemy.tscn" id="1_457us"]
+[ext_resource type="PackedScene" uid="uid://copbpawgnmm4p" path="res://scenes/entities/Enemy.tscn" id="1_457us"]
 [ext_resource type="Script" path="res://scripts/RangedEnemy.cs" id="2_1ungy"]
 [ext_resource type="Resource" uid="uid://vyndi0np1ygd" path="res://assets/resources/enemies/Bamboo.tres" id="3_f8vlm"]
 [ext_resource type="Texture2D" uid="uid://14446p5tx5vg" path="res://assets/textures/enemies/Bamboo/SpriteSheet.png" id="5_pvu3v"]

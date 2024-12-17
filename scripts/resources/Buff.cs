@@ -9,7 +9,7 @@ public partial class Buff : Resource
     [Export]
     public BuffType type;
     [Export]
-    public Texture2D icon;
+    public Texture2D[] icons;
     [Export]
     public string description;
 

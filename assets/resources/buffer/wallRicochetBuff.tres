@@ -1,10 +1,11 @@
-[gd_resource type="Resource" script_class="Buff" load_steps=3 format=3 uid="uid://dd10my8gs55ho"]
+[gd_resource type="Resource" script_class="Buff" load_steps=4 format=3 uid="uid://dd10my8gs55ho"]
 
 [ext_resource type="Texture2D" uid="uid://ugd2apl8f47m" path="res://assets/textures/buffer/icons/wallRicochetBuff.png" id="1_dqssj"]
 [ext_resource type="Script" path="res://scripts/resources/Buff.cs" id="2_bdtoq"]
+[ext_resource type="Texture2D" uid="uid://cv2it6kiy203l" path="res://assets/textures/buffer/icons/withoutBG/wallRicochetBuffBG.png" id="2_w7whp"]
 
 [resource]
 script = ExtResource("2_bdtoq")
 type = 5
-icon = ExtResource("1_dqssj")
+icons = Array[Texture2D]([ExtResource("1_dqssj"), ExtResource("2_w7whp")])
 description = "Add +1 ricochet on walls!"

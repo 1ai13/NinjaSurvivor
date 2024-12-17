@@ -1,10 +1,11 @@
-[gd_resource type="Resource" script_class="Buff" load_steps=3 format=3 uid="uid://d2vu1gi1284ou"]
+[gd_resource type="Resource" script_class="Buff" load_steps=4 format=3 uid="uid://d2vu1gi1284ou"]
 
 [ext_resource type="Texture2D" uid="uid://dvd8entoi21re" path="res://assets/textures/buffer/icons/diagonalBuff.png" id="1_picg3"]
+[ext_resource type="Texture2D" uid="uid://bc0idycwqb8b6" path="res://assets/textures/buffer/icons/withoutBG/diagonalBuffBG.png" id="2_y1bed"]
 [ext_resource type="Script" path="res://scripts/resources/Buff.cs" id="2_ymhk6"]
 
 [resource]
 script = ExtResource("2_ymhk6")
 type = 4
-icon = ExtResource("1_picg3")
+icons = Array[Texture2D]([ExtResource("1_picg3"), ExtResource("2_y1bed")])
 description = "Throw diagonal projectiles!"

@@ -14,9 +14,9 @@ public partial class HudController : Control
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
-		healthBarContainer = GetNode<HFlowContainer>("HealthBarContainer");
+		healthBarContainer = GetNode<HFlowContainer>("PlayerStats/HealthBarContainer");
 		notification = GetNode<Label>("NotificationLabel");
-		SignalBus.bus.onNotifyPlayer += showNotificationAsync;
+		SignalBus.bus.onNotifyPlayer += showNotification;
 		SignalBus.bus.onHealthChanged += healthChanged;
 		SignalBus.bus.onPlayerHealthBarUpdate += playerHealthBarUpdate;
 		//TODO Improve HUD with ammo, dynamic healthbar
@@ -61,13 +61,12 @@ public partial class HudController : Control
 			var hBar = AssetManager.instance.playerHealthBarScene.Instantiate<TextureProgressBar>();
 			hBar.Value = 100;
 			healthBarContainer.AddChild(hBar);
-			GD.Print("Creating heart");
 		}
 		healthBar = healthBarContainer.GetChild<TextureProgressBar>(healthBarContainer.GetChildCount() - 1);
 	}
 
 	//Notify player and animates de message
-	private async void showNotificationAsync(string message, Color color)
+	private async void showNotification(string message, Color color)
 	{
 		if (tween != null && tween.IsRunning())
 		{
@@ -75,7 +74,7 @@ public partial class HudController : Control
 		}
 		tween = this.CreateTween();
 		notification.Text = message;
-		tween.TweenProperty(notification, "visible", true, .5f);
+		tween.TweenProperty(notification, "visible", true, .3f);
 		tween.TweenProperty(notification, "self_modulate", color, .5f);
 		tween.TweenProperty(notification, "visible", true, 1);
 		tween.TweenProperty(notification, "self_modulate", Color.Color8(1, 1, 1, 0), .5f);

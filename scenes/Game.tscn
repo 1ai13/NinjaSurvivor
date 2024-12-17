@@ -1,16 +1,16 @@
 [gd_scene load_steps=12 format=4 uid="uid://b0w0mvnkhnene"]
 
 [ext_resource type="Script" path="res://scripts/controllers/GameController.cs" id="1_fmhb6"]
-[ext_resource type="PackedScene" uid="uid://by6wissqun38m" path="res://scenes/Arena.tscn" id="1_vwonq"]
+[ext_resource type="PackedScene" uid="uid://by6wissqun38m" path="res://scenes/map/Arena.tscn" id="1_vwonq"]
 [ext_resource type="Resource" uid="uid://qh7omqpi52eh" path="res://assets/resources/characters/ninja.tres" id="2_m37q8"]
-[ext_resource type="PackedScene" uid="uid://d27tgl25p8g58" path="res://scenes/Player.tscn" id="2_s2hus"]
+[ext_resource type="PackedScene" uid="uid://d27tgl25p8g58" path="res://scenes/entities/Player.tscn" id="2_s2hus"]
 [ext_resource type="Resource" uid="uid://ci4rfe38owy18" path="res://assets/resources/characters/masked.tres" id="3_ugdps"]
 [ext_resource type="Resource" uid="uid://bbk16kldo5xxd" path="res://assets/resources/maps/ForestBiome.tres" id="4_i0xgm"]
 [ext_resource type="Resource" uid="uid://cjwnlnj4uoak4" path="res://assets/resources/maps/DesertBiome.tres" id="5_iw8js"]
 [ext_resource type="Resource" uid="uid://cw84oje3xaqku" path="res://assets/resources/maps/TundraBiome.tres" id="6_qt4k3"]
 [ext_resource type="Resource" uid="uid://dfmocbfcrs7rp" path="res://assets/resources/maps/GrassBiome.tres" id="7_gefoh"]
-[ext_resource type="PackedScene" uid="uid://c0fa61ops184b" path="res://scenes/HUD.tscn" id="7_mtukj"]
-[ext_resource type="PackedScene" uid="uid://dbaue3875uu2w" path="res://scenes/Buffer.tscn" id="10_qi65a"]
+[ext_resource type="PackedScene" uid="uid://c0fa61ops184b" path="res://scenes/ui/HUD.tscn" id="7_mtukj"]
+[ext_resource type="PackedScene" uid="uid://dbaue3875uu2w" path="res://scenes/objects/Buffer.tscn" id="10_qi65a"]
 
 [node name="Game" type="Node2D"]
 y_sort_enabled = true

@@ -110,7 +110,7 @@ public partial class LevelManager
 		foreach (var e in biome.enemies)
 		{
 			var name = e.ToString().Capitalize();
-			enemyScenes.Add(GD.Load<PackedScene>($"res://scenes/{name}Enemy.tscn"));
+			enemyScenes.Add(GD.Load<PackedScene>($"res://scenes/entities/{name}Enemy.tscn"));
 		}
 		generateTerrain();
 		generateArenaCells();

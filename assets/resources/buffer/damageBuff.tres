@@ -1,10 +1,11 @@
-[gd_resource type="Resource" script_class="Buff" load_steps=3 format=3 uid="uid://djx5mn0558wh8"]
+[gd_resource type="Resource" script_class="Buff" load_steps=4 format=3 uid="uid://djx5mn0558wh8"]
 
 [ext_resource type="Script" path="res://scripts/resources/Buff.cs" id="1_g4pyi"]
 [ext_resource type="Texture2D" uid="uid://t24pyp1jk0s1" path="res://assets/textures/buffer/icons/attackDamageBuff.png" id="1_hxw6t"]
+[ext_resource type="Texture2D" uid="uid://lu7pvmjn8ovj" path="res://assets/textures/buffer/icons/withoutBG/attackDamageBuff.png" id="2_k8n2y"]
 
 [resource]
 script = ExtResource("1_g4pyi")
 type = 1
-icon = ExtResource("1_hxw6t")
+icons = Array[Texture2D]([ExtResource("1_hxw6t"), ExtResource("2_k8n2y")])
 description = "Boost both weapons damage!"

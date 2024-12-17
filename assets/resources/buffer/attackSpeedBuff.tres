@@ -1,10 +1,11 @@
-[gd_resource type="Resource" script_class="Buff" load_steps=3 format=3 uid="uid://ibpnhi70a4s4"]
+[gd_resource type="Resource" script_class="Buff" load_steps=4 format=3 uid="uid://ibpnhi70a4s4"]
 
 [ext_resource type="Script" path="res://scripts/resources/Buff.cs" id="1_ldmht"]
 [ext_resource type="Texture2D" uid="uid://b0up0x8l5sao1" path="res://assets/textures/buffer/icons/attackSpeedBuff.png" id="1_wtitu"]
+[ext_resource type="Texture2D" uid="uid://f73a6lxtpemp" path="res://assets/textures/buffer/icons/withoutBG/attackSpeedBuffBG.png" id="2_27n0e"]
 
 [resource]
 script = ExtResource("1_ldmht")
 type = 2
-icon = ExtResource("1_wtitu")
+icons = Array[Texture2D]([ExtResource("1_wtitu"), ExtResource("2_27n0e")])
 description = "Increase the attack speed!"

@@ -23,7 +23,6 @@ public abstract partial class Enemy : Node2D
 	private ProgressBar baseHealthBar;
 	private ProgressBar healthBar;
 	private PackedScene healthBarLabel;
-	private Vector2I healthBarOffset = new Vector2I(8, 14);
 	private Vector2I healthBarLabelOffset = new Vector2I(0, 6);
 	private float lerpValue = 0f;
 	private const float lerpDuration = .5f;
@@ -180,7 +179,7 @@ public abstract partial class Enemy : Node2D
 		label.Position -= healthBarLabelOffset;
 		label.Text = "-" + damage.ToString();
 		var offset = healthBarLabelOffset;
-		var rndX = EntityHelper.rnd.RandiRange(offset.X - 2, offset.X + 2);
+		var rndX = EntityHelper.rnd.RandiRange(offset.X - 3, offset.X + 3);
 		var rndY = EntityHelper.rnd.RandiRange(offset.Y - 1, offset.Y);
 		offset[0] = rndX;
 		if (criticalHit)

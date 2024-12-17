@@ -1,6 +1,6 @@
 [gd_scene load_steps=19 format=3 uid="uid://dvj6l1rm50wnt"]
 
-[ext_resource type="PackedScene" uid="uid://copbpawgnmm4p" path="res://scenes/Enemy.tscn" id="1_u3pbf"]
+[ext_resource type="PackedScene" uid="uid://copbpawgnmm4p" path="res://scenes/entities/Enemy.tscn" id="1_u3pbf"]
 [ext_resource type="Texture2D" uid="uid://53b73617equ5" path="res://assets/textures/enemies/BlueBat/SpriteSheet.png" id="2_alqno"]
 [ext_resource type="Script" path="res://scripts/RangedEnemy.cs" id="2_od27k"]
 [ext_resource type="Resource" uid="uid://dc76ox265vks6" path="res://assets/resources/enemies/Bat.tres" id="3_lch3c"]

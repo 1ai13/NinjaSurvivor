@@ -1,10 +1,11 @@
-[gd_resource type="Resource" script_class="Buff" load_steps=3 format=3 uid="uid://pmuitoj1p16p"]
+[gd_resource type="Resource" script_class="Buff" load_steps=4 format=3 uid="uid://pmuitoj1p16p"]
 
 [ext_resource type="Texture2D" uid="uid://o1ohwek6ic5b" path="res://assets/textures/buffer/icons/luckBuff.png" id="1_jgp2f"]
+[ext_resource type="Texture2D" uid="uid://bgdupihsyokg0" path="res://assets/textures/buffer/icons/withoutBG/luckBuff.png" id="2_ah5j2"]
 [ext_resource type="Script" path="res://scripts/resources/Buff.cs" id="2_srx1a"]
 
 [resource]
 script = ExtResource("2_srx1a")
 type = 8
-icon = ExtResource("1_jgp2f")
+icons = Array[Texture2D]([ExtResource("1_jgp2f"), ExtResource("2_ah5j2")])
 description = "Boost the chances of item drops!"

@@ -1,6 +1,6 @@
 [gd_scene load_steps=18 format=3 uid="uid://cgykevomx5nxt"]
 
-[ext_resource type="PackedScene" uid="uid://copbpawgnmm4p" path="res://scenes/Enemy.tscn" id="1_o4lgr"]
+[ext_resource type="PackedScene" uid="uid://copbpawgnmm4p" path="res://scenes/entities/Enemy.tscn" id="1_o4lgr"]
 [ext_resource type="Script" path="res://scripts/MeleeEnemy.cs" id="2_1bbre"]
 [ext_resource type="Texture2D" uid="uid://dfixpnuiqtoa" path="res://assets/textures/enemies/Slime/Slime4SpriteSheet.png" id="2_jadii"]
 [ext_resource type="Resource" uid="uid://scjbc0p47iab" path="res://assets/resources/enemies/Slime.tres" id="3_f1qk1"]

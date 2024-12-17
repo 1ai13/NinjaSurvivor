@@ -1,10 +1,11 @@
-[gd_resource type="Resource" script_class="Buff" load_steps=3 format=3 uid="uid://dua4dkhk4mxqi"]
+[gd_resource type="Resource" script_class="Buff" load_steps=4 format=3 uid="uid://dua4dkhk4mxqi"]
 
 [ext_resource type="Texture2D" uid="uid://5ko0p0taciky" path="res://assets/textures/buffer/icons/heartBuff.png" id="1_cthxm"]
+[ext_resource type="Texture2D" uid="uid://d4h1g815e7v0" path="res://assets/textures/buffer/icons/withoutBG/heartBuff.png" id="2_ncmgv"]
 [ext_resource type="Script" path="res://scripts/resources/Buff.cs" id="2_y88q7"]
 
 [resource]
 script = ExtResource("2_y88q7")
 type = 3
-icon = ExtResource("1_cthxm")
+icons = Array[Texture2D]([ExtResource("1_cthxm"), ExtResource("2_ncmgv")])
 description = "Add +1 heart slot!"

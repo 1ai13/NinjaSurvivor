@@ -18,9 +18,9 @@ public partial class AssetManager : Node
 		//Initialize the private Singleton Autoload
 		instance = this;
 
-		projectileScene = GD.Load<PackedScene>("res://scenes/Projectile.tscn");
-		enemyHealthBarLabel = GD.Load<PackedScene>("res://scenes/HealthBarLabel.tscn");
-		playerHealthBarScene = GD.Load<PackedScene>("res://scenes/PlayerHealthBar.tscn");
+		projectileScene = GD.Load<PackedScene>("res://scenes/objects/Projectile.tscn");
+		enemyHealthBarLabel = GD.Load<PackedScene>("res://scenes/ui/HealthBarLabel.tscn");
+		playerHealthBarScene = GD.Load<PackedScene>("res://scenes/ui/PlayerHealthBar.tscn");
 
 		//Audio Manager
 		SFXAudios = new Dictionary<string, List<AudioStream>>();

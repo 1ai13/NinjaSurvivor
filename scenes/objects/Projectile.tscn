@@ -1,25 +1,25 @@
 [gd_scene load_steps=12 format=3 uid="uid://byyxce36i1psg"]
 
-[ext_resource type="Script" path="res://scripts/Projectile.cs" id="1_1ad1x"]
-[ext_resource type="Texture2D" uid="uid://bndsrbo0t6wxi" path="res://assets/textures/weapons/Bow2/Projectile.png" id="1_eqmcl"]
-[ext_resource type="Texture2D" uid="uid://16etx08minih" path="res://assets/textures/enemies/Bamboo/PlantSpike.png" id="2_uopll"]
-[ext_resource type="Texture2D" uid="uid://c8lgymqvd1n8u" path="res://assets/textures/enemies/BlueBat/Bullet.png" id="3_oy543"]
-[ext_resource type="Texture2D" uid="uid://bw6tfjqqna16r" path="res://assets/textures/weapons/Shuriken/SpriteInHand.png" id="5_ulmdw"]
+[ext_resource type="Script" path="res://scripts/Projectile.cs" id="1_n24m0"]
+[ext_resource type="Texture2D" uid="uid://16etx08minih" path="res://assets/textures/enemies/Bamboo/PlantSpike.png" id="2_sa1gi"]
+[ext_resource type="Texture2D" uid="uid://c8lgymqvd1n8u" path="res://assets/textures/enemies/BlueBat/Bullet.png" id="3_8lbd1"]
+[ext_resource type="Texture2D" uid="uid://bndsrbo0t6wxi" path="res://assets/textures/weapons/Bow2/Projectile.png" id="4_1031k"]
+[ext_resource type="Texture2D" uid="uid://bw6tfjqqna16r" path="res://assets/textures/weapons/Shuriken/SpriteInHand.png" id="5_sycvg"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_5ho0u"]
-atlas = ExtResource("2_uopll")
+atlas = ExtResource("2_sa1gi")
 region = Rect2(0, 0, 24, 20)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_1ygw5"]
-atlas = ExtResource("2_uopll")
+atlas = ExtResource("2_sa1gi")
 region = Rect2(24, 0, 24, 20)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_g67o8"]
-atlas = ExtResource("2_uopll")
+atlas = ExtResource("2_sa1gi")
 region = Rect2(48, 0, 24, 20)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_l3m6a"]
-atlas = ExtResource("2_uopll")
+atlas = ExtResource("2_sa1gi")
 region = Rect2(72, 0, 24, 20)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_ahk6n"]
@@ -43,7 +43,7 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("3_oy543")
+"texture": ExtResource("3_8lbd1")
 }],
 "loop": true,
 "name": &"Bat",
@@ -51,7 +51,7 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("1_eqmcl")
+"texture": ExtResource("4_1031k")
 }],
 "loop": true,
 "name": &"Bow",
@@ -59,7 +59,7 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("5_ulmdw")
+"texture": ExtResource("5_sycvg")
 }],
 "loop": true,
 "name": &"Shuriken",
@@ -73,7 +73,7 @@ height = 12.0
 [node name="Projectile" type="Area2D" groups=["Projectiles"]]
 z_index = 1
 collision_mask = 3
-script = ExtResource("1_1ad1x")
+script = ExtResource("1_n24m0")
 
 [node name="ProjectileSprite" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_ahk6n")

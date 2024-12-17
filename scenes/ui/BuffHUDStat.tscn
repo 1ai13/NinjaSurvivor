@@ -1,0 +1,26 @@
+[gd_scene load_steps=3 format=3 uid="uid://drwgytle7t86l"]
+
+[ext_resource type="Texture2D" uid="uid://lu7pvmjn8ovj" path="res://assets/textures/buffer/icons/withoutBG/attackDamageBuff.png" id="1_5ks1b"]
+[ext_resource type="FontFile" uid="uid://botklpdl5a2x1" path="res://assets/fonts/NormalFont.ttf" id="2_k8ymt"]
+
+[node name="Buffs" type="HFlowContainer"]
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 2
+texture = ExtResource("1_5ks1b")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="."]
+clip_contents = false
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.39)
+theme_override_constants/outline_size = 3
+theme_override_constants/shadow_outline_size = 5
+theme_override_fonts/normal_font = ExtResource("2_k8ymt")
+theme_override_fonts/bold_font = ExtResource("2_k8ymt")
+theme_override_font_sizes/normal_font_size = 12
+theme_override_font_sizes/bold_font_size = 12
+bbcode_enabled = true
+text = "[font_size=8]x[/font_size] 1"
+scroll_active = false
+autowrap_mode = 0
