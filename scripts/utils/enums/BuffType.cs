@@ -8,6 +8,8 @@ namespace Enums
         HEALTH,
         DIAGONAL,
         WALL_RICHOCHET,
-        HIT_RICOCHET
+        HIT_RICOCHET,
+        MOVEMENT_SPEED,
+        DROP_LUCK
     }
 }

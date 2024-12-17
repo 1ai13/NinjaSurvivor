@@ -7,4 +7,4 @@
 script = ExtResource("2_ymhk6")
 type = 4
 icon = ExtResource("1_picg3")
-description = "Add diagonal projectiles!"
+description = "Throw diagonal projectiles!"

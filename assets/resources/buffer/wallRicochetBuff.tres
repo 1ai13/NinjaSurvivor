@@ -7,4 +7,4 @@
 script = ExtResource("2_bdtoq")
 type = 5
 icon = ExtResource("1_dqssj")
-description = "Projectiles bounce one more time in walls!"
+description = "Add +1 ricochet on walls!"

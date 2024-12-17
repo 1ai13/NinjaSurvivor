@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="Buff" load_steps=3 format=3 uid="uid://daxe02x25p6f2"]
+
+[ext_resource type="Texture2D" uid="uid://dpunj6fbajrgr" path="res://assets/textures/buffer/icons/speedBuff.png" id="1_wjvjk"]
+[ext_resource type="Script" path="res://scripts/resources/Buff.cs" id="2_ssucp"]
+
+[resource]
+script = ExtResource("2_ssucp")
+type = 7
+icon = ExtResource("1_wjvjk")
+description = "Increase your movement speed!"

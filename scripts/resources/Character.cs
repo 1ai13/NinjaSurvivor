@@ -14,4 +14,6 @@ public partial class Character : Resource
     public Weapon rangedWeapon;
     [Export]
     public int health;
+    [Export]
+    public float speed;
 }

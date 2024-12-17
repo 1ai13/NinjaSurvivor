@@ -7,4 +7,4 @@
 script = ExtResource("2_ocf3c")
 type = 6
 icon = ExtResource("1_5htb7")
-description = "Projectiles bounce one more time after hitting an enemy!"
+description = "Add +1 ricochet after hitting an enemy!"

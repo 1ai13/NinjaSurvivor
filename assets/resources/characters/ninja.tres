@@ -12,3 +12,4 @@ body = ExtResource("1_euag1")
 meleeWeapon = ExtResource("2_qwdoi")
 rangedWeapon = ExtResource("3_etng2")
 health = 300
+speed = 70.0

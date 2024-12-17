@@ -27,11 +27,17 @@ public partial class Buff : Resource
                 p.damage *= 1.1f;
                 break;
             case ATTACK_SPEED:
-                p.attackCooldown.WaitTime -= .1f;
-                GD.Print("Current AS" + p.attackCooldown.WaitTime);
-                if (p.attackCooldown.WaitTime <= .2f)
+                p.attackCooldown.WaitTime = Math.Max(p.attackCooldown.WaitTime - .1f, .2f);
+                if (p.attackCooldown.WaitTime == .2f)
                 {
-                    p.attackCooldown.WaitTime = .2f;
+                    GD.Print("Maxed");
+                    maxed = true;
+                }
+                break;
+            case MOVEMENT_SPEED:
+                p.speed = Math.Min(p.speed + 5, 100);
+                if (p.speed == 100)
+                {
                     GD.Print("Maxed");
                     maxed = true;
                 }

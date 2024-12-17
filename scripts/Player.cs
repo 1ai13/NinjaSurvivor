@@ -8,8 +8,7 @@ using static Enums.BuffType;
 
 public partial class Player : CharacterBody2D
 {
-	[Export]
-	private float speed = 60f;
+	public float speed;
 	public int health { get; set; }
 	public int maxHealth;
 	public AnimationPlayer animation;
@@ -133,6 +132,7 @@ public partial class Player : CharacterBody2D
 		rangedWeapon.Texture = c.rangedWeapon.texture;
 		health = c.health;
 		maxHealth = health;
+		speed = c.speed;
 		characterData = c;
 		SignalBus.bus.EmitSignal("onPlayerHealthBarUpdate", health);
 	}
