@@ -198,14 +198,19 @@ public partial class Player : CharacterBody2D
 						}
 						break;
 					case DIAGONAL:
-						for (int i = 0; i < 2; i++)
+
+						for (int i = -b.Value * 2; i <= b.Value * 2; i += 2)
 						{
-							var projectile = PoolEngine.instance.pullFromPool();
-							var lastRotation = Rotation;
-							Rotation += Mathf.Pi / 4;
-							projectile.init(GlobalPosition, mouseDirection, mouseDirection.Angle(), this, rangedWeapon.projectileSpeed, rangedWeapon.angularSpeed, rangedWeapon.isProjectile, rangedWeapon.name, ricochets);
-							Rotation = lastRotation;
-							projectile.projectileHitArea += onRangedEnemyHit;
+							if (i != 0)
+							{
+								var projectile = PoolEngine.instance.pullFromPool();
+								//Creating new offsets based on current mouse direction angle
+								var diagonal = mouseDirection.Angle() + Mathf.Pi / (i * 6);
+								//Using COS and SIN to convert new Offset Angle to new vector X,Y
+								var newDirection = new Vector2(Mathf.Cos(diagonal), Mathf.Sin(diagonal));
+								projectile.init(GlobalPosition, newDirection, mouseDirection.Angle(), this, rangedWeapon.projectileSpeed, rangedWeapon.angularSpeed, rangedWeapon.isProjectile, rangedWeapon.name, ricochets);
+								projectile.projectileHitArea += onRangedEnemyHit;
+							}
 						}
 						break;
 				}
