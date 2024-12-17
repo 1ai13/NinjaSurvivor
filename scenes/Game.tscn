@@ -17,7 +17,7 @@ y_sort_enabled = true
 texture_filter = 1
 position = Vector2(2, -1)
 script = ExtResource("1_fmhb6")
-characterSelected = "Masked"
+characterSelected = "Ninja"
 characters = Array[Object]([ExtResource("2_m37q8"), ExtResource("3_ugdps")])
 biomeConfigs = Array[Object]([ExtResource("4_i0xgm"), ExtResource("5_iw8js"), ExtResource("6_qt4k3"), ExtResource("7_gefoh")])
 

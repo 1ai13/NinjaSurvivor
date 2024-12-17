@@ -197,6 +197,17 @@ public partial class Player : CharacterBody2D
 							projectile.projectileHitArea += onRangedEnemyHit;
 						}
 						break;
+					case DIAGONAL:
+						for (int i = 0; i < 2; i++)
+						{
+							var projectile = PoolEngine.instance.pullFromPool();
+							var lastRotation = Rotation;
+							Rotation += Mathf.Pi / 4;
+							projectile.init(GlobalPosition, mouseDirection, mouseDirection.Angle(), this, rangedWeapon.projectileSpeed, rangedWeapon.angularSpeed, rangedWeapon.isProjectile, rangedWeapon.name, ricochets);
+							Rotation = lastRotation;
+							projectile.projectileHitArea += onRangedEnemyHit;
+						}
+						break;
 				}
 			}
 			AssetManager.instance.playSFX("rangedAttack");

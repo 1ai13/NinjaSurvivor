@@ -1,11 +1,9 @@
-[gd_scene load_steps=18 format=3 uid="uid://dbaue3875uu2w"]
+[gd_scene load_steps=16 format=3 uid="uid://dbaue3875uu2w"]
 
 [ext_resource type="Script" path="res://scripts/controllers/BufferController.cs" id="1_fugwi"]
 [ext_resource type="Texture2D" uid="uid://bsp61tcsnfryt" path="res://assets/textures/buffer/buffers.png" id="1_h7hbx"]
 [ext_resource type="Texture2D" uid="uid://dq75xy7qg12pu" path="res://assets/textures/buffer/Smoke.png" id="2_cjbyu"]
-[ext_resource type="Resource" uid="uid://n83geraoqm32" path="res://assets/resources/buffer/frontalBuff.tres" id="3_du7yy"]
-[ext_resource type="Resource" uid="uid://ibpnhi70a4s4" path="res://assets/resources/buffer/attackSpeedBuff.tres" id="4_kd0sa"]
-[ext_resource type="Resource" uid="uid://dd10my8gs55ho" path="res://assets/resources/buffer/wallRicochetBuff.tres" id="6_8nkbs"]
+[ext_resource type="Resource" uid="uid://d2vu1gi1284ou" path="res://assets/resources/buffer/diagonalBuff.tres" id="2_xpex0"]
 [ext_resource type="Texture2D" uid="uid://ck7uns807qa6b" path="res://assets/textures/buffer/icons/DialogInfo.png" id="9_n312f"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_2l8w4"]
@@ -128,7 +126,7 @@ _data = {
 z_index = 1
 y_sort_enabled = true
 script = ExtResource("1_fugwi")
-buffs = Array[Object]([ExtResource("6_8nkbs"), ExtResource("3_du7yy"), ExtResource("4_kd0sa")])
+buffs = Array[Object]([ExtResource("2_xpex0")])
 
 [node name="BufferBody" type="StaticBody2D" parent="."]
 position = Vector2(0, -411)

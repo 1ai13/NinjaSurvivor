@@ -58,7 +58,20 @@ public partial class Buff : Resource
                 else
                 {
                     p.buffPool[type]++;
+                    GD.Print("Maxed");
                     if (p.buffPool[type] == 3) maxed = true;
+                }
+                break;
+            case DIAGONAL:
+                if (!p.buffPool.ContainsKey(type))
+                {
+                    p.buffPool.Add(type, 1);
+                }
+                else
+                {
+                    GD.Print("Maxed");
+                    p.buffPool[type] = 2;
+                    maxed = true;
                 }
                 break;
         }

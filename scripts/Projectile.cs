@@ -21,7 +21,7 @@ public partial class Projectile : Area2D
 	public Node2D owner;
 	public AnimatedSprite2D sprite;
 	public int ricochets;
-	private RayCast2D rayCast;
+	public RayCast2D rayCast;
 
 	public void init(Vector2 position, Vector2 vel, float rotation, Node2D owner, float s, float angularS, bool isProjectile, string sprite, int ricochets)
 	{
@@ -59,6 +59,13 @@ public partial class Projectile : Area2D
 	{
 		if (IsPhysicsProcessing())
 		{
+			//Update movement
+			Position += velocity * speed * (float)delta;
+			if (!isProjectile)
+			{
+				Rotation += angularSpeed * (float)delta;
+				rayCast.Rotation -= angularSpeed * (float)delta;
+			}
 			//Check for RayCast collisions
 			if (rayCast.IsColliding() && owner is Player)
 			{
@@ -67,13 +74,14 @@ public partial class Projectile : Area2D
 				{
 					velocity = velocity - 2 * velocity.Dot(rayCast.GetCollisionNormal()) * rayCast.GetCollisionNormal();
 					ricochets--;
-					if (isProjectile)
+					if (!isProjectile)
 					{
-						Rotation = velocity.Angle();
+						Rotation = 0;
+						rayCast.Rotation = velocity.Angle();
 					}
 					else
 					{
-						rayCast.Rotation = velocity.Angle();
+						Rotation = velocity.Angle();
 					}
 				}
 				else
@@ -82,13 +90,7 @@ public partial class Projectile : Area2D
 				}
 				AssetManager.instance.playSFX("rangedWallHit", -5f);
 			}
-			//Update movement
-			Position += velocity * speed * (float)delta;
-			if (!isProjectile)
-			{
-				rayCast.Rotation -= angularSpeed * (float)delta;
-				Rotation += angularSpeed * (float)delta;
-			}
+
 		}
 	}
 

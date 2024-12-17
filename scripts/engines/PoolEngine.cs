@@ -49,6 +49,8 @@ public partial class PoolEngine : Node
 		p.Rotation = 0;
 		p.speed = 0;
 		p.angularSpeed = 0;
+		p.rayCast.Rotation = 0;
+		p.rayCast.TargetPosition = new Vector2(20, 0);
 		p.sprite.Stop();
 		p.sprite = null;
 	}

@@ -83,7 +83,8 @@ animation = &"Bamboo"
 shape = SubResource("CapsuleShape2D_mpsag")
 
 [node name="RayCastFront" type="RayCast2D" parent="."]
-target_position = Vector2(9, 0)
+exclude_parent = false
+target_position = Vector2(8, 0)
 collision_mask = 2
 
 [connection signal="area_entered" from="." to="." method="onAreaDetected"]
