@@ -16,11 +16,26 @@ public partial class Buff : Resource
     public bool applyBuff(Player p)
     {
         var maxed = false;
+        if (!p.buffPool.ContainsKey(type))
+        {
+            p.buffPool.Add(type, 1);
+
+        }
+        else
+        {
+            p.buffPool[type]++;
+        }
         switch (type)
         {
             case HEALTH:
-                p.maxHealth += 100;
+
+                p.maxHealth = Math.Min(4400, p.maxHealth + 100);
                 p.health = p.maxHealth;
+                if (p.maxHealth == 4400)
+                {
+                    GD.Print("Maxed");
+                    maxed = true;
+                }
                 SignalBus.bus.EmitSignal("onPlayerHealthBarUpdate", p.health);
                 break;
             case DAMAGE:
@@ -43,60 +58,31 @@ public partial class Buff : Resource
                 }
                 break;
             case FRONTAL:
-                if (!p.buffPool.ContainsKey(type))
-                {
-                    p.buffPool.Add(type, 1);
-
-                }
-                else
+                if (p.buffPool[type] == 2)
                 {
                     GD.Print("Maxed");
                     maxed = true;
-                    p.buffPool[type] = 2;
                 }
                 break;
             case WALL_RICHOCHET:
-                if (!p.buffPool.ContainsKey(type))
+                if (p.buffPool[type] == 3)
                 {
-                    p.buffPool.Add(type, 1);
-
-                }
-                else
-                {
-                    p.buffPool[type]++;
-                    if (p.buffPool[type] == 3)
-                    {
-                        maxed = true;
-                        GD.Print("Maxed");
-                    }
+                    maxed = true;
+                    GD.Print("Maxed");
                 }
                 break;
             case DIAGONAL:
-                if (!p.buffPool.ContainsKey(type))
-                {
-                    p.buffPool.Add(type, 1);
-                }
-                else
+                if (p.buffPool[type] == 2)
                 {
                     GD.Print("Maxed");
-                    p.buffPool[type] = 2;
                     maxed = true;
                 }
                 break;
             case HIT_RICOCHET:
-                if (!p.buffPool.ContainsKey(type))
+                if (p.buffPool[type] == 3)
                 {
-                    p.buffPool.Add(type, 1);
-
-                }
-                else
-                {
-                    p.buffPool[type]++;
-                    if (p.buffPool[type] == 3)
-                    {
-                        maxed = true;
-                        GD.Print("Maxed");
-                    }
+                    maxed = true;
+                    GD.Print("Maxed");
                 }
                 break;
         }

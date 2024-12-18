@@ -1,4 +1,6 @@
+using Enums;
 using Godot;
+using Godot.Collections;
 using System;
 
 public partial class SignalBus : Node
@@ -14,6 +16,13 @@ public partial class SignalBus : Node
 	public delegate void onHealthChangedEventHandler(int health);
 	[Signal]
 	public delegate void onPlayerHealthBarUpdateEventHandler(int health);
+	[Signal]
+	public delegate void onPlayerBuffedEventHandler(Buff buff, Player p);
+	[Signal]
+	public delegate void onLevelCompletedEventHandler(int level, string icon);
+	[Signal]
+	public delegate void onWaveCompletedEventHandler(int level);
+
 	//Init method
 	public override void _Ready()
 	{

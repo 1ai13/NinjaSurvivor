@@ -1,13 +1,12 @@
-[gd_scene load_steps=6 format=3 uid="uid://c0fa61ops184b"]
+[gd_scene load_steps=7 format=3 uid="uid://c0fa61ops184b"]
 
 [ext_resource type="Script" path="res://scripts/controllers/HudController.cs" id="1_icudm"]
-[ext_resource type="Texture2D" uid="uid://lu7pvmjn8ovj" path="res://assets/textures/buffer/icons/withoutBG/attackDamageBuff.png" id="3_1yjny"]
+[ext_resource type="Texture2D" uid="uid://iey472jm1yuo" path="res://assets/textures/buffer/icons/withoutBG/goldIcon.png" id="2_56igj"]
 [ext_resource type="FontFile" uid="uid://botklpdl5a2x1" path="res://assets/fonts/NormalFont.ttf" id="5_k1iq5"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_810v0"]
 font = ExtResource("5_k1iq5")
-font_size = 14
-outline_size = 4
+outline_size = 3
 outline_color = Color(0, 0, 0, 1)
 shadow_size = 5
 shadow_color = Color(0, 0, 0, 1)
@@ -20,6 +19,13 @@ outline_color = Color(0, 0, 0, 1)
 shadow_size = 10
 shadow_color = Color(0, 0, 0, 0.5)
 
+[sub_resource type="LabelSettings" id="LabelSettings_p1qav"]
+font = ExtResource("5_k1iq5")
+outline_size = 4
+outline_color = Color(0, 0, 0, 1)
+shadow_size = 3
+shadow_color = Color(0, 0, 0, 0.605)
+
 [node name="HUD" type="Control"]
 texture_repeat = 2
 layout_mode = 3
@@ -30,52 +36,92 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_icudm")
 
-[node name="PlayerStats" type="VBoxContainer" parent="."]
+[node name="HealthBarContainer" type="HFlowContainer" parent="."]
+clip_contents = true
 layout_mode = 1
 offset_left = 10.0
 offset_top = 10.0
-offset_right = 210.0
-offset_bottom = 113.0
-size_flags_horizontal = 0
-alignment = 1
+offset_right = 235.0
+offset_bottom = 70.0
 
-[node name="HealthBarContainer" type="HFlowContainer" parent="PlayerStats"]
-custom_minimum_size = Vector2(200, 50)
+[node name="GoldCounter" type="HFlowContainer" parent="."]
 layout_mode = 2
+offset_left = 10.0
+offset_top = 80.0
+offset_right = 103.0
+offset_bottom = 101.0
+scale = Vector2(0.8, 0.8)
 
-[node name="BuffsContainer" type="VBoxContainer" parent="PlayerStats"]
-custom_minimum_size = Vector2(52, 0)
+[node name="GoldIcon" type="TextureRect" parent="GoldCounter"]
 layout_mode = 2
-size_flags_horizontal = 0
+texture = ExtResource("2_56igj")
 
-[node name="Label" type="Label" parent="PlayerStats/BuffsContainer"]
-custom_minimum_size = Vector2(0, 25)
-layout_mode = 2
-size_flags_vertical = 1
-text = "Buffs:"
-label_settings = SubResource("LabelSettings_810v0")
-vertical_alignment = 1
-
-[node name="Buffs" type="HFlowContainer" parent="PlayerStats/BuffsContainer"]
-layout_mode = 2
-
-[node name="TextureRect" type="TextureRect" parent="PlayerStats/BuffsContainer/Buffs"]
-layout_mode = 2
-texture = ExtResource("3_1yjny")
-
-[node name="RichTextLabel" type="RichTextLabel" parent="PlayerStats/BuffsContainer/Buffs"]
+[node name="RichTextLabel" type="RichTextLabel" parent="GoldCounter"]
 clip_contents = false
 layout_mode = 2
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.39)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.422)
 theme_override_constants/outline_size = 3
-theme_override_constants/shadow_outline_size = 5
+theme_override_constants/shadow_outline_size = 1
 theme_override_fonts/normal_font = ExtResource("5_k1iq5")
-theme_override_fonts/bold_font = ExtResource("5_k1iq5")
 theme_override_font_sizes/normal_font_size = 12
-theme_override_font_sizes/bold_font_size = 12
 bbcode_enabled = true
-text = "[font_size=8]x[/font_size] 1"
+text = "0[font_size=8] g[/font_size]"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+
+[node name="BuffsContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+offset_left = 10.0
+offset_top = 106.0
+offset_right = 103.0
+offset_bottom = 174.0
+scale = Vector2(0.8, 0.8)
+
+[node name="Label" type="Label" parent="BuffsContainer"]
+layout_mode = 2
+text = "Buffs:"
+label_settings = SubResource("LabelSettings_810v0")
+
+[node name="LevelInfo" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -83.0
+offset_top = 10.0
+offset_right = -10.0
+offset_bottom = 40.0
+grow_horizontal = 0
+
+[node name="LevelLabel" type="RichTextLabel" parent="LevelInfo"]
+clip_contents = false
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.394)
+theme_override_constants/outline_size = 4
+theme_override_constants/shadow_outline_size = 1
+theme_override_fonts/normal_font = ExtResource("5_k1iq5")
+theme_override_font_sizes/normal_font_size = 10
+bbcode_enabled = true
+text = "[right]LEVEL	1 - [img=12]res://assets/textures/GUI/HUD/forestBiomeIcon.png[/img][/right]"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+
+[node name="WaveLabel" type="RichTextLabel" parent="LevelInfo"]
+clip_contents = false
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.508)
+theme_override_constants/outline_size = 4
+theme_override_constants/shadow_outline_size = 1
+theme_override_fonts/normal_font = ExtResource("5_k1iq5")
+theme_override_font_sizes/normal_font_size = 8
+bbcode_enabled = true
+text = "WAVE						1 / X"
+fit_content = true
 scroll_active = false
 autowrap_mode = 0
 
@@ -99,6 +145,33 @@ text = "LEVEL     1"
 label_settings = SubResource("LabelSettings_rtjc3")
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -218.0
+offset_top = -141.0
+offset_right = 218.0
+offset_bottom = 141.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="Panel"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -20.0
+offset_top = 10.0
+offset_right = 20.0
+offset_bottom = 33.0
+grow_horizontal = 2
+text = "PICK		   A		   RANDOM		   BUFF"
+label_settings = SubResource("LabelSettings_p1qav")
 
 [node name="NotificationTimer" type="Timer" parent="."]
 one_shot = true

@@ -10,4 +10,6 @@ public partial class BiomeConfig : Resource
 	public Array<EnemyType> enemies;
 	[Export]
 	public TileType name;
+	[Export]
+	public string iconPath;
 }

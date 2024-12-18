@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="Buff" load_steps=4 format=3 uid="uid://daxe02x25p6f2"]
 
-[ext_resource type="Texture2D" uid="uid://dpunj6fbajrgr" path="res://assets/textures/buffer/icons/movementSpeedBuff.png" id="1_2gvj3"]
+[ext_resource type="Texture2D" uid="uid://cvwdkym6g6dlt" path="res://assets/textures/buffer/icons/movementSpeedBuff.png" id="1_2gvj3"]
 [ext_resource type="Texture2D" uid="uid://c6rcefql1dl2j" path="res://assets/textures/buffer/icons/withoutBG/movementSpeedBuff.png" id="2_6l2ao"]
 [ext_resource type="Script" path="res://scripts/resources/Buff.cs" id="3_0j0p3"]
 

@@ -57,6 +57,7 @@ public partial class BufferController : Node2D
 			//Applying selected buff
 			GD.Print("Buff SELECTED " + randomBuffs[0].type);
 			maxedBuff = randomBuffs[0].applyBuff(p);
+			SignalBus.bus.EmitSignal("onPlayerBuffed", randomBuffs[0], p);
 			//Maxed buff
 			if (maxedBuff)
 			{

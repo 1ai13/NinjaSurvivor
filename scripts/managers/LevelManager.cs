@@ -83,6 +83,7 @@ public partial class LevelManager
 			game.buffer.resetBufferPosition();
 		}
 		level++;
+		//Show Level Notification
 		SignalBus.bus.EmitSignal("onNotifyPlayer", $"LEVEL   {level}", Colors.White);
 		wave = 0;
 		//Select Biome
@@ -105,6 +106,8 @@ public partial class LevelManager
 				break;
 
 		}
+		//Update UI with new level
+		SignalBus.bus.EmitSignal("onLevelCompleted", level, biome.iconPath);
 		//Get biome enemies
 		enemyScenes = new Array<PackedScene>();
 		foreach (var e in biome.enemies)
@@ -149,6 +152,7 @@ public partial class LevelManager
 				enemyTypes = biome.enemies;
 				break;
 		};
+		SignalBus.bus.EmitSignal("onWaveCompleted", wave);
 		var spawns = poissonDiskSampling(spawnCount, minDistance);
 		int rndEnemy;
 		foreach (var s in spawns)

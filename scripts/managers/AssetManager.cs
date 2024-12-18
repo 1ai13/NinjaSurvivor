@@ -11,6 +11,7 @@ public partial class AssetManager : Node
 	public PackedScene projectileScene;
 	public PackedScene enemyHealthBarLabel;
 	public PackedScene playerHealthBarScene;
+	public PackedScene buffStatCounter;
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
@@ -21,6 +22,7 @@ public partial class AssetManager : Node
 		projectileScene = GD.Load<PackedScene>("res://scenes/objects/Projectile.tscn");
 		enemyHealthBarLabel = GD.Load<PackedScene>("res://scenes/ui/HealthBarLabel.tscn");
 		playerHealthBarScene = GD.Load<PackedScene>("res://scenes/ui/PlayerHealthBar.tscn");
+		buffStatCounter = GD.Load<PackedScene>("res://scenes/ui/BuffStatCounter.tscn");
 
 		//Audio Manager
 		SFXAudios = new Dictionary<string, List<AudioStream>>();
