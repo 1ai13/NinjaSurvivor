@@ -1,11 +1,13 @@
-[gd_resource type="Resource" script_class="Buff" load_steps=4 format=3 uid="uid://dd10my8gs55ho"]
+[gd_resource type="Resource" script_class="Buff" load_steps=6 format=3 uid="uid://dd10my8gs55ho"]
 
 [ext_resource type="Texture2D" uid="uid://ugd2apl8f47m" path="res://assets/textures/buffer/icons/wallRicochetBuff.png" id="1_dqssj"]
 [ext_resource type="Script" path="res://scripts/resources/Buff.cs" id="2_bdtoq"]
 [ext_resource type="Texture2D" uid="uid://cv2it6kiy203l" path="res://assets/textures/buffer/icons/withoutBG/wallRicochetBuffBG.png" id="2_w7whp"]
+[ext_resource type="Texture2D" uid="uid://cychg1qwodq11" path="res://assets/textures/buffer/icons/wallRicochetBuffHover.png" id="3_woyuu"]
+[ext_resource type="Texture2D" uid="uid://bcmw3f16v8747" path="res://assets/textures/buffer/icons/wallRicochetBuffSelected.png" id="4_s4bj1"]
 
 [resource]
 script = ExtResource("2_bdtoq")
 type = 5
-icons = Array[Texture2D]([ExtResource("1_dqssj"), ExtResource("2_w7whp")])
-description = "Add +1 ricochet on walls!"
+icons = Array[Texture2D]([ExtResource("2_w7whp"), ExtResource("1_dqssj"), ExtResource("3_woyuu"), ExtResource("4_s4bj1")])
+description = "Add  +1  ricochet  on  walls!"

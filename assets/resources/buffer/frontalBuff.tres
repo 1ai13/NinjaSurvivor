@@ -1,11 +1,13 @@
-[gd_resource type="Resource" script_class="Buff" load_steps=4 format=3 uid="uid://n83geraoqm32"]
+[gd_resource type="Resource" script_class="Buff" load_steps=6 format=3 uid="uid://n83geraoqm32"]
 
 [ext_resource type="Texture2D" uid="uid://ds6d6rq5ch0i4" path="res://assets/textures/buffer/icons/frontalBuff.png" id="1_qqbh8"]
 [ext_resource type="Texture2D" uid="uid://cr8grdlsx0j10" path="res://assets/textures/buffer/icons/withoutBG/frontalBuffBG.png" id="2_05ejf"]
 [ext_resource type="Script" path="res://scripts/resources/Buff.cs" id="2_wx5yp"]
+[ext_resource type="Texture2D" uid="uid://c4my1fr7g80jb" path="res://assets/textures/buffer/icons/frontalBuffHover.png" id="3_4b0cx"]
+[ext_resource type="Texture2D" uid="uid://ddt0ug35ajeka" path="res://assets/textures/buffer/icons/frontalBuffSelected.png" id="4_0tnq6"]
 
 [resource]
 script = ExtResource("2_wx5yp")
 type = 0
-icons = Array[Texture2D]([ExtResource("1_qqbh8"), ExtResource("2_05ejf")])
-description = "Add +1 frontal projectile!"
+icons = Array[Texture2D]([ExtResource("2_05ejf"), ExtResource("1_qqbh8"), ExtResource("3_4b0cx"), ExtResource("4_0tnq6")])
+description = "Add  +1  frontal  projectile!"

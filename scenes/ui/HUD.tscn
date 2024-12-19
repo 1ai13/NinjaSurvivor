@@ -1,7 +1,8 @@
-[gd_scene load_steps=7 format=3 uid="uid://c0fa61ops184b"]
+[gd_scene load_steps=8 format=3 uid="uid://c0fa61ops184b"]
 
 [ext_resource type="Script" path="res://scripts/controllers/HudController.cs" id="1_icudm"]
 [ext_resource type="Texture2D" uid="uid://iey472jm1yuo" path="res://assets/textures/buffer/icons/withoutBG/goldIcon.png" id="2_56igj"]
+[ext_resource type="PackedScene" uid="uid://co541saeejs1x" path="res://scenes/ui/ModalRandomBuff.tscn" id="4_gunwc"]
 [ext_resource type="FontFile" uid="uid://botklpdl5a2x1" path="res://assets/fonts/NormalFont.ttf" id="5_k1iq5"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_810v0"]
@@ -23,7 +24,7 @@ shadow_color = Color(0, 0, 0, 0.5)
 font = ExtResource("5_k1iq5")
 outline_size = 4
 outline_color = Color(0, 0, 0, 1)
-shadow_size = 3
+shadow_size = 5
 shadow_color = Color(0, 0, 0, 0.605)
 
 [node name="HUD" type="Control"]
@@ -56,13 +57,11 @@ scale = Vector2(0.8, 0.8)
 layout_mode = 2
 texture = ExtResource("2_56igj")
 
-[node name="RichTextLabel" type="RichTextLabel" parent="GoldCounter"]
+[node name="GoldCounter" type="RichTextLabel" parent="GoldCounter"]
 clip_contents = false
 layout_mode = 2
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.422)
-theme_override_constants/outline_size = 3
-theme_override_constants/shadow_outline_size = 1
+theme_override_constants/outline_size = 4
 theme_override_fonts/normal_font = ExtResource("5_k1iq5")
 theme_override_font_sizes/normal_font_size = 12
 bbcode_enabled = true
@@ -72,14 +71,16 @@ scroll_active = false
 autowrap_mode = 0
 
 [node name="BuffsContainer" type="VBoxContainer" parent="."]
+visible = false
 layout_mode = 2
 offset_left = 10.0
 offset_top = 106.0
-offset_right = 103.0
+offset_right = 62.0
 offset_bottom = 174.0
 scale = Vector2(0.8, 0.8)
 
 [node name="Label" type="Label" parent="BuffsContainer"]
+custom_minimum_size = Vector2(0, 23)
 layout_mode = 2
 text = "Buffs:"
 label_settings = SubResource("LabelSettings_810v0")
@@ -99,9 +100,7 @@ grow_horizontal = 0
 clip_contents = false
 layout_mode = 2
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.394)
-theme_override_constants/outline_size = 4
-theme_override_constants/shadow_outline_size = 1
+theme_override_constants/outline_size = 5
 theme_override_fonts/normal_font = ExtResource("5_k1iq5")
 theme_override_font_sizes/normal_font_size = 10
 bbcode_enabled = true
@@ -146,7 +145,8 @@ label_settings = SubResource("LabelSettings_rtjc3")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Panel" type="Panel" parent="."]
+[node name="BuffModal" type="Panel" parent="."]
+visible = false
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -159,19 +159,35 @@ offset_right = 218.0
 offset_bottom = 141.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 
-[node name="Label" type="Label" parent="Panel"]
+[node name="Title" type="Label" parent="BuffModal"]
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -20.0
+offset_left = -108.5
 offset_top = 10.0
-offset_right = 20.0
+offset_right = 108.5
 offset_bottom = 33.0
 grow_horizontal = 2
-text = "PICK		   A		   RANDOM		   BUFF"
+text = "PICK     A    RANDOM    BUFF:"
 label_settings = SubResource("LabelSettings_p1qav")
+
+[node name="BuffsContainer" type="HBoxContainer" parent="BuffModal"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 67.0
+offset_bottom = -64.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="BuffButton" parent="BuffModal/BuffsContainer" instance=ExtResource("4_gunwc")]
+layout_mode = 2
 
 [node name="NotificationTimer" type="Timer" parent="."]
 one_shot = true
+
+[connection signal="pressed" from="BuffModal/BuffsContainer/BuffButton" to="." method="randomBuffSelected"]

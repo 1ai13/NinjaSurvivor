@@ -34,3 +34,6 @@ position = Vector2(190, 144)
 
 [node name="Buffer" parent="." instance=ExtResource("10_qi65a")]
 position = Vector2(607, 278)
+
+[connection signal="onHealthChanged" from="Player" to="CanvasLayer/HUD" method="healthChanged"]
+[connection signal="onRandomBuffsGenerated" from="Buffer" to="CanvasLayer/HUD" method="randomBuffsGenerated"]

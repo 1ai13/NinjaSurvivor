@@ -8,6 +8,8 @@ using static Enums.BuffType;
 
 public partial class Player : CharacterBody2D
 {
+	[Signal]
+	public delegate void onHealthChangedEventHandler(int health);
 	public float speed;
 	public int health { get; set; }
 	public int maxHealth;
@@ -270,7 +272,7 @@ public partial class Player : CharacterBody2D
 		tween.TweenProperty(playerSprite, "self_modulate", Colors.DarkRed, .2f);
 		tween.TweenProperty(playerSprite, "self_modulate", Colors.White, 0f);
 		AssetManager.instance.playSFX("playerHit");
-		SignalBus.bus.EmitSignal("onHealthChanged", health);
+		EmitSignal(SignalName.onHealthChanged, health);
 		GD.Print("takiong damage player" + health);
 	}
 

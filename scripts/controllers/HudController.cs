@@ -1,6 +1,6 @@
 using Godot;
+using Godot.Collections;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 public partial class HudController : Control
 {
@@ -8,26 +8,33 @@ public partial class HudController : Control
 	private TextureProgressBar healthBar;
 	private HFlowContainer healthBarContainer;
 	private VBoxContainer buffsContainer;
+	private Panel modalContainer;
+	private HBoxContainer modalBuffsContainer;
 	private RichTextLabel levelCounter;
 	private RichTextLabel waveCounter;
 	public Label notification;
 	private int numberOfHearts;
 	private Tween tween;
-	private Dictionary<Buff, int> buffsApplied;
+	private System.Collections.Generic.Dictionary<Buff, int> buffsApplied;
+	private Array<Buff> currentRandomBuffs;
+	private Player player;
+	private BufferController buffer;
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
 		healthBarContainer = GetNode<HFlowContainer>("HealthBarContainer");
 		buffsContainer = GetNode<VBoxContainer>("BuffsContainer");
+		modalContainer = GetNode<Panel>("BuffModal");
+		modalBuffsContainer = GetNode<HBoxContainer>("BuffModal/BuffsContainer");
 		levelCounter = GetNode<RichTextLabel>("LevelInfo/LevelLabel");
 		waveCounter = GetNode<RichTextLabel>("LevelInfo/WaveLabel");
-		buffsApplied = new Dictionary<Buff, int>();
+		buffsApplied = new System.Collections.Generic.Dictionary<Buff, int>();
 		notification = GetNode<Label>("NotificationLabel");
+		player = GetTree().CurrentScene.GetNode<Player>("Player");
+		buffer = GetTree().CurrentScene.GetNode<BufferController>("Buffer");
 		SignalBus.bus.onNotifyPlayer += showNotification;
-		SignalBus.bus.onHealthChanged += healthChanged;
 		SignalBus.bus.onPlayerHealthBarUpdate += playerHealthBarUpdate;
-		SignalBus.bus.onPlayerBuffed += playerBuffAdded;
 		SignalBus.bus.onLevelCompleted += levelCompletedUpdate;
 		SignalBus.bus.onWaveCompleted += waveCompletedUpdate;
 		//TODO Improve HUD with ammo, dynamic healthbar
@@ -92,13 +99,13 @@ public partial class HudController : Control
 		tween.TweenProperty(notification, "visible", true, 0);
 	}
 
-	private void playerBuffAdded(Buff buff, Player p)
+	private void playerBuffAdded(Buff buff)
 	{
 		//Creating icon and counter
 		var buffStat = AssetManager.instance.buffStatCounter.Instantiate<HFlowContainer>();
 		var icon = buffStat.GetNode<TextureRect>("Icon");
 		var label = buffStat.GetNode<RichTextLabel>("Counter");
-		icon.Texture = buff.icons[1];
+		icon.Texture = buff.icons[0];
 		buffStat.Name += $"-{buff.type}";
 		//New buff
 		if (!buffsApplied.ContainsKey(buff))
@@ -112,7 +119,7 @@ public partial class HudController : Control
 			buffsApplied[buff]++;
 			var buffCounter = buffsContainer.GetNode<RichTextLabel>("Buff-" + buff.type + "/Counter");
 			buffCounter.Text = label.Text = smallFontCounter + $" {buffsApplied[buff]}";
-			//Annoying bug not SORTING correctly
+			// FIXME (?) Annoying bug not SORTING correctly
 			// string buffSamePath = null;
 			// string buffBiggerPath = null;
 			// var leastBigger = Mathf.Inf;
@@ -159,12 +166,82 @@ public partial class HudController : Control
 			// }
 		}
 	}
+
 	private void levelCompletedUpdate(int level, string icon)
 	{
 		levelCounter.Text = $"[right]LEVEL\t{level} - [img=12]{icon}[/img][/right]";
 	}
+
 	private void waveCompletedUpdate(int wave)
 	{
 		waveCounter.Text = $"WAVE\t\t\t\t\t\t{wave}  /  5";
+	}
+
+	private void randomBuffsGenerated(Array<Buff> randomBuffs)
+	{
+		currentRandomBuffs = randomBuffs;
+		//Clearing current buffs
+		modalBuffsContainer.GetChildren().ToList().ForEach(x =>
+		{
+			x.QueueFree();
+		});
+		//Assigning button images and description
+		for (int i = 0; i < randomBuffs.Count; i++)
+		{
+			var buff = AssetManager.instance.buffRandomBuff.Instantiate<TextureButton>();
+			buff.TextureNormal = randomBuffs[i].icons[1];
+			buff.TextureHover = randomBuffs[i].icons[2];
+			buff.TexturePressed = randomBuffs[i].icons[3];
+			buff.GetNode<Label>("BuffDescription").Text = randomBuffs[i].description;
+			switch (i)
+			{
+				case 0:
+					buff.Pressed += firstBuffSelected;
+					break;
+				case 1:
+					buff.Pressed += secondBuffSelected;
+					break;
+				case 2:
+					buff.Pressed += thirdBuffSelected;
+					break;
+			}
+			modalBuffsContainer.AddChild(buff);
+		}
+		modalContainer.Visible = true;
+	}
+
+	private void firstBuffSelected()
+	{
+		GD.Print("Button pressed1");
+		buffSelected(0);
+	}
+
+	private void secondBuffSelected()
+	{
+		GD.Print("Button pressed2");
+		buffSelected(1);
+	}
+
+	private void thirdBuffSelected()
+	{
+		GD.Print("Button pressed3");
+		buffSelected(2);
+	}
+
+	private void buffSelected(int index)
+	{
+		//Applying buff and hiding modal
+		buffer.bufferBubble.Play("sleep");
+		player.SetPhysicsProcess(true);
+		player.SetProcessInput(true);
+		modalContainer.Visible = false;
+		buffsContainer.Visible = true;
+		var maxedBuff = currentRandomBuffs[index].applyBuff(player);
+		playerBuffAdded(currentRandomBuffs[index]);
+		//Maxed buff
+		if (maxedBuff)
+		{
+			buffer.buffs.Remove(currentRandomBuffs[index]);
+		}
 	}
 }

@@ -4,21 +4,25 @@ using System;
 
 public partial class BufferController : Node2D
 {
+	[Signal]
+	public delegate void onRandomBuffsGeneratedEventHandler(Array<Buff> randomBuffs);
 	[Export]
-	private Array<Buff> buffs;
+	public Array<Buff> buffs;
 	public AnimationPlayer animation;
 	public StaticBody2D bufferBody;
+	public AnimatedSprite2D bufferBubble;
 	private Vector2 initialPosition;
-	private Vector2 nodeInitial;
-
+	private Vector2 bufferInitialPos;
+	public bool areBuffsGenerated;
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
 		animation = GetNode<AnimationPlayer>("AnimationPlayer");
 		bufferBody = GetNode<StaticBody2D>("BufferBody");
+		bufferBubble = GetNode<AnimatedSprite2D>("BufferBody/Bubble");
 		initialPosition = bufferBody.GlobalPosition;
-		nodeInitial = Position;
+		bufferInitialPos = Position;
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -28,11 +32,14 @@ public partial class BufferController : Node2D
 
 	public void onPlayerNear(Node2D body)
 	{
-		GetNode<AnimatedSprite2D>("BufferBody/Bubble").Visible = false;
+		if (areBuffsGenerated) return;
+
 		//Generate a Random buff from Buffs Pool
 		if (body is Player p)
 		{
-			bool maxedBuff = false;
+			p.animation.CallDeferred("stop");
+			p.SetPhysicsProcess(false);
+			p.SetProcessInput(false);
 			var randomBuffs = new Array<Buff>();
 			var currentBuffs = buffs.Duplicate();
 			var buffMinSize = 3;
@@ -48,35 +55,24 @@ public partial class BufferController : Node2D
 				randomBuffs.Add(rndBuff);
 				currentBuffs.Remove(rndBuff);
 			}
-			//Showing random buffs
-			for (int i = 0; i < randomBuffs.Count; i++)
-			{
-				var buff = randomBuffs[i];
-				GD.Print($"{i + 1} - {buff.type} -> {buff.description}");
-			}
-			//Applying selected buff
-			GD.Print("Buff SELECTED " + randomBuffs[0].type);
-			maxedBuff = randomBuffs[0].applyBuff(p);
-			SignalBus.bus.EmitSignal("onPlayerBuffed", randomBuffs[0], p);
-			//Maxed buff
-			if (maxedBuff)
-			{
-				buffs.Remove(randomBuffs[0]);
-			}
+			EmitSignal(SignalName.onRandomBuffsGenerated, randomBuffs);
+			areBuffsGenerated = true;
 		}
 	}
 
-	public void resetBufferPosition()
+	public void resetBuffer()
 	{
 		//Reset random position around door
 		if (EntityHelper.rnd.Randf() <= .5f)
 		{
-			Position = nodeInitial;
+			Position = bufferInitialPos;
 		}
 		else
 		{
-			Position = nodeInitial + Vector2.Right * 115;
+			Position = bufferInitialPos + Vector2.Right * 115;
 		}
 		bufferBody.GlobalPosition = initialPosition;
+		areBuffsGenerated = false;
+		bufferBubble.Play("dots");
 	}
 }

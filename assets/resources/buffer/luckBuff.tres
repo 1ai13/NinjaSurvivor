@@ -1,11 +1,13 @@
-[gd_resource type="Resource" script_class="Buff" load_steps=4 format=3 uid="uid://pmuitoj1p16p"]
+[gd_resource type="Resource" script_class="Buff" load_steps=6 format=3 uid="uid://pmuitoj1p16p"]
 
 [ext_resource type="Texture2D" uid="uid://o1ohwek6ic5b" path="res://assets/textures/buffer/icons/luckBuff.png" id="1_jgp2f"]
 [ext_resource type="Texture2D" uid="uid://bgdupihsyokg0" path="res://assets/textures/buffer/icons/withoutBG/luckBuff.png" id="2_ah5j2"]
 [ext_resource type="Script" path="res://scripts/resources/Buff.cs" id="2_srx1a"]
+[ext_resource type="Texture2D" uid="uid://q3hramxqoo1w" path="res://assets/textures/buffer/icons/luckBuffHover.png" id="3_6tgqr"]
+[ext_resource type="Texture2D" uid="uid://b0iitpi7xe4rx" path="res://assets/textures/buffer/icons/luckBuffSelected.png" id="4_ji1sx"]
 
 [resource]
 script = ExtResource("2_srx1a")
 type = 8
-icons = Array[Texture2D]([ExtResource("1_jgp2f"), ExtResource("2_ah5j2")])
-description = "Boost the chances of item drops!"
+icons = Array[Texture2D]([ExtResource("2_ah5j2"), ExtResource("1_jgp2f"), ExtResource("3_6tgqr"), ExtResource("4_ji1sx")])
+description = "Boost  the  chances  of  item  drops!"

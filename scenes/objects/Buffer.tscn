@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3 uid="uid://dbaue3875uu2w"]
+[gd_scene load_steps=26 format=3 uid="uid://dbaue3875uu2w"]
 
 [ext_resource type="Script" path="res://scripts/controllers/BufferController.cs" id="1_fugwi"]
 [ext_resource type="Texture2D" uid="uid://bsp61tcsnfryt" path="res://assets/textures/buffer/buffers.png" id="1_h7hbx"]
@@ -13,6 +13,8 @@
 [ext_resource type="Resource" uid="uid://dd10my8gs55ho" path="res://assets/resources/buffer/wallRicochetBuff.tres" id="9_ax2vm"]
 [ext_resource type="Texture2D" uid="uid://ck7uns807qa6b" path="res://assets/textures/buffer/icons/DialogInfo.png" id="9_n312f"]
 [ext_resource type="Resource" uid="uid://djx5mn0558wh8" path="res://assets/resources/buffer/damageBuff.tres" id="10_aywkt"]
+[ext_resource type="Texture2D" uid="uid://ceikgsu5ukbri" path="res://assets/textures/buffer/icons/emoteZzz.png" id="14_2bqaj"]
+[ext_resource type="Texture2D" uid="uid://bwss1wh2c8o5l" path="res://assets/textures/buffer/icons/emoteDots.png" id="14_vksrj"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_2l8w4"]
 radius = 3.0
@@ -55,6 +57,22 @@ animations = [{
 "loop": true,
 "name": &"default",
 "speed": 1.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("14_vksrj")
+}],
+"loop": true,
+"name": &"dots",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("14_2bqaj")
+}],
+"loop": true,
+"name": &"sleep",
+"speed": 5.0
 }]
 
 [sub_resource type="Animation" id="Animation_pyl38"]
@@ -138,6 +156,7 @@ buffs = Array[Object]([ExtResource("2_1jys6"), ExtResource("3_pj774"), ExtResour
 
 [node name="BufferBody" type="StaticBody2D" parent="."]
 position = Vector2(0, -411)
+collision_layer = 3
 
 [node name="BufferSprite" type="Sprite2D" parent="BufferBody"]
 texture = ExtResource("1_h7hbx")
@@ -162,9 +181,10 @@ position = Vector2(0, 0.5)
 shape = SubResource("RectangleShape2D_d7b6k")
 
 [node name="Bubble" type="AnimatedSprite2D" parent="BufferBody"]
-position = Vector2(-3, -21)
+position = Vector2(-5, -18)
 sprite_frames = SubResource("SpriteFrames_04ray")
-autoplay = "default"
+animation = &"sleep"
+autoplay = "dots"
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {

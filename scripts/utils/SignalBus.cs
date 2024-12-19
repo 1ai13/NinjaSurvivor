@@ -13,11 +13,7 @@ public partial class SignalBus : Node
 	[Signal]
 	public delegate void onNotifyPlayerEventHandler(string message, Color color);
 	[Signal]
-	public delegate void onHealthChangedEventHandler(int health);
-	[Signal]
 	public delegate void onPlayerHealthBarUpdateEventHandler(int health);
-	[Signal]
-	public delegate void onPlayerBuffedEventHandler(Buff buff, Player p);
 	[Signal]
 	public delegate void onLevelCompletedEventHandler(int level, string icon);
 	[Signal]

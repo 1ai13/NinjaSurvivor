@@ -80,7 +80,7 @@ public partial class LevelManager
 			game.GetTree().CallGroup("Enemies", "queue_free");
 			game.GetTree().CallGroup("Projectiles", "queue_free");
 			PoolEngine.instance.projectilePool.Clear();
-			game.buffer.resetBufferPosition();
+			game.buffer.resetBuffer();
 		}
 		level++;
 		//Show Level Notification
