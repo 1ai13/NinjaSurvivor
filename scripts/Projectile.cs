@@ -42,7 +42,10 @@ public partial class Projectile : Area2D
 		speed = s;
 		angularSpeed = angularS;
 		this.isProjectile = isProjectile;
-		this.sprite = GetNode<AnimatedSprite2D>("ProjectileSprite");
+		if (this.sprite == null)
+		{
+			this.sprite = GetNode<AnimatedSprite2D>("ProjectileSprite");
+		}
 		rayCast = GetNode<RayCast2D>("RayCast");
 		this.sprite.Animation = sprite;
 		this.wallRicochet = wallRicochet;
@@ -174,6 +177,21 @@ public partial class Projectile : Area2D
 				GD.PrintErr("No wall hit sound available for projectile");
 				break;
 		}
+	}
+
+	public void resetProjectile()
+	{
+		owner = null;
+		velocity = Vector2.Zero;
+		Position = Vector2.Zero;
+		Rotation = 0;
+		speed = 0;
+		angularSpeed = 0;
+		rayCast.Rotation = 0;
+		wallRicochet = 0;
+		hitRicochet = 0;
+		sprite.Stop();
+		sprite = null;
 	}
 
 }

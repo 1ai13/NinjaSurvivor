@@ -9,6 +9,7 @@ public partial class AssetManager : Node
 	private AudioStreamPlayer2D SFXPlayer;
 	private AudioStreamPlayer musicPlayer;
 	public PackedScene projectileScene;
+	public PackedScene itemScene;
 	public PackedScene enemyHealthBarLabel;
 	public PackedScene playerHealthBarScene;
 	public PackedScene buffStatCounter;
@@ -20,7 +21,9 @@ public partial class AssetManager : Node
 		//Initialize the private Singleton Autoload
 		instance = this;
 
+		//Load re-usable scenes
 		projectileScene = GD.Load<PackedScene>("res://scenes/objects/Projectile.tscn");
+		itemScene = GD.Load<PackedScene>("res://scenes/objects/Item.tscn");
 		enemyHealthBarLabel = GD.Load<PackedScene>("res://scenes/ui/HealthBarLabel.tscn");
 		playerHealthBarScene = GD.Load<PackedScene>("res://scenes/ui/PlayerHealthBar.tscn");
 		buffStatCounter = GD.Load<PackedScene>("res://scenes/ui/BuffStatCounter.tscn");

@@ -2,57 +2,59 @@ using Godot;
 using Godot.Collections;
 using System;
 using System.Linq;
-
 public partial class PoolEngine : Node
 {
 	public static PoolEngine instance { get; private set; }
-	private PackedScene projectileScene;
-	public Array<Projectile> projectilePool;
+	public Dictionary<string, Array<Area2D>> pools;
+	public Dictionary<string, PackedScene> scenes;
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
 		instance = this;
-		projectileScene = AssetManager.instance.projectileScene;
-		projectilePool = new Array<Projectile>();
+		// Initialize pools and scenes
+		pools = new Dictionary<string, Array<Area2D>>
+	{
+		{ nameof(Projectile), new Array<Area2D>() },
+		{ nameof(Item), new Array<Area2D>() }
+	};
+
+		scenes = new Dictionary<string, PackedScene>
+	{
+		{ nameof(Projectile), AssetManager.instance.projectileScene },
+		{ nameof(Item), AssetManager.instance.itemScene }
+	};
 	}
 
-	public void addToPool(Projectile p)
+	public void addToPool(Area2D obj)
 	{
-		//Resetting projectile
-		p.SetPhysicsProcess(false);
-		p.Hide();
-		resetProjectile(p);
-		projectilePool.Add(p);
-	}
-
-	public Projectile pullFromPool()
-	{
-		//Pulling or creating new Projectile
-		if (projectilePool.Count == 0)
+		var key = obj.GetType().Name;
+		obj.SetPhysicsProcess(false);
+		obj.Hide();
+		if (obj is Projectile p)
 		{
-			var projectile = projectileScene.Instantiate<Projectile>();
-			GetTree().CurrentScene.AddChild(projectile);
-			return projectile;
+			p.resetProjectile();
+		}
+		else if (obj is Item i)
+		{
+			// i.resetItem();
+		}
+		pools[key].Add(obj);
+	}
+
+	public T pullFromPool<T>() where T : Area2D
+	{
+		var key = typeof(T).Name;
+		if (pools[key].Count == 0)
+		{
+			var obj = scenes[key].Instantiate<T>();
+			GetTree().CurrentScene.AddChild(obj);
+			return obj;
 		}
 		else
 		{
-			var projectile = projectilePool.Last();
-			projectilePool.RemoveAt(projectilePool.Count - 1);
-			return projectile;
+			var obj = (T)pools[key].Last();
+			pools[key].Remove(obj);
+			return obj;
 		}
-	}
-	private void resetProjectile(Projectile p)
-	{
-		p.owner = null;
-		p.velocity = Vector2.Zero;
-		p.Position = Vector2.Zero;
-		p.Rotation = 0;
-		p.speed = 0;
-		p.angularSpeed = 0;
-		p.rayCast.Rotation = 0;
-		p.wallRicochet = 0;
-		p.hitRicochet = 0;
-		p.sprite.Stop();
-		p.sprite = null;
 	}
 }

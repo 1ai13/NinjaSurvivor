@@ -5,7 +5,6 @@ using System;
 using System.Collections.Generic;
 using static Enums.WeaponType;
 using static Enums.BuffType;
-
 public partial class Player : CharacterBody2D
 {
 	[Signal]
@@ -182,7 +181,7 @@ public partial class Player : CharacterBody2D
 			//Creating Unbuffed projectile
 			if (!buffPool.ContainsKey(FRONTAL))
 			{
-				var projectile = PoolEngine.instance.pullFromPool();
+				var projectile = PoolEngine.instance.pullFromPool<Projectile>();
 				projectile.init(GlobalPosition, mouseDirection, mouseDirection.Angle(), this, rangedWeapon.projectileSpeed, rangedWeapon.angularSpeed, rangedWeapon.isProjectile, rangedWeapon.name, wallRicochet, hitRicochet);
 				projectile.projectileHitArea += onRangedEnemyHit;
 			}
@@ -196,7 +195,7 @@ public partial class Player : CharacterBody2D
 						//Adjusting projectile offsets based on the number of projectiles
 						for (int i = -5 * b.Value; i <= 5 * b.Value; i += 10)
 						{
-							var projectile = PoolEngine.instance.pullFromPool();
+							var projectile = PoolEngine.instance.pullFromPool<Projectile>();
 							var offset = new Vector2();
 							//Perpendicular vector for offset
 							offset = new Vector2(mouseDirection.Y, -mouseDirection.X) * i;
@@ -210,7 +209,7 @@ public partial class Player : CharacterBody2D
 						{
 							if (i != 0)
 							{
-								var projectile = PoolEngine.instance.pullFromPool();
+								var projectile = PoolEngine.instance.pullFromPool<Projectile>();
 								//Creating new offsets based on current mouse direction angle
 								var diagonal = mouseDirection.Angle() + Mathf.Pi / (i * 4 / b.Value);
 								//Using COS and SIN to convert new Offset Angle to new vector X,Y

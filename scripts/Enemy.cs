@@ -59,25 +59,6 @@ public abstract partial class Enemy : Node2D
 		enemyArea.BodyEntered += onBodyCollission;
 	}
 
-	protected virtual void onAnimationFinished(StringName animName)
-	{
-		//Activating enemy
-		if (animName.ToString().Equals("spawn"))
-		{
-			SetPhysicsProcess(true);
-			enemyArea.Monitorable = true;
-		}
-		else if (animName.ToString().StartsWith("attack"))
-		{
-			if (this is RangedEnemy)
-			{
-				playAttackSound();
-			}
-			isAttacking = false;
-			attackCooldown.Start();
-		}
-	}
-
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _PhysicsProcess(double delta)
 	{
@@ -90,6 +71,19 @@ public abstract partial class Enemy : Node2D
 			if (baseHealthBar.Value == 0)
 			{
 				baseHealthBar.Visible = false;
+				//Create random item
+				var rnd = EntityHelper.rnd;
+				if (rnd.Randf() > .75f)
+				{
+					//TODO POOL IT
+					var item = AssetManager.instance.itemScene.Instantiate<Area2D>();
+					item.GlobalPosition = GlobalPosition;
+					// if (rnd.Randf() < .8f)
+					// {
+					GD.Print("Generating item");
+					GetParent().AddChild(item);
+					// }
+				}
 			}
 		}
 		if (isDead)
@@ -172,6 +166,7 @@ public abstract partial class Enemy : Node2D
 		animateHealthBar(damage, criticalHit);
 
 	}
+
 	private void animateHealthBar(int damage, bool criticalHit)
 	{
 		//Creating labels
@@ -212,6 +207,25 @@ public abstract partial class Enemy : Node2D
 				}
 			}
 		});
+	}
+
+	protected virtual void onAnimationFinished(StringName animName)
+	{
+		//Activating enemy
+		if (animName.ToString().Equals("spawn"))
+		{
+			SetPhysicsProcess(true);
+			enemyArea.Monitorable = true;
+		}
+		else if (animName.ToString().StartsWith("attack"))
+		{
+			if (this is RangedEnemy)
+			{
+				playAttackSound();
+			}
+			isAttacking = false;
+			attackCooldown.Start();
+		}
 	}
 
 	private void playDeadSound()
