@@ -340,7 +340,7 @@ public partial class LevelManager
 			AssetManager.instance.playSFX("openDoor");
 			SignalBus.bus.EmitSignal(nameof(SignalBus.bus.onNotifyPlayer), $"LEVEL COMPLETED", Colors.Green);
 			game.buffer.animation.Play("drop");
-			game.GetTree().CallGroup("Items", "autoCollectItem");
+			SignalBus.bus.EmitSignal(nameof(SignalBus.bus.onAutoCollectItem));
 		}
 		else
 		{
@@ -372,6 +372,7 @@ public partial class LevelManager
 	{
 		if (body is Player p)
 		{
+			p.autoCollect = false;
 			AssetManager.instance.playSFX("doorTp");
 			openLevelDoor(false);
 			generateLevel();

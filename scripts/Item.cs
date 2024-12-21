@@ -10,7 +10,6 @@ public partial class Item : Area2D
 	private AnimatedSprite2D sprite;
 	private ItemType type;
 	private float initialDistance;
-	private bool autoCollect = false;
 	private Player player;
 	private int speed = 50;
 
@@ -18,6 +17,8 @@ public partial class Item : Area2D
 	{
 		Position = position;
 		sprite.Animation = type.ToString().Capitalize();
+		initialDistance = -1;
+		this.type = type;
 		if (type == HEART)
 		{
 			sprite.Scale = new Vector2(.5f, .5f);
@@ -28,6 +29,7 @@ public partial class Item : Area2D
 			Show();
 		}
 		sprite.Play();
+		AssetManager.instance.playSFX("itemDrop");
 		GD.Print("Generating " + type);
 	}
 	// Called when the node enters the scene tree for the first time.
@@ -40,8 +42,12 @@ public partial class Item : Area2D
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _PhysicsProcess(double delta)
 	{
-		if (autoCollect)
+		if (player.autoCollect)
 		{
+			if (initialDistance == -1)
+			{
+				initialDistance = (player.GlobalPosition - GlobalPosition).Length();
+			}
 			var direction = player.GlobalPosition - GlobalPosition;
 			var speed = Mathf.Lerp(150, 250, direction.Length() / initialDistance);
 			GlobalPosition += direction.Normalized() * speed * (float)delta;
@@ -52,15 +58,17 @@ public partial class Item : Area2D
 	{
 		if (body is Player p)
 		{
-			autoCollect = false;
 			switch (type)
 			{
 				case COIN:
 					p.gold++;
+					SignalBus.bus.EmitSignal(nameof(SignalBus.bus.onCoinCollected));
+					AssetManager.instance.playSFX("coinCollected");
 					break;
 				case HEART:
 					p.health = Math.Min(p.maxHealth, p.health + 50);
-					p.EmitSignal(nameof(p.onHealthChanged), p.health);
+					p.EmitSignal(nameof(p.onHealthChanged), 50);
+					AssetManager.instance.playSFX("heartHeal", -5f);
 					break;
 			}
 			PoolEngine.instance.addToPool(this);
@@ -71,13 +79,8 @@ public partial class Item : Area2D
 	{
 		Position = Vector2.Zero;
 		Scale = Vector2.One;
-		autoCollect = false;
+		initialDistance = -1;
+		type = 0;
 		sprite.Stop();
-	}
-
-	private void autoCollectItem()
-	{
-		initialDistance = (player.GlobalPosition - GlobalPosition).Length();
-		autoCollect = true;
 	}
 }

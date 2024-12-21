@@ -8,7 +8,7 @@ using static Enums.BuffType;
 public partial class Player : CharacterBody2D
 {
 	[Signal]
-	public delegate void onHealthChangedEventHandler(int health);
+	public delegate void onHealthChangedEventHandler(int value);
 	public float speed;
 	public int health { get; set; }
 	public int maxHealth;
@@ -30,6 +30,7 @@ public partial class Player : CharacterBody2D
 	public float criticalChance;
 	public float criticalDamage;
 	public float dropLuck;
+	public bool autoCollect;
 
 	public override void _Ready()
 	{
@@ -40,12 +41,14 @@ public partial class Player : CharacterBody2D
 		enemiesMeleeTargeted = new HashSet<Enemy>();
 		attackCooldown = GetNode<Timer>("AttackCooldown");
 		attackCooldown.Timeout += onAttackCooldownTimeout;
+		SignalBus.bus.onAutoCollectItem += autoCollectMode;
 		camera = GetNode<Camera2D>("Camera2D");
 		buffPool = new Godot.Collections.Dictionary<BuffType, int>();
 		gold = 0;
 		criticalChance = .05f;
 		criticalDamage = 1.5f;
 		dropLuck = .75f;
+		autoCollect = false;
 		//TODO Create Dash behaviour (maybe not)
 	}
 
@@ -250,6 +253,7 @@ public partial class Player : CharacterBody2D
 
 	public void takeDamage(int damage)
 	{
+		EmitSignal(SignalName.onHealthChanged, -damage);
 		health -= damage;
 		health = Math.Max(0, health);
 		//Hurt animation
@@ -257,7 +261,6 @@ public partial class Player : CharacterBody2D
 		tween.TweenProperty(playerSprite, "self_modulate", Colors.DarkRed, .2f);
 		tween.TweenProperty(playerSprite, "self_modulate", Colors.White, 0f);
 		AssetManager.instance.playSFX("playerHit");
-		EmitSignal(SignalName.onHealthChanged, damage);
 	}
 
 	private void onAttackCooldownTimeout()
@@ -272,5 +275,9 @@ public partial class Player : CharacterBody2D
 		{
 			makeAttack(RANGED);
 		}
+	}
+	private void autoCollectMode()
+	{
+		autoCollect = true;
 	}
 }

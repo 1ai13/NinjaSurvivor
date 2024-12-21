@@ -72,7 +72,7 @@ public abstract partial class Enemy : Node2D
 				baseHealthBar.Visible = false;
 				//Create random item
 				var rnd = EntityHelper.rnd;
-				if (rnd.Randf() >= player.dropLuck)
+				if (rnd.Randf() >= 0)
 				{
 					var item = PoolEngine.instance.pullFromPool<Item>();
 					if (rnd.Randf() <= .66f)
@@ -93,7 +93,7 @@ public abstract partial class Enemy : Node2D
 	{
 		if (isDead)
 		{
-			return;
+			SetPhysicsProcess(false);
 		}
 
 		//Enemy VS Player logic

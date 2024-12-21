@@ -18,6 +18,10 @@ public partial class SignalBus : Node
 	public delegate void onLevelCompletedEventHandler(int level, string icon);
 	[Signal]
 	public delegate void onWaveCompletedEventHandler(int level);
+	[Signal]
+	public delegate void onCoinCollectedEventHandler();
+	[Signal]
+	public delegate void onAutoCollectItemEventHandler();
 
 	//Init method
 	public override void _Ready()

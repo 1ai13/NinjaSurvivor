@@ -12,6 +12,7 @@ public partial class HudController : Control
 	private HBoxContainer modalBuffsContainer;
 	private RichTextLabel levelCounter;
 	private RichTextLabel waveCounter;
+	private RichTextLabel goldCounter;
 	public Label notification;
 	private int numberOfHearts;
 	private Tween tween;
@@ -29,6 +30,7 @@ public partial class HudController : Control
 		modalBuffsContainer = GetNode<HBoxContainer>("BuffModal/BuffsContainer");
 		levelCounter = GetNode<RichTextLabel>("LevelInfo/LevelLabel");
 		waveCounter = GetNode<RichTextLabel>("LevelInfo/WaveLabel");
+		goldCounter = GetNode<RichTextLabel>("GoldCounter/GoldCounter");
 		buffsApplied = new System.Collections.Generic.Dictionary<Buff, int>();
 		notification = GetNode<Label>("NotificationLabel");
 		player = GetTree().CurrentScene.GetNode<Player>("Player");
@@ -37,6 +39,7 @@ public partial class HudController : Control
 		SignalBus.bus.onPlayerHealthBarUpdate += playerHealthBarUpdate;
 		SignalBus.bus.onLevelCompleted += levelCompletedUpdate;
 		SignalBus.bus.onWaveCompleted += waveCompletedUpdate;
+		SignalBus.bus.onCoinCollected += coinCollected;
 		//TODO Improve HUD with ammo, dynamic healthbar
 	}
 
@@ -45,54 +48,73 @@ public partial class HudController : Control
 	{
 	}
 
-	private void healthChanged(int damage)
+	private void healthChanged(int value)
 	{
-		//Health of the current Heart
-		var numDamagedHeart = damage / 100;
-		GD.Print("hearts to delete:" + numDamagedHeart);
-		if (damage > 100 && numberOfHearts > 1)
+		//Least optimal way of updating healthbar
+		// var hp = player.health;
+		// for (int i = 0; i < healthBarContainer.GetChildCount(); i++)
+		// {
+		// 	var healthBar = healthBarContainer.GetChild<TextureProgressBar>(i);
+		// 	if (hp > 0)
+		// 	{
+		// 		if (hp >= 100)
+		// 		{
+		// 			healthBar.Value = 100;
+		// 			hp -= 100;
+		// 		}
+		// 		else
+		// 		{
+		// 			healthBar.Value = hp;
+		// 			this.healthBar = healthBarContainer.GetChild<TextureProgressBar>(i);
+		// 			hp = 0;
+		// 		}
+		// 	}
+		// 	else
+		// 	{
+		// 		healthBar.Value = 0;
+		// 	}
+		// }
+		int remainingValue = Mathf.Abs(value);
+		if (value < 0)
 		{
-			for (int i = 0; i < numDamagedHeart; i++)
+			while (remainingValue > 0 && healthBar.GetIndex() >= 0)
 			{
-				healthBarContainer.GetChild<TextureProgressBar>(healthBar.GetIndex() - i).Value = 0;
-				GD.Print("healthBar " + healthBar.GetIndex());
-				numberOfHearts--;
+				if (remainingValue >= healthBar.Value && healthBar.GetIndex() != 0)
+				{
+					remainingValue -= (int)healthBar.Value;
+					healthBar.Value = 0;
+					healthBar = healthBarContainer.GetChild<TextureProgressBar>(healthBar.GetIndex() - 1);
+				}
+				else
+				{
+					healthBar.Value -= remainingValue;
+					remainingValue = 0;
+				}
+			}
+		}
+		else if (value > 0)
+		{
+			while (remainingValue > 0 && healthBar.GetIndex() < healthBarContainer.GetChildCount())
+			{
+				if (healthBar.Value + remainingValue > 100 && healthBar.GetIndex() != healthBarContainer.GetChildCount() - 1)
+				{
+					remainingValue -= (int)(100 - healthBar.Value);
+					healthBar.Value = 100;
+					healthBar = healthBarContainer.GetChild<TextureProgressBar>(healthBar.GetIndex() + 1);
+				}
+				else
+				{
+					healthBar.Value += remainingValue;
+					remainingValue = 0;
+				}
+			}
+		}
 
-			}
-			healthBar = healthBarContainer.GetChild<TextureProgressBar>(healthBar.GetIndex() - numDamagedHeart);
-			GD.Print("new healthbar value " + healthBar.Value);
-			healthBar.Value -= damage - 100 * numDamagedHeart;
-			GD.Print("updated healthbar value " + healthBar.Value);
-		}
-		else
-		{
-			var damageLeft = healthBar.Value -= damage;
-			if (healthBar.Value <= 0)
-			{
-				healthBar.Value = 0;
-				healthBar = healthBarContainer.GetChild<TextureProgressBar>(healthBar.GetIndex() - 1);
-				healthBar.Value += damageLeft;
-				numberOfHearts--;
-			}
-		}
-		// int playerHealth = 100 * (numberOfHearts - 1) + (int)healthBar.Value;
-		// GD.Print("Player health conversion " + playerHealth);
-		//Swap active Heart if Player loses HP
-		// if (playerHealth <= 0 && health >= 100)
-		// {
-		// 	var currentHealth = healthBar.Value;
-		// 	healthBar.Value = 0;
-		// 	GD.Print("Empty bar" + healthBar.Value);
-		// 	healthBar = healthBarContainer.GetChild<TextureProgressBar>(healthBar.GetIndex() - 1);
-		// 	healthBar.Value -= playerHealth - currentHealth;
-		// 	GD.Print("Swapped hp value2" + healthBar.Value);
-		// 	numberOfHearts--;
-		// }
-		// else
-		// {
-		// 	healthBar.Value = playerHealth;
-		// }
-		// GD.Print(healthBar.Value);
+	}
+
+	private void coinCollected()
+	{
+		goldCounter.Text = $"{player.gold}[font_size=8] g[/font_size]";
 	}
 
 	private void playerHealthBarUpdate(int health)
@@ -148,7 +170,6 @@ public partial class HudController : Control
 			buffsApplied[buff]++;
 			var buffCounter = buffsContainer.GetNode<RichTextLabel>("Buff-" + buff.type + "/Counter");
 			buffCounter.Text = label.Text = smallFontCounter + $" {buffsApplied[buff]}";
-			// FIXME (?) Annoying bug not SORTING correctly
 			// string buffSamePath = null;
 			// string buffBiggerPath = null;
 			// var leastBigger = Mathf.Inf;
