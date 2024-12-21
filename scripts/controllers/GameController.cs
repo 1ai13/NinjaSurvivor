@@ -50,7 +50,7 @@ public partial class GameController : Node2D
 				if (t.HasPoint(player.GlobalPosition + playerFeetOffset))
 				{
 					areTrapsActive = false;
-					player.takeDamage((int)(player.maxHealth * 0.25f));
+					player.takeDamage((int)(player.maxHealth * .25f));
 				}
 			}
 		}

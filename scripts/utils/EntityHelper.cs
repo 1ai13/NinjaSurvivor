@@ -82,13 +82,13 @@ public partial class EntityHelper : Node
 
     public static int getVariableDamage(int damage)
     {
-        var damageVariation = (int)(damage * 0.2f);
+        var damageVariation = (int)(damage * 0.15f);
         return rnd.RandiRange(damage - damageVariation, damage + damageVariation);
     }
 
-    public static bool isCriticalHit()
+    public static bool isCriticalHit(float critChance)
     {
-        if (rnd.Randf() > .6f)
+        if (rnd.Randf() < critChance)
         {
             return true;
         }

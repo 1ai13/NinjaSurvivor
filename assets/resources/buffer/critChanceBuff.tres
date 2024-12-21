@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="Buff" load_steps=6 format=3 uid="uid://bu5vj406sahye"]
+
+[ext_resource type="Texture2D" uid="uid://c1u4usefch3wu" path="res://assets/textures/buffer/icons/withoutBG/critChanceBuffBG.png" id="1_yneuc"]
+[ext_resource type="Texture2D" uid="uid://c2txdxe0pbubh" path="res://assets/textures/buffer/icons/critChanceBuff.png" id="2_2y1tn"]
+[ext_resource type="Texture2D" uid="uid://fxxwpou1sx4n" path="res://assets/textures/buffer/icons/critChanceBuffHover.png" id="3_pj530"]
+[ext_resource type="Texture2D" uid="uid://c8g588i6h1gn8" path="res://assets/textures/buffer/icons/critChanceBuffSelected.png" id="4_6d4dj"]
+[ext_resource type="Script" path="res://scripts/resources/Buff.cs" id="5_2rkku"]
+
+[resource]
+script = ExtResource("5_2rkku")
+type = 9
+icons = Array[Texture2D]([ExtResource("1_yneuc"), ExtResource("2_2y1tn"), ExtResource("3_pj530"), ExtResource("4_6d4dj")])
+description = "Boost  the  chances  of  critical  hits!"

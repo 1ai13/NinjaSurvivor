@@ -36,7 +36,7 @@ public partial class PoolEngine : Node
 		}
 		else if (obj is Item i)
 		{
-			// i.resetItem();
+			i.resetItem();
 		}
 		pools[key].Add(obj);
 	}

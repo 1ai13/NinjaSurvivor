@@ -45,25 +45,54 @@ public partial class HudController : Control
 	{
 	}
 
-	private void healthChanged(int health)
+	private void healthChanged(int damage)
 	{
 		//Health of the current Heart
-		int playerHealth;
-		playerHealth = health - 100 * (numberOfHearts - 1);
-		//Swap active Heart if Player loses HP
-		if (playerHealth <= 0 && health >= 100)
+		var numDamagedHeart = damage / 100;
+		GD.Print("hearts to delete:" + numDamagedHeart);
+		if (damage > 100 && numberOfHearts > 1)
 		{
-			healthBar.Value = 0;
-			healthBar = healthBarContainer.GetChild<TextureProgressBar>(healthBar.GetIndex() - 1);
-			healthBar.Value -= playerHealth;
-			GD.Print("Swapped hp value2" + healthBar.Value);
-			numberOfHearts--;
+			for (int i = 0; i < numDamagedHeart; i++)
+			{
+				healthBarContainer.GetChild<TextureProgressBar>(healthBar.GetIndex() - i).Value = 0;
+				GD.Print("healthBar " + healthBar.GetIndex());
+				numberOfHearts--;
+
+			}
+			healthBar = healthBarContainer.GetChild<TextureProgressBar>(healthBar.GetIndex() - numDamagedHeart);
+			GD.Print("new healthbar value " + healthBar.Value);
+			healthBar.Value -= damage - 100 * numDamagedHeart;
+			GD.Print("updated healthbar value " + healthBar.Value);
 		}
 		else
 		{
-			healthBar.Value = playerHealth;
+			var damageLeft = healthBar.Value -= damage;
+			if (healthBar.Value <= 0)
+			{
+				healthBar.Value = 0;
+				healthBar = healthBarContainer.GetChild<TextureProgressBar>(healthBar.GetIndex() - 1);
+				healthBar.Value += damageLeft;
+				numberOfHearts--;
+			}
 		}
-		GD.Print(healthBar.Value);
+		// int playerHealth = 100 * (numberOfHearts - 1) + (int)healthBar.Value;
+		// GD.Print("Player health conversion " + playerHealth);
+		//Swap active Heart if Player loses HP
+		// if (playerHealth <= 0 && health >= 100)
+		// {
+		// 	var currentHealth = healthBar.Value;
+		// 	healthBar.Value = 0;
+		// 	GD.Print("Empty bar" + healthBar.Value);
+		// 	healthBar = healthBarContainer.GetChild<TextureProgressBar>(healthBar.GetIndex() - 1);
+		// 	healthBar.Value -= playerHealth - currentHealth;
+		// 	GD.Print("Swapped hp value2" + healthBar.Value);
+		// 	numberOfHearts--;
+		// }
+		// else
+		// {
+		// 	healthBar.Value = playerHealth;
+		// }
+		// GD.Print(healthBar.Value);
 	}
 
 	private void playerHealthBarUpdate(int health)
@@ -212,19 +241,16 @@ public partial class HudController : Control
 
 	private void firstBuffSelected()
 	{
-		GD.Print("Button pressed1");
 		buffSelected(0);
 	}
 
 	private void secondBuffSelected()
 	{
-		GD.Print("Button pressed2");
 		buffSelected(1);
 	}
 
 	private void thirdBuffSelected()
 	{
-		GD.Print("Button pressed3");
 		buffSelected(2);
 	}
 

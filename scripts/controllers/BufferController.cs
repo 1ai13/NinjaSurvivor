@@ -51,12 +51,11 @@ public partial class BufferController : Node2D
 			for (int i = 0; i < buffMinSize; i++)
 			{
 				var rndBuff = currentBuffs.PickRandom();
-				GD.Print("Inserting buff" + rndBuff.type);
 				randomBuffs.Add(rndBuff);
 				currentBuffs.Remove(rndBuff);
 			}
 			EmitSignal(SignalName.onRandomBuffsGenerated, randomBuffs);
-			areBuffsGenerated = true;
+			// areBuffsGenerated = true;
 		}
 	}
 

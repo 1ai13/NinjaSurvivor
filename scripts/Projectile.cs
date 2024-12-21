@@ -6,10 +6,6 @@ using static Enums.EnemyType;
 
 public partial class Projectile : Area2D
 {
-	[Signal]
-	public delegate void projectileHitAreaEventHandler(Area2D area);
-	[Signal]
-	public delegate void projectileHitPlayerEventHandler();
 	[Export]
 	public float speed = 200f;
 	public float angularSpeed = 500f;
@@ -42,22 +38,22 @@ public partial class Projectile : Area2D
 		speed = s;
 		angularSpeed = angularS;
 		this.isProjectile = isProjectile;
-		if (this.sprite == null)
-		{
-			this.sprite = GetNode<AnimatedSprite2D>("ProjectileSprite");
-		}
 		rayCast = GetNode<RayCast2D>("RayCast");
 		this.sprite.Animation = sprite;
 		this.wallRicochet = wallRicochet;
 		this.hitRicochet = hitRicochet;
-		SetPhysicsProcess(true);
-		Show();
+		if (!IsPhysicsProcessing())
+		{
+			SetPhysicsProcess(true);
+			Show();
+		}
 		this.sprite.Play();
 	}
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
+		sprite = GetNode<AnimatedSprite2D>("ProjectileSprite");
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -95,22 +91,33 @@ public partial class Projectile : Area2D
 	//Hitting enemy
 	private void onAreaDetected(Area2D area)
 	{
-		if (owner is Player o && area.GetParent() is Enemy e)
+		if (owner is Player player && area.GetParent() is Enemy enemy)
 		{
-			EmitSignal(SignalName.projectileHitArea, area);
+			var isCrit = EntityHelper.isCriticalHit(player.criticalChance);
+			int dmg;
+			if (isCrit)
+			{
+				dmg = (int)(player.damage.Y * player.criticalDamage);
+			}
+			else
+			{
+				dmg = EntityHelper.getVariableDamage((int)player.damage.Y);
+			}
+			enemy.takeDamage(dmg, isCrit);
+
 			//Enemy hit ricochet
 			if (hitRicochet > 0)
 			{
 				//Querying all enemies
 				var enemies = GetTree().GetNodesInGroup("Enemies");
 				var nearestDirection = Vector2.Inf;
-				foreach (var enemy in enemies.Cast<Enemy>())
+				foreach (var e in enemies.Cast<Enemy>())
 				{
-					if (enemy.isDead)
+					if (e.isDead)
 						continue;
 
 					//Searching for nearest one
-					var direction = enemy.GlobalPosition - GlobalPosition;
+					var direction = e.GlobalPosition - GlobalPosition;
 					if (nearestDirection.Length() > direction.Length())
 					{
 						nearestDirection = direction;
@@ -122,9 +129,28 @@ public partial class Projectile : Area2D
 			}
 			else
 			{
-				projectileHitArea -= o.onRangedEnemyHit;
 				PoolEngine.instance.addToPool(this);
 			}
+		}
+	}
+
+	//Area Collisions
+	private void onBodyEntered(Node2D body)
+	{
+		//Player collision
+		if (owner is RangedEnemy o && body is Player p)
+		{
+			p.takeDamage(o.damage);
+			playHitSound(o.type);
+			PoolEngine.instance.addToPool(this);
+
+		}
+		//Wall Collision from Enemy
+		else if (owner is RangedEnemy own)
+		{
+			playHitSound(own.type);
+			PoolEngine.instance.addToPool(this);
+
 		}
 	}
 
@@ -138,28 +164,6 @@ public partial class Projectile : Area2D
 		else
 		{
 			Rotation = velocity.Angle();
-		}
-	}
-
-	//Area Collisions
-	private void onBodyEntered(Node2D body)
-	{
-		//Player collision
-		if (owner is RangedEnemy o && body is Player p)
-		{
-			EmitSignal(SignalName.projectileHitPlayer);
-			projectileHitPlayer -= o.onPlayerHit;
-			playHitSound(o.type);
-			PoolEngine.instance.addToPool(this);
-
-		}
-		//Wall Collision from Enemy
-		else if (owner is RangedEnemy own)
-		{
-			projectileHitPlayer -= own.onPlayerHit;
-			playHitSound(own.type);
-			PoolEngine.instance.addToPool(this);
-
 		}
 	}
 
@@ -191,7 +195,6 @@ public partial class Projectile : Area2D
 		wallRicochet = 0;
 		hitRicochet = 0;
 		sprite.Stop();
-		sprite = null;
 	}
 
 }

@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="Buff" load_steps=6 format=3 uid="uid://t2jlbqv27iae"]
+
+[ext_resource type="Texture2D" uid="uid://dj5ggroyywepk" path="res://assets/textures/buffer/icons/withoutBG/critDamageBuffBG.png" id="1_l0ces"]
+[ext_resource type="Texture2D" uid="uid://pxjq7rjn0gci" path="res://assets/textures/buffer/icons/critDamageBuff.png" id="2_wj4tt"]
+[ext_resource type="Texture2D" uid="uid://dl7wp0bye46by" path="res://assets/textures/buffer/icons/critDamageBuffHover.png" id="3_xmf8e"]
+[ext_resource type="Texture2D" uid="uid://b7e1fjv7hoa0u" path="res://assets/textures/buffer/icons/critDamageBuffSelected.png" id="4_62x5n"]
+[ext_resource type="Script" path="res://scripts/resources/Buff.cs" id="5_p0je1"]
+
+[resource]
+script = ExtResource("5_p0je1")
+type = 10
+icons = Array[Texture2D]([ExtResource("1_l0ces"), ExtResource("2_wj4tt"), ExtResource("3_xmf8e"), ExtResource("4_62x5n")])
+description = "Increase  the  damage  done  on  critical  hits!"

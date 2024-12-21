@@ -10,4 +10,4 @@
 script = ExtResource("2_srx1a")
 type = 8
 icons = Array[Texture2D]([ExtResource("2_ah5j2"), ExtResource("1_jgp2f"), ExtResource("3_6tgqr"), ExtResource("4_ji1sx")])
-description = "Boost  the  chances  of  item  drops!"
+description = "Boost  the  chances  of  item  drops  on  enemy  kills!!"

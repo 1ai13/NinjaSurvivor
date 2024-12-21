@@ -3,7 +3,7 @@ using Godot;
 using System;
 using System.Linq;
 using static Enums.EnemyType;
-
+using static Enums.ItemType;
 public abstract partial class Enemy : Node2D
 {
 	[Export]
@@ -24,7 +24,7 @@ public abstract partial class Enemy : Node2D
 	private ProgressBar healthBar;
 	private PackedScene healthBarLabel;
 	private Vector2I healthBarLabelOffset = new Vector2I(0, 6);
-	private float lerpValue = 0f;
+	private float lerpValue = 1f;
 	private const float lerpDuration = .5f;
 	private int lastHealth;
 	public bool isDead = false;
@@ -59,10 +59,9 @@ public abstract partial class Enemy : Node2D
 		enemyArea.BodyEntered += onBodyCollission;
 	}
 
-	// Called every frame. 'delta' is the elapsed time since the previous frame.
-	public override void _PhysicsProcess(double delta)
+	public override void _Process(double delta)
 	{
-		//Adjust taken damage over time
+		//Adjust HealthBar taken damage over time
 		if (lerpValue < lerpDuration && baseHealthBar.Value > 0)
 		{
 			lerpValue += (float)delta;
@@ -73,19 +72,25 @@ public abstract partial class Enemy : Node2D
 				baseHealthBar.Visible = false;
 				//Create random item
 				var rnd = EntityHelper.rnd;
-				if (rnd.Randf() > .75f)
+				if (rnd.Randf() >= player.dropLuck)
 				{
-					//TODO POOL IT
-					var item = AssetManager.instance.itemScene.Instantiate<Area2D>();
-					item.GlobalPosition = GlobalPosition;
-					// if (rnd.Randf() < .8f)
-					// {
-					GD.Print("Generating item");
-					GetParent().AddChild(item);
-					// }
+					var item = PoolEngine.instance.pullFromPool<Item>();
+					if (rnd.Randf() <= .66f)
+					{
+						item.init(GlobalPosition, COIN);
+					}
+					else
+					{
+						item.init(GlobalPosition, HEART);
+					}
 				}
 			}
 		}
+	}
+
+	// Called every frame. 'delta' is the elapsed time since the previous frame.
+	public override void _PhysicsProcess(double delta)
+	{
 		if (isDead)
 		{
 			return;
@@ -152,7 +157,7 @@ public abstract partial class Enemy : Node2D
 			//Enemy dead
 			isDead = true;
 			animation.Play("dead");
-			SignalBus.bus.EmitSignal("onEnemyKilled");
+			SignalBus.bus.EmitSignal(nameof(SignalBus.bus.onEnemyKilled));
 			playDeadSound();
 			enemyArea.SetDeferred(Area2D.PropertyName.Monitorable, false);
 		}

@@ -26,6 +26,10 @@ public partial class Player : CharacterBody2D
 	private Character characterData;
 	private Camera2D camera;
 	public Godot.Collections.Dictionary<BuffType, int> buffPool;
+	public int gold;
+	public float criticalChance;
+	public float criticalDamage;
+	public float dropLuck;
 
 	public override void _Ready()
 	{
@@ -38,9 +42,11 @@ public partial class Player : CharacterBody2D
 		attackCooldown.Timeout += onAttackCooldownTimeout;
 		camera = GetNode<Camera2D>("Camera2D");
 		buffPool = new Godot.Collections.Dictionary<BuffType, int>();
+		gold = 0;
+		criticalChance = .05f;
+		criticalDamage = 1.5f;
+		dropLuck = .75f;
 		//TODO Create Dash behaviour (maybe not)
-		//TODO Add random buffs after finishing level
-		//TODO Add items (ammo?) from monsters + coins for shop?
 	}
 
 	public override void _PhysicsProcess(double delta)
@@ -54,7 +60,7 @@ public partial class Player : CharacterBody2D
 		var offsetY = Mathf.Clamp(camera.Offset.Y + mouseDirection.Y, -10, 10);
 		camera.Offset = new Vector2(offsetX, offsetY);
 		// Player movement logic
-		Vector2 velocity = Velocity;
+		Vector2 velocity;
 		Vector2 playerDirection = Input.GetVector("left", "right", "up", "down");
 		if (playerDirection != Vector2.Zero)
 		{
@@ -135,7 +141,7 @@ public partial class Player : CharacterBody2D
 		maxHealth = health;
 		speed = c.speed;
 		characterData = c;
-		SignalBus.bus.EmitSignal("onPlayerHealthBarUpdate", health);
+		SignalBus.bus.EmitSignal(nameof(SignalBus.bus.onPlayerHealthBarUpdate), health);
 	}
 
 	private void makeAttack(WeaponType type)
@@ -183,7 +189,6 @@ public partial class Player : CharacterBody2D
 			{
 				var projectile = PoolEngine.instance.pullFromPool<Projectile>();
 				projectile.init(GlobalPosition, mouseDirection, mouseDirection.Angle(), this, rangedWeapon.projectileSpeed, rangedWeapon.angularSpeed, rangedWeapon.isProjectile, rangedWeapon.name, wallRicochet, hitRicochet);
-				projectile.projectileHitArea += onRangedEnemyHit;
 			}
 
 			//Creating Buffed projectile
@@ -200,7 +205,6 @@ public partial class Player : CharacterBody2D
 							//Perpendicular vector for offset
 							offset = new Vector2(mouseDirection.Y, -mouseDirection.X) * i;
 							projectile.init(GlobalPosition + offset, mouseDirection, mouseDirection.Angle(), this, rangedWeapon.projectileSpeed, rangedWeapon.angularSpeed, rangedWeapon.isProjectile, rangedWeapon.name, wallRicochet, hitRicochet);
-							projectile.projectileHitArea += onRangedEnemyHit;
 						}
 						break;
 					case DIAGONAL:
@@ -215,7 +219,6 @@ public partial class Player : CharacterBody2D
 								//Using COS and SIN to convert new Offset Angle to new vector X,Y
 								var newDirection = new Vector2(Mathf.Cos(diagonal), Mathf.Sin(diagonal));
 								projectile.init(GlobalPosition, newDirection, newDirection.Angle(), this, rangedWeapon.projectileSpeed, rangedWeapon.angularSpeed, rangedWeapon.isProjectile, rangedWeapon.name, wallRicochet, hitRicochet);
-								projectile.projectileHitArea += onRangedEnemyHit;
 							}
 						}
 						break;
@@ -230,11 +233,11 @@ public partial class Player : CharacterBody2D
 		//Ensure the enemy was hit only once, checking enemies targeted by attack
 		if (area.GetParent() is Enemy e && isAttacking && !enemiesMeleeTargeted.Contains(e))
 		{
-			var isCrit = EntityHelper.isCriticalHit();
+			var isCrit = EntityHelper.isCriticalHit(criticalChance);
 			int dmg;
 			if (isCrit)
 			{
-				dmg = (int)(damage.X * 1.6f);
+				dmg = (int)(damage.X * criticalDamage);
 			}
 			else
 			{
@@ -242,23 +245,6 @@ public partial class Player : CharacterBody2D
 			}
 			e.takeDamage(dmg, isCrit);
 			enemiesMeleeTargeted.Add(e);
-		}
-	}
-	public void onRangedEnemyHit(Area2D area)
-	{
-		if (area.GetParent() is Enemy e)
-		{
-			var isCrit = EntityHelper.isCriticalHit();
-			int dmg;
-			if (isCrit)
-			{
-				dmg = (int)(damage.Y * 1.6f);
-			}
-			else
-			{
-				dmg = EntityHelper.getVariableDamage((int)damage.Y);
-			}
-			e.takeDamage(dmg, isCrit);
 		}
 	}
 
@@ -271,8 +257,7 @@ public partial class Player : CharacterBody2D
 		tween.TweenProperty(playerSprite, "self_modulate", Colors.DarkRed, .2f);
 		tween.TweenProperty(playerSprite, "self_modulate", Colors.White, 0f);
 		AssetManager.instance.playSFX("playerHit");
-		EmitSignal(SignalName.onHealthChanged, health);
-		GD.Print("takiong damage player" + health);
+		EmitSignal(SignalName.onHealthChanged, damage);
 	}
 
 	private void onAttackCooldownTimeout()

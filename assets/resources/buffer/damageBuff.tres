@@ -10,4 +10,4 @@
 script = ExtResource("1_g4pyi")
 type = 1
 icons = Array[Texture2D]([ExtResource("2_k8n2y"), ExtResource("1_hxw6t"), ExtResource("3_wwry5"), ExtResource("4_3alk1")])
-description = "Boost  both  weapons  damage!"
+description = "Boost  the  melee  and  ranged  damage!"

@@ -10,4 +10,4 @@
 script = ExtResource("2_ymhk6")
 type = 4
 icons = Array[Texture2D]([ExtResource("2_y1bed"), ExtResource("1_picg3"), ExtResource("3_3lcr8"), ExtResource("4_x4rwo")])
-description = "Throw  diagonal  projectiles!"
+description = "Throw  2  new  diagonal  projectiles!"

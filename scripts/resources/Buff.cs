@@ -36,7 +36,7 @@ public partial class Buff : Resource
                     GD.Print("Maxed");
                     maxed = true;
                 }
-                SignalBus.bus.EmitSignal("onPlayerHealthBarUpdate", p.health);
+                SignalBus.bus.EmitSignal(nameof(SignalBus.bus.onPlayerHealthBarUpdate), p.health);
                 break;
             case DAMAGE:
                 p.damage *= 1.1f;
@@ -57,6 +57,30 @@ public partial class Buff : Resource
                     maxed = true;
                 }
                 break;
+            case CRIT_CHANCE:
+                p.criticalChance = Mathf.Min(p.criticalChance + .05f, .35f);
+                if (p.criticalChance == .35f)
+                {
+                    GD.Print("Maxed");
+                    maxed = true;
+                }
+                break;
+            case CRIT_DAMAGE:
+                p.criticalDamage = Mathf.Min(p.criticalDamage + .1f, 2f);
+                if (p.criticalDamage == 2f)
+                {
+                    GD.Print("Maxed");
+                    maxed = true;
+                }
+                break;
+            case DROP_LUCK:
+                p.dropLuck = Math.Max(p.dropLuck - .5f, .35f);
+                if (p.dropLuck == .35f)
+                {
+                    GD.Print("Maxed");
+                    maxed = true;
+                }
+                break;
             case FRONTAL:
                 if (p.buffPool[type] == 2)
                 {
@@ -67,8 +91,8 @@ public partial class Buff : Resource
             case WALL_RICHOCHET:
                 if (p.buffPool[type] == 3)
                 {
-                    maxed = true;
                     GD.Print("Maxed");
+                    maxed = true;
                 }
                 break;
             case DIAGONAL:
@@ -81,8 +105,8 @@ public partial class Buff : Resource
             case HIT_RICOCHET:
                 if (p.buffPool[type] == 3)
                 {
-                    maxed = true;
                     GD.Print("Maxed");
+                    maxed = true;
                 }
                 break;
         }

@@ -79,12 +79,14 @@ public partial class LevelManager
 		{
 			game.GetTree().CallGroup("Enemies", "queue_free");
 			game.GetTree().CallGroup("Projectiles", "queue_free");
+			game.GetTree().CallGroup("Items", "queue_free");
 			PoolEngine.instance.pools[nameof(Projectile)].Clear();
+			PoolEngine.instance.pools[nameof(Item)].Clear();
 			game.buffer.resetBuffer();
 		}
 		level++;
 		//Show Level Notification
-		SignalBus.bus.EmitSignal("onNotifyPlayer", $"LEVEL   {level}", Colors.White);
+		SignalBus.bus.EmitSignal(nameof(SignalBus.bus.onNotifyPlayer), $"LEVEL   {level}", Colors.White);
 		wave = 0;
 		//Select Biome
 		switch (level)
@@ -107,7 +109,7 @@ public partial class LevelManager
 
 		}
 		//Update UI with new level
-		SignalBus.bus.EmitSignal("onLevelCompleted", level, biome.iconPath);
+		SignalBus.bus.EmitSignal(nameof(SignalBus.bus.onLevelCompleted), level, biome.iconPath);
 		//Get biome enemies
 		enemyScenes = new Array<PackedScene>();
 		foreach (var e in biome.enemies)
@@ -152,7 +154,7 @@ public partial class LevelManager
 				enemyTypes = biome.enemies;
 				break;
 		};
-		SignalBus.bus.EmitSignal("onWaveCompleted", wave);
+		SignalBus.bus.EmitSignal(nameof(SignalBus.bus.onWaveCompleted), wave);
 		var spawns = poissonDiskSampling(spawnCount, minDistance);
 		int rndEnemy;
 		foreach (var s in spawns)
@@ -335,9 +337,10 @@ public partial class LevelManager
 			door = layers[1].GetUsedCellsById(1, tilesMap[DOOR][0]);
 			layers[1].SetCell(door[0], 1, tilesMap[DOOR][1]);
 			AssetManager.instance.playSFX("levelCompleted");
-			SignalBus.bus.EmitSignal("onNotifyPlayer", $"LEVEL COMPLETED", Colors.Green);
 			AssetManager.instance.playSFX("openDoor");
+			SignalBus.bus.EmitSignal(nameof(SignalBus.bus.onNotifyPlayer), $"LEVEL COMPLETED", Colors.Green);
 			game.buffer.animation.Play("drop");
+			game.GetTree().CallGroup("Items", "autoCollectItem");
 		}
 		else
 		{

@@ -10,6 +10,8 @@ namespace Enums
         WALL_RICHOCHET,
         HIT_RICOCHET,
         MOVEMENT_SPEED,
-        DROP_LUCK
+        DROP_LUCK,
+        CRIT_CHANCE,
+        CRIT_DAMAGE
     }
 }

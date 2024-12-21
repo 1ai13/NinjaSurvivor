@@ -52,7 +52,7 @@ animations = [{
 "texture": SubResource("AtlasTexture_ov2gk")
 }],
 "loop": true,
-"name": &"coin",
+"name": &"Coin",
 "speed": 6.0
 }, {
 "frames": [{
@@ -69,7 +69,7 @@ animations = [{
 "texture": SubResource("AtlasTexture_5xmb8")
 }],
 "loop": true,
-"name": &"heart",
+"name": &"Heart",
 "speed": 5.0
 }]
 
@@ -77,18 +77,17 @@ animations = [{
 radius = 8.24621
 
 [node name="Item" type="Area2D" groups=["Items"]]
-z_index = 1
+z_index = 2
 y_sort_enabled = true
 script = ExtResource("1_mkax3")
 
 [node name="ItemSprite" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_ul73p")
-animation = &"coin"
-autoplay = "coin"
-frame_progress = 0.863668
+animation = &"Heart"
+autoplay = "Coin"
+frame_progress = 0.513298
 
 [node name="ItemShape" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_h2deo")
 
-[connection signal="area_entered" from="." to="." method="onAreaDetected"]
-[connection signal="body_entered" from="." to="." method="onBodyEntered"]
+[connection signal="body_entered" from="." to="." method="onBodyDetected"]
