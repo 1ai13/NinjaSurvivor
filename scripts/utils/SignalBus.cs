@@ -17,7 +17,7 @@ public partial class SignalBus : Node
 	[Signal]
 	public delegate void onLevelCompletedEventHandler(int level, string icon);
 	[Signal]
-	public delegate void onWaveCompletedEventHandler(int level);
+	public delegate void onWaveCompletedEventHandler(int wave, int maxWaves);
 	[Signal]
 	public delegate void onCoinCollectedEventHandler();
 	[Signal]

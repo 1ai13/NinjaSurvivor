@@ -65,6 +65,9 @@ public partial class AssetManager : Node
 		addSFX("coinCollected", "res://assets/audio/items/coinCollected.wav");
 		addSFX("heartHeal", "res://assets/audio/items/heartHeal.wav");
 		addSFX("itemDrop", "res://assets/audio/items/itemDrop.wav");
+		addSFX("buttonHover", "res://assets/audio/ui/buttonHover.wav");
+		addSFX("openBuffer", "res://assets/audio/ui/openBuffer.wav");
+		addSFX("closeBuffer", "res://assets/audio/ui/closeBuffer.wav");
 
 		//Playing it without AudioStream for PolyphonicPlayback assignment not null
 		SFXPlayer.Play();

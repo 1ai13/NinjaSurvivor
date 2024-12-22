@@ -94,6 +94,7 @@ public abstract partial class Enemy : Node2D
 		if (isDead)
 		{
 			SetPhysicsProcess(false);
+			return;
 		}
 
 		//Enemy VS Player logic

@@ -36,6 +36,7 @@ public partial class LevelManager
 	private int enemiesKilled;
 	private Area2D doorArea;
 	private int spawnCount = 0;
+	private int maxWaves;
 
 	public LevelManager(GameController game, TileMapLayer baseLayer)
 	{
@@ -73,8 +74,7 @@ public partial class LevelManager
 	{
 		//TODO Balance trap numbers and spawns based on level/waves
 		//TODO Biome obstacles?
-
-		//Clear dead enemies and projectiles
+		//Clear dead and unused entities and objects
 		if (level >= 1)
 		{
 			game.GetTree().CallGroup("Enemies", "queue_free");
@@ -82,9 +82,11 @@ public partial class LevelManager
 			game.GetTree().CallGroup("Items", "queue_free");
 			PoolEngine.instance.pools[nameof(Projectile)].Clear();
 			PoolEngine.instance.pools[nameof(Item)].Clear();
+			game.buffer.animation.Stop();
 			game.buffer.resetBuffer();
 		}
 		level++;
+		maxWaves = 4 + level;
 		//Show Level Notification
 		SignalBus.bus.EmitSignal(nameof(SignalBus.bus.onNotifyPlayer), $"LEVEL   {level}", Colors.White);
 		wave = 0;
@@ -127,13 +129,11 @@ public partial class LevelManager
 		wave = 5;
 		var maxDistance = 9;
 		int minDistance = maxDistance - wave;
-		spawnCount = 2 * wave;
+		spawnCount = 2 * wave + level;
 		var enemyTypes = new Array<EnemyType>();
 		switch (wave)
 		{
 			case 1:
-				spawnCount++;
-				minDistance++;
 				enemyTypes.Add(biome.enemies[0]);
 				break;
 			case 2:
@@ -154,7 +154,7 @@ public partial class LevelManager
 				enemyTypes = biome.enemies;
 				break;
 		};
-		SignalBus.bus.EmitSignal(nameof(SignalBus.bus.onWaveCompleted), wave);
+		SignalBus.bus.EmitSignal(nameof(SignalBus.bus.onWaveCompleted), wave, maxWaves);
 		var spawns = poissonDiskSampling(spawnCount, minDistance);
 		int rndEnemy;
 		foreach (var s in spawns)
@@ -355,7 +355,7 @@ public partial class LevelManager
 		enemiesKilled++;
 		if (enemiesKilled == spawnCount)
 		{
-			if (wave == 5)
+			if (wave == maxWaves)
 			{
 				openLevelDoor(true);
 			}

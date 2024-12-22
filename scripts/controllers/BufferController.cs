@@ -22,7 +22,7 @@ public partial class BufferController : Node2D
 		bufferBody = GetNode<StaticBody2D>("BufferBody");
 		bufferBubble = GetNode<AnimatedSprite2D>("BufferBody/Bubble");
 		initialPosition = bufferBody.GlobalPosition;
-		bufferInitialPos = Position;
+		bufferInitialPos = GlobalPosition;
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -55,6 +55,7 @@ public partial class BufferController : Node2D
 				currentBuffs.Remove(rndBuff);
 			}
 			EmitSignal(SignalName.onRandomBuffsGenerated, randomBuffs);
+			AssetManager.instance.playSFX("openBuffer");
 			// areBuffsGenerated = true;
 		}
 	}
@@ -64,11 +65,11 @@ public partial class BufferController : Node2D
 		//Reset random position around door
 		if (EntityHelper.rnd.Randf() <= .5f)
 		{
-			Position = bufferInitialPos;
+			GlobalPosition = bufferInitialPos;
 		}
 		else
 		{
-			Position = bufferInitialPos + Vector2.Right * 115;
+			GlobalPosition = bufferInitialPos + Vector2.Right * 115;
 		}
 		bufferBody.GlobalPosition = initialPosition;
 		areBuffsGenerated = false;

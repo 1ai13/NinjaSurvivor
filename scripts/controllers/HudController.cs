@@ -40,7 +40,6 @@ public partial class HudController : Control
 		SignalBus.bus.onLevelCompleted += levelCompletedUpdate;
 		SignalBus.bus.onWaveCompleted += waveCompletedUpdate;
 		SignalBus.bus.onCoinCollected += coinCollected;
-		//TODO Improve HUD with ammo, dynamic healthbar
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -222,9 +221,9 @@ public partial class HudController : Control
 		levelCounter.Text = $"[right]LEVEL\t{level} - [img=12]{icon}[/img][/right]";
 	}
 
-	private void waveCompletedUpdate(int wave)
+	private void waveCompletedUpdate(int wave, int maxWaves)
 	{
-		waveCounter.Text = $"WAVE\t\t\t\t\t\t{wave}  /  5";
+		waveCounter.Text = $"WAVE\t\t\t\t\t\t{wave}  /  {maxWaves}";
 	}
 
 	private void randomBuffsGenerated(Array<Buff> randomBuffs)
@@ -255,9 +254,15 @@ public partial class HudController : Control
 					buff.Pressed += thirdBuffSelected;
 					break;
 			}
+			buff.Connect("mouse_entered", Callable.From(mouseHoveringButton));
 			modalBuffsContainer.AddChild(buff);
 		}
 		modalContainer.Visible = true;
+	}
+
+	private void mouseHoveringButton()
+	{
+		AssetManager.instance.playSFX("buttonHover");
 	}
 
 	private void firstBuffSelected()
@@ -279,10 +284,14 @@ public partial class HudController : Control
 	{
 		//Applying buff and hiding modal
 		buffer.bufferBubble.Play("sleep");
+		AssetManager.instance.playSFX("closeBuffer");
 		player.SetPhysicsProcess(true);
 		player.SetProcessInput(true);
 		modalContainer.Visible = false;
-		buffsContainer.Visible = true;
+		if (!buffsContainer.Visible)
+		{
+			buffsContainer.Show();
+		}
 		var maxedBuff = currentRandomBuffs[index].applyBuff(player);
 		playerBuffAdded(currentRandomBuffs[index]);
 		//Maxed buff
