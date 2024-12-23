@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="EnemyData" load_steps=3 format=3 uid="uid://dwgd78bgcmflm"]
+
+[ext_resource type="Texture2D" uid="uid://cmpxc43qoyoqf" path="res://assets/textures/enemies/Bosses/Bamboo/Faceset.png" id="1_q6pse"]
+[ext_resource type="Script" path="res://scripts/resources/EnemyData.cs" id="2_olqqv"]
+
+[resource]
+script = ExtResource("2_olqqv")
+name = 2
+icon = ExtResource("1_q6pse")
+health = 5000
+damage = 125
+speed = 20.0
+range = 500.0
+isProjectile = true
+projectileSpeed = 100.0
+angularSpeed = 0.0

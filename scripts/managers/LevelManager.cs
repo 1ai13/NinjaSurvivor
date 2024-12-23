@@ -29,9 +29,10 @@ public partial class LevelManager
 
 	private Godot.Collections.Dictionary<Vector2I, Rect2> trapCells;
 	private Array<BiomeConfig> biomes;
-	private int level;
+	internal static int level;
 	private int wave;
 	private BiomeConfig biome;
+	private int currentBiome;
 	private Array<PackedScene> enemyScenes;
 	private int enemiesKilled;
 	private Area2D doorArea;
@@ -49,7 +50,9 @@ public partial class LevelManager
 		trapCells = new Godot.Collections.Dictionary<Vector2I, Rect2>();
 		rnd = new RandomNumberGenerator();
 		this.biomes = game.biomeConfigs;
-		this.level = game.level;
+		currentBiome = 0;
+		biome = biomes[currentBiome];
+		level = game.level;
 		doorArea = game.GetNode<Area2D>("Arena/DoorArea");
 
 		//Initialize all Tiled Map Layers
@@ -70,6 +73,8 @@ public partial class LevelManager
 		SignalBus.bus.onEnemyKilled += enemyKilled;
 		SignalBus.bus.onGenerateLevel += generateLevel;
 		SignalBus.bus.onSpawnEnemies += generateSpawns;
+		//Update UI with new level
+		SignalBus.bus.EmitSignal(nameof(SignalBus.bus.onWaveCompleted), 1, maxWaves);
 	}
 
 	public void generateLevel()
@@ -89,31 +94,7 @@ public partial class LevelManager
 		}
 		level++;
 		maxWaves = 4 + level;
-		//Show Level Notification
-		SignalBus.bus.EmitSignal(nameof(SignalBus.bus.onNotifyPlayer), $"LEVEL   {level}", Colors.White);
-		wave = 0;
-		//Select Biome
-		switch (level)
-		{
-			case <= 5:
-				biome = biomes[0];
-				break;
-			case <= 10:
-				biome = biomes[1];
-				break;
-			case <= 15:
-				biome = biomes[2];
-				break;
-			case <= 20:
-				biome = biomes[3];
-				break;
-			default:
-				biome = biomes[0];
-				break;
-
-		}
-		//Update UI with new level
-		SignalBus.bus.EmitSignal(nameof(SignalBus.bus.onLevelCompleted), level, biome.iconPath);
+		wave = 7;
 		//Get biome enemies
 		enemyScenes = new Array<PackedScene>();
 		foreach (var e in biome.enemies)
@@ -121,8 +102,56 @@ public partial class LevelManager
 			var name = e.ToString().Capitalize();
 			enemyScenes.Add(GD.Load<PackedScene>($"res://scenes/entities/{name}Enemy.tscn"));
 		}
+		if (level == 6)
+		{
+			swapArenas(true);
+		}
 		generateTerrain();
 		generateArenaCells();
+		//Show Level Notification
+		if (level > 0)
+		{
+			SignalBus.bus.EmitSignal(nameof(SignalBus.bus.onNotifyPlayer), $"LEVEL   {level}", Colors.White);
+			//Update UI with new level
+			SignalBus.bus.EmitSignal(nameof(SignalBus.bus.onLevelCompleted), level, biome.iconPath);
+		}
+		else
+		{//Boss notification
+			SignalBus.bus.EmitSignal(nameof(SignalBus.bus.onNotifyPlayer), $"BOSS   STAGE", Colors.White);
+			SignalBus.bus.EmitSignal(nameof(SignalBus.bus.onLevelCompleted), level, biome.iconPath);
+		}
+
+	}
+
+	private void swapArenas(bool arenaBoss)
+	{
+		if (arenaBoss)
+		{
+			var boss = biome.bossScene.Instantiate<EnemyBoss>();
+			game.CallDeferred("add_child", boss);
+			boss.init(game.bossSpawn.Position);
+
+			level = 0;
+			layers[1].CollisionEnabled = false;
+			layers[1].Visible = false;
+			layers[2].CollisionEnabled = false;
+			layers[2].Visible = false;
+			layers[3].CollisionEnabled = true;
+			layers[3].Visible = true;
+			layers[4].CollisionEnabled = true;
+			layers[4].Visible = true;
+		}
+		else
+		{
+			layers[1].CollisionEnabled = true;
+			layers[1].Visible = true;
+			layers[2].CollisionEnabled = true;
+			layers[2].Visible = true;
+			layers[3].CollisionEnabled = false;
+			layers[3].Visible = false;
+			layers[4].CollisionEnabled = false;
+			layers[4].Visible = false;
+		}
 	}
 
 	public void generateSpawns()
@@ -150,7 +179,7 @@ public partial class LevelManager
 				enemyTypes = biome.enemies;
 				break;
 			default:
-				spawnCount = 10;
+				spawnCount = 1;
 				minDistance = 4;
 				enemyTypes = biome.enemies;
 				break;
@@ -206,7 +235,7 @@ public partial class LevelManager
 				cellPos.X = i;
 				cellPos.Y = y;
 				//Generate base terrain in case its arena area
-				if (arenaCells.Contains(cellPos))
+				if (arenaCells.Contains(cellPos) && level != 0)
 				{
 					layers[0].SetCell(cellPos, 0, tilesMap[biome.name][0]);
 					layers[1].SetCell(cellPos, 6, tilesMap[biome.name][0]);
@@ -373,7 +402,12 @@ public partial class LevelManager
 		if (body is Player p)
 		{
 			openLevelDoor(false);
-			p.newLevelAnimation(true);
+			if (level == 5)
+			{
+				p.newLevelAnimation(true);
+				return;
+			}
+			p.newLevelAnimation(false);
 		}
 	}
 }

@@ -26,6 +26,8 @@ public partial class SignalBus : Node
 	public delegate void onGenerateLevelEventHandler();
 	[Signal]
 	public delegate void onSpawnEnemiesEventHandler();
+	[Signal]
+	public delegate void onAwakeBossEventHandler();
 	//Init method
 	public override void _Ready()
 	{

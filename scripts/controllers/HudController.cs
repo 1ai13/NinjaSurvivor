@@ -113,7 +113,7 @@ public partial class HudController : Control
 
 	private void coinCollected()
 	{
-		goldCounter.Text = $"{player.gold}[font_size=8] g[/font_size]";
+		goldCounter.Text = $"{player.gold}[font_size=8]  g[/font_size]";
 	}
 
 	private void playerHealthBarUpdate(int health)
@@ -218,7 +218,16 @@ public partial class HudController : Control
 
 	private void levelCompletedUpdate(int level, string icon)
 	{
-		levelCounter.Text = $"[right]LEVEL\t{level} - [img=12]{icon}[/img][/right]";
+		if (level == 0)
+		{
+			waveCounter.Visible = false;
+			levelCounter.Text = $"[right]LEVEL\t[img=12]res://assets/textures/GUI/HUD/bossIcon.png[/img] - [img=12]{icon}[/img][/right]";
+		}
+		else
+		{
+			waveCounter.Visible = true;
+			levelCounter.Text = $"[right]LEVEL\t{level} - [img=12]{icon}[/img][/right]";
+		}
 	}
 
 	private void waveCompletedUpdate(int wave, int maxWaves)
@@ -285,8 +294,7 @@ public partial class HudController : Control
 		//Applying buff and hiding modal
 		buffer.bufferBubble.Play("sleep");
 		AssetManager.instance.playSFX("closeBuffer");
-		player.SetPhysicsProcess(true);
-		player.SetProcessInput(true);
+		player.setPlayerProcess(true);
 		modalContainer.Visible = false;
 		if (!buffsContainer.Visible)
 		{

@@ -24,7 +24,7 @@ public partial class Player : CharacterBody2D
 	private HashSet<Enemy> enemiesMeleeTargeted;
 	private WeaponType currentType = MELEE;
 	private Character characterData;
-	private Camera2D camera;
+	public Camera2D camera;
 	public Godot.Collections.Dictionary<BuffType, int> buffPool;
 	public int gold;
 	public float criticalChance;
@@ -147,7 +147,7 @@ public partial class Player : CharacterBody2D
 		speed = c.speed;
 		characterData = c;
 		SignalBus.bus.EmitSignal(nameof(SignalBus.bus.onPlayerHealthBarUpdate), health);
-		newLevelAnimation(false);
+		finishedAnimation(false);
 	}
 
 	private void makeAttack(WeaponType type)
@@ -284,44 +284,65 @@ public partial class Player : CharacterBody2D
 		autoCollect = true;
 	}
 
-	public void newLevelAnimation(bool finishAnimation)
+	//Switching level aniamtions
+	public async void newLevelAnimation(bool arenaBoss)
 	{
+		//Deactivating player
 		autoCollect = false;
-		SetProcessInput(false);
-		SetPhysicsProcess(false);
+		setPlayerProcess(false);
+		Hide();
+		//Animating going next level
+		GD.Print("GOING NEW LEVEL");
 		var tween = CreateTween();
 		tween.TweenProperty(this, "position", Position + Vector2.Up * 50, 2);
-		if (!finishAnimation)
-		{
-			AssetManager.instance.playSFX("doorTp");
-			animation.Play("walk_up");
-			tween.Connect("finished", Callable.From(notifySpawnEnemies));
-		}
-		else
-		{
-			Hide();
-			tween.Connect("finished", Callable.From(finishedAnimation));
-		}
+		await tween.ToSignal(tween, "finished");
+		finishedAnimation(arenaBoss);
+		// tween.Connect("finished", Callable.From(() => finishedAnimation(arenaBoss)));
 
 	}
 
-	private void finishedAnimation()
+	private async void finishedAnimation(bool arenaBoss)
 	{
-
-		AssetManager.instance.playSFX("doorTp");
+		//TODO Remove when char select avaiable
+		setPlayerProcess(false);
+		//Generating new level
 		SignalBus.bus.EmitSignal(nameof(SignalBus.bus.onGenerateLevel));
+		AssetManager.instance.playSFX("doorTp");
+
 		Show();
 		GlobalPosition = playerSpawn;
+		//Animating entry on new level
 		var tween = CreateTween();
 		animation.Play("walk_up");
 		tween.TweenProperty(this, "position", Position + Vector2.Up * 50, 2);
-		tween.Connect("finished", Callable.From(notifySpawnEnemies));
+		if (arenaBoss)
+		{
+			tween.TweenCallback(Callable.From(() =>
+			{
+				animation.Stop();
+			}));
+			tween.TweenProperty(camera, "offset", Vector2.Up * 200, 1f);
+		}
+
+		//After finished animation spawn enemies or wake up boss
+		await tween.ToSignal(tween, "finished");
+		if (LevelManager.level > 0)
+		{
+			setPlayerProcess(true);
+			SignalBus.bus.EmitSignal(nameof(SignalBus.bus.onSpawnEnemies));
+		}
+		else
+		{   //Span to wake up boss
+			await ToSignal(GetTree().CreateTimer(.75f), "timeout");
+			SignalBus.bus.EmitSignal(nameof(SignalBus.bus.onAwakeBoss));
+		}
+
 	}
 
-	private void notifySpawnEnemies()
+	public void setPlayerProcess(bool value)
 	{
-		SetProcessInput(true);
-		SetPhysicsProcess(true);
-		SignalBus.bus.EmitSignal(nameof(SignalBus.bus.onSpawnEnemies));
+		GD.Print("activating player");
+		SetProcessInput(value);
+		SetPhysicsProcess(value);
 	}
 }

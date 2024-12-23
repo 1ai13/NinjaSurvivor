@@ -12,4 +12,6 @@ public partial class BiomeConfig : Resource
 	public TileType name;
 	[Export]
 	public string iconPath;
+	[Export]
+	public PackedScene bossScene;
 }

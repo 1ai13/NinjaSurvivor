@@ -7,11 +7,12 @@ public partial class GameController : Node2D
 {
 	private Player player;
 	public Marker2D playerSpawn;
+	public Marker2D bossSpawn;
 	[Export]
 	private string characterSelected;
 	[Export]
 	private Character[] characters;
-	public int level = 0;
+	public int level = 4;
 	[Export]
 	public Array<BiomeConfig> biomeConfigs;
 	public Array<Rect2> trapsPosition;
@@ -24,6 +25,7 @@ public partial class GameController : Node2D
 		player = GetNode<Player>("Player");
 		var arena = GetNode<TileMapLayer>("Arena");
 		playerSpawn = GetNode<Marker2D>("Arena/PlayerRespawn");
+		bossSpawn = GetNode<Marker2D>("Arena/BossSpawn");
 		buffer = GetNode<BufferController>("Buffer");
 		//Load selected Character
 		foreach (var c in characters)

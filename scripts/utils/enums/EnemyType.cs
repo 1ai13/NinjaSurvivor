@@ -4,6 +4,7 @@ namespace Enums
 	{
 		SLIME,
 		BAT,
-		BAMBOO
+		BAMBOO,
+		BAMBOO_BOSS
 	}
 }

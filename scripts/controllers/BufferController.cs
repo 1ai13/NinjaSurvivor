@@ -38,8 +38,7 @@ public partial class BufferController : Node2D
 		if (body is Player p)
 		{
 			p.animation.CallDeferred("stop");
-			p.SetPhysicsProcess(false);
-			p.SetProcessInput(false);
+			p.setPlayerProcess(false);
 			var randomBuffs = new Array<Buff>();
 			var currentBuffs = buffs.Duplicate();
 			var buffMinSize = 3;
@@ -56,7 +55,7 @@ public partial class BufferController : Node2D
 			}
 			EmitSignal(SignalName.onRandomBuffsGenerated, randomBuffs);
 			AssetManager.instance.playSFX("openBuffer");
-			// areBuffsGenerated = true;
+			areBuffsGenerated = true;
 		}
 	}
 

@@ -1,9 +1,11 @@
-[gd_resource type="Resource" script_class="BiomeConfig" load_steps=2 format=3 uid="uid://bbk16kldo5xxd"]
+[gd_resource type="Resource" script_class="BiomeConfig" load_steps=3 format=3 uid="uid://bbk16kldo5xxd"]
 
 [ext_resource type="Script" path="res://scripts/resources/BiomeConfig.cs" id="1_i3oq4"]
+[ext_resource type="PackedScene" uid="uid://cg65l3alrqygr" path="res://scenes/entities/EnemyBoss.tscn" id="1_k3knu"]
 
 [resource]
 script = ExtResource("1_i3oq4")
 enemies = Array[int]([0, 1, 2])
 name = 3
 iconPath = "res://assets/textures/GUI/HUD/forestBiomeIcon.png"
+bossScene = ExtResource("1_k3knu")
