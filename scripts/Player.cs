@@ -31,6 +31,7 @@ public partial class Player : CharacterBody2D
 	public float criticalDamage;
 	public float dropLuck;
 	public bool autoCollect;
+	private Vector2 playerSpawn;
 
 	public override void _Ready()
 	{
@@ -133,6 +134,7 @@ public partial class Player : CharacterBody2D
 	{
 		//Player Data
 		playerSprite.Texture = c.body;
+		playerSpawn = position;
 		Position = position;
 		//Weapon Data
 		var melee = c.meleeWeapon;
@@ -145,6 +147,7 @@ public partial class Player : CharacterBody2D
 		speed = c.speed;
 		characterData = c;
 		SignalBus.bus.EmitSignal(nameof(SignalBus.bus.onPlayerHealthBarUpdate), health);
+		newLevelAnimation(false);
 	}
 
 	private void makeAttack(WeaponType type)
@@ -279,5 +282,46 @@ public partial class Player : CharacterBody2D
 	private void autoCollectMode()
 	{
 		autoCollect = true;
+	}
+
+	public void newLevelAnimation(bool finishAnimation)
+	{
+		autoCollect = false;
+		SetProcessInput(false);
+		SetPhysicsProcess(false);
+		var tween = CreateTween();
+		tween.TweenProperty(this, "position", Position + Vector2.Up * 50, 2);
+		if (!finishAnimation)
+		{
+			AssetManager.instance.playSFX("doorTp");
+			animation.Play("walk_up");
+			tween.Connect("finished", Callable.From(notifySpawnEnemies));
+		}
+		else
+		{
+			Hide();
+			tween.Connect("finished", Callable.From(finishedAnimation));
+		}
+
+	}
+
+	private void finishedAnimation()
+	{
+
+		AssetManager.instance.playSFX("doorTp");
+		SignalBus.bus.EmitSignal(nameof(SignalBus.bus.onGenerateLevel));
+		Show();
+		GlobalPosition = playerSpawn;
+		var tween = CreateTween();
+		animation.Play("walk_up");
+		tween.TweenProperty(this, "position", Position + Vector2.Up * 50, 2);
+		tween.Connect("finished", Callable.From(notifySpawnEnemies));
+	}
+
+	private void notifySpawnEnemies()
+	{
+		SetProcessInput(true);
+		SetPhysicsProcess(true);
+		SignalBus.bus.EmitSignal(nameof(SignalBus.bus.onSpawnEnemies));
 	}
 }

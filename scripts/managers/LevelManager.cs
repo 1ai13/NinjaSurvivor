@@ -68,6 +68,8 @@ public partial class LevelManager
 		generateLevel();
 		doorArea.BodyEntered += onDoorCrossed;
 		SignalBus.bus.onEnemyKilled += enemyKilled;
+		SignalBus.bus.onGenerateLevel += generateLevel;
+		SignalBus.bus.onSpawnEnemies += generateSpawns;
 	}
 
 	public void generateLevel()
@@ -121,15 +123,14 @@ public partial class LevelManager
 		}
 		generateTerrain();
 		generateArenaCells();
-		generateSpawns();
 	}
 
 	public void generateSpawns()
 	{
-		wave = 5;
+		wave++;
 		var maxDistance = 9;
 		int minDistance = maxDistance - wave;
-		spawnCount = 2 * wave + level;
+		spawnCount = 1;
 		var enemyTypes = new Array<EnemyType>();
 		switch (wave)
 		{
@@ -177,8 +178,6 @@ public partial class LevelManager
 		}
 		var timer = game.GetTree().CreateTimer(.75f);
 		timer.Timeout += playSpawn;
-
-
 	}
 
 	private void playSpawn()
@@ -344,6 +343,7 @@ public partial class LevelManager
 		}
 		else
 		{
+			AssetManager.instance.playSFX("openDoor");
 			door = layers[1].GetUsedCellsById(1, tilesMap[DOOR][1]);
 			layers[1].SetCell(door[0], 1, tilesMap[DOOR][0]);
 		}
@@ -372,11 +372,8 @@ public partial class LevelManager
 	{
 		if (body is Player p)
 		{
-			p.autoCollect = false;
-			AssetManager.instance.playSFX("doorTp");
 			openLevelDoor(false);
-			generateLevel();
-			p.GlobalPosition = game.playerSpawn.Position;
+			p.newLevelAnimation(true);
 		}
 	}
 }

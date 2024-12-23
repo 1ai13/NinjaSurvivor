@@ -22,7 +22,10 @@ public partial class SignalBus : Node
 	public delegate void onCoinCollectedEventHandler();
 	[Signal]
 	public delegate void onAutoCollectItemEventHandler();
-
+	[Signal]
+	public delegate void onGenerateLevelEventHandler();
+	[Signal]
+	public delegate void onSpawnEnemiesEventHandler();
 	//Init method
 	public override void _Ready()
 	{
