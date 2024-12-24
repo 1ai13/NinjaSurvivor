@@ -31,7 +31,7 @@ public abstract partial class Enemy : Node2D
 	public AudioStream deadSound;
 	protected bool isAttacking = false;
 	protected abstract void performAttack();
-	private bool randomDirection;
+	protected bool randomDirection;
 	protected Vector2 distanceToPlayer;
 	private Vector2 initialHealthBarPos;
 
@@ -119,9 +119,7 @@ public abstract partial class Enemy : Node2D
 		{
 			if (!randomDirection)
 			{
-				var rndX = EntityHelper.rnd.RandfRange(-1, 1);
-				var rndY = EntityHelper.rnd.RandfRange(-1, 1);
-				enemyDirection = new Vector2(rndX, rndY);
+				enemyDirection = EntityHelper.getRandomDirection(enemyDirection);
 				randomDirection = true;
 			}
 			Position += enemyDirection * speed * (float)delta;

@@ -5,12 +5,12 @@
 
 [resource]
 script = ExtResource("2_olqqv")
-name = 2
+name = 3
 icon = ExtResource("1_q6pse")
 health = 5000
-damage = 125
-speed = 20.0
-range = 500.0
+damage = 100
+speed = 35.0
+range = 400.0
 isProjectile = true
-projectileSpeed = 100.0
+projectileSpeed = 200.0
 angularSpeed = 0.0

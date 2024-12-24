@@ -12,7 +12,7 @@ public partial class GameController : Node2D
 	private string characterSelected;
 	[Export]
 	private Character[] characters;
-	public int level = 4;
+	public int level = 5;
 	[Export]
 	public Array<BiomeConfig> biomeConfigs;
 	public Array<Rect2> trapsPosition;

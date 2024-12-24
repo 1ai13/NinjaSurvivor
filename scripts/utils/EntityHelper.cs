@@ -105,4 +105,12 @@ public partial class EntityHelper : Node
         e.speed = data.speed;
         e.attackRange = data.range;
     }
+    public static Vector2 getRandomDirection(Vector2 direction)
+    {
+        var rndX = EntityHelper.rnd.RandfRange(-1, 1);
+        var rndY = EntityHelper.rnd.RandfRange(-1, 1);
+        direction.X = rndX;
+        direction.Y = rndY;
+        return direction;
+    }
 }

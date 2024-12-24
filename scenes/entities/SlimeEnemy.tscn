@@ -256,5 +256,5 @@ libraries = {
 autoplay = "spawn"
 
 [node name="AttackCooldown" type="Timer" parent="." index="2"]
-wait_time = 0.6
+wait_time = 0.8
 one_shot = true

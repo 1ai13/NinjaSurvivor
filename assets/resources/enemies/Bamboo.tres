@@ -7,10 +7,10 @@
 script = ExtResource("3_gmoea")
 name = 2
 icon = ExtResource("1_bfjci")
-health = 125
-damage = 125
-speed = 35.0
+health = 150
+damage = 50
+speed = 30.0
 range = 250.0
 isProjectile = true
-projectileSpeed = 100.0
+projectileSpeed = 125.0
 angularSpeed = 0.0

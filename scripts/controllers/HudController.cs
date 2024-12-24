@@ -24,7 +24,7 @@ public partial class HudController : Control
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
-		healthBarContainer = GetNode<HFlowContainer>("HealthBarContainer");
+		healthBarContainer = GetNode<HFlowContainer>("PlayerHealthBarContainer");
 		buffsContainer = GetNode<VBoxContainer>("BuffsContainer");
 		modalContainer = GetNode<Panel>("BuffModal");
 		modalBuffsContainer = GetNode<HBoxContainer>("BuffModal/BuffsContainer");

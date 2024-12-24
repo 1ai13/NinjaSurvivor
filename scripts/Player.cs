@@ -292,7 +292,6 @@ public partial class Player : CharacterBody2D
 		setPlayerProcess(false);
 		Hide();
 		//Animating going next level
-		GD.Print("GOING NEW LEVEL");
 		var tween = CreateTween();
 		tween.TweenProperty(this, "position", Position + Vector2.Up * 50, 2);
 		await tween.ToSignal(tween, "finished");
@@ -341,7 +340,6 @@ public partial class Player : CharacterBody2D
 
 	public void setPlayerProcess(bool value)
 	{
-		GD.Print("activating player");
 		SetProcessInput(value);
 		SetPhysicsProcess(value);
 	}

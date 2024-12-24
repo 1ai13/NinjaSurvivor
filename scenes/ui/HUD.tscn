@@ -1,8 +1,9 @@
-[gd_scene load_steps=8 format=3 uid="uid://c0fa61ops184b"]
+[gd_scene load_steps=13 format=3 uid="uid://c0fa61ops184b"]
 
 [ext_resource type="Script" path="res://scripts/controllers/HudController.cs" id="1_icudm"]
 [ext_resource type="Texture2D" uid="uid://iey472jm1yuo" path="res://assets/textures/buffer/icons/withoutBG/goldIcon.png" id="2_56igj"]
 [ext_resource type="PackedScene" uid="uid://co541saeejs1x" path="res://scenes/ui/ModalRandomBuff.tscn" id="4_gunwc"]
+[ext_resource type="Texture2D" uid="uid://bmro4xa26i18y" path="res://assets/textures/enemies/Bosses/Bamboo/BambooFaceset.png" id="5_2t8i7"]
 [ext_resource type="FontFile" uid="uid://botklpdl5a2x1" path="res://assets/fonts/NormalFont.ttf" id="5_k1iq5"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_810v0"]
@@ -27,6 +28,35 @@ outline_color = Color(0, 0, 0, 1)
 shadow_size = 5
 shadow_color = Color(0, 0, 0, 0.605)
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_doxdo"]
+bg_color = Color(0.184, 0.184, 0.184, 0.9)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.503453, 0.0155647, 0.00863215, 1)
+border_blend = true
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+expand_margin_left = 1.0
+expand_margin_top = 1.0
+expand_margin_right = 1.0
+expand_margin_bottom = 1.0
+shadow_color = Color(0, 0, 0, 0.35)
+shadow_size = 1
+
+[sub_resource type="Gradient" id="Gradient_2tdo7"]
+colors = PackedColorArray(0.351563, 0.351563, 0.351563, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_44xa3"]
+gradient = SubResource("Gradient_2tdo7")
+fill_from = Vector2(0, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_n0ckq"]
+texture = SubResource("GradientTexture2D_44xa3")
+
 [node name="HUD" type="Control"]
 texture_repeat = 2
 layout_mode = 3
@@ -37,7 +67,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_icudm")
 
-[node name="HealthBarContainer" type="HFlowContainer" parent="."]
+[node name="PlayerHealthBarContainer" type="HFlowContainer" parent="."]
 clip_contents = true
 layout_mode = 1
 offset_left = 10.0
@@ -65,7 +95,7 @@ theme_override_constants/outline_size = 4
 theme_override_fonts/normal_font = ExtResource("5_k1iq5")
 theme_override_font_sizes/normal_font_size = 12
 bbcode_enabled = true
-text = "0[font_size=8] g[/font_size]"
+text = "0[font_size=8]  g[/font_size]"
 fit_content = true
 scroll_active = false
 autowrap_mode = 0
@@ -189,5 +219,33 @@ layout_mode = 2
 
 [node name="NotificationTimer" type="Timer" parent="."]
 one_shot = true
+
+[node name="BossHealthBarContainer" type="VFlowContainer" parent="."]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -63.0
+offset_top = -110.0
+offset_right = -15.0
+offset_bottom = 143.0
+grow_horizontal = 0
+grow_vertical = 2
+
+[node name="BossIcon" type="TextureRect" parent="BossHealthBarContainer"]
+layout_mode = 2
+texture = ExtResource("5_2t8i7")
+
+[node name="BossHealthBar" type="ProgressBar" parent="BossHealthBarContainer"]
+custom_minimum_size = Vector2(25, 200)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_styles/background = SubResource("StyleBoxFlat_doxdo")
+theme_override_styles/fill = SubResource("StyleBoxTexture_n0ckq")
+value = 50.0
+fill_mode = 3
+show_percentage = false
 
 [connection signal="pressed" from="BuffModal/BuffsContainer/BuffButton" to="." method="randomBuffSelected"]
