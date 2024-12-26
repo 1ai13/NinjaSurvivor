@@ -1,6 +1,5 @@
 using Enums;
 using Godot;
-using Godot.Collections;
 using System;
 using System.Collections.Generic;
 using static Enums.WeaponType;
@@ -251,6 +250,10 @@ public partial class Player : CharacterBody2D
 			}
 			e.takeDamage(dmg, isCrit);
 			enemiesMeleeTargeted.Add(e);
+			if (e is EnemyBoss)
+			{
+				SignalBus.bus.EmitSignal(nameof(SignalBus.bus.onBossHit), e.health);
+			}
 		}
 	}
 

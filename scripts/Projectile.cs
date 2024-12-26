@@ -104,7 +104,11 @@ public partial class Projectile : Area2D
 				dmg = EntityHelper.getVariableDamage((int)player.damage.Y);
 			}
 			enemy.takeDamage(dmg, isCrit);
-
+			if (enemy is EnemyBoss)
+			{
+				PoolEngine.instance.addToPool(this);
+				return;
+			}
 			//Enemy hit ricochet
 			if (hitRicochet > 0)
 			{

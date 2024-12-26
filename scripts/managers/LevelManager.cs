@@ -82,7 +82,7 @@ public partial class LevelManager
 		//TODO Balance trap numbers and spawns based on level/waves
 		//TODO Biome obstacles?
 		//Clear dead and unused entities and objects
-		if (level >= 1)
+		if (spawnCount != 0)
 		{
 			game.GetTree().CallGroup("Enemies", "queue_free");
 			game.GetTree().CallGroup("Projectiles", "queue_free");
@@ -94,17 +94,25 @@ public partial class LevelManager
 		}
 		level++;
 		maxWaves = 4 + level;
-		wave = 7;
-		//Get biome enemies
-		enemyScenes = new Array<PackedScene>();
-		foreach (var e in biome.enemies)
-		{
-			var name = e.ToString().Capitalize();
-			enemyScenes.Add(GD.Load<PackedScene>($"res://scenes/entities/{name}Enemy.tscn"));
-		}
+		//TODO REMOVE
+		wave = maxWaves;
 		if (level == 6)
 		{
 			swapArenas(true);
+		}
+		else
+		{
+			//Get biome enemies
+			enemyScenes = new Array<PackedScene>();
+			foreach (var e in biome.enemies)
+			{
+				var name = e.ToString().Capitalize();
+				enemyScenes.Add(GD.Load<PackedScene>($"res://scenes/entities/{name}Enemy.tscn"));
+			}
+		}
+		if (level == 0)
+		{
+			swapArenas(false);
 		}
 		generateTerrain();
 		generateArenaCells();
@@ -131,7 +139,8 @@ public partial class LevelManager
 			game.CallDeferred("add_child", boss);
 			boss.init(game.bossSpawn.Position);
 
-			level = 0;
+			level = -1;
+			spawnCount = 1;
 			layers[1].CollisionEnabled = false;
 			layers[1].Visible = false;
 			layers[2].CollisionEnabled = false;
@@ -143,6 +152,7 @@ public partial class LevelManager
 		}
 		else
 		{
+			level++;
 			layers[1].CollisionEnabled = true;
 			layers[1].Visible = true;
 			layers[2].CollisionEnabled = true;
@@ -235,7 +245,7 @@ public partial class LevelManager
 				cellPos.X = i;
 				cellPos.Y = y;
 				//Generate base terrain in case its arena area
-				if (arenaCells.Contains(cellPos) && level != 0)
+				if (arenaCells.Contains(cellPos) && level != -1)
 				{
 					layers[0].SetCell(cellPos, 0, tilesMap[biome.name][0]);
 					layers[1].SetCell(cellPos, 6, tilesMap[biome.name][0]);
@@ -256,7 +266,7 @@ public partial class LevelManager
 			var rand = rnd.Randf();
 			switch (rand)
 			{
-				case < .90f:
+				case < .80f:
 					//Create decoration
 					var isSkull = rnd.Randf() > .90f;
 					if (isSkull)
@@ -360,21 +370,41 @@ public partial class LevelManager
 	public void openLevelDoor(bool opening)
 	{
 		Array<Vector2I> door;
+		int layerIndex;
+		int sourceId;
+		string message;
+		if (level == -1)
+		{
+			message = "BIOME  COMPLETED";
+			layerIndex = 3;
+			sourceId = 2;
+		}
+		else
+		{
+			message = "LEVEL  COMPLETED";
+			layerIndex = 1;
+			sourceId = layerIndex;
+		}
 		if (opening)
 		{
-			door = layers[1].GetUsedCellsById(1, tilesMap[DOOR][0]);
-			layers[1].SetCell(door[0], 1, tilesMap[DOOR][1]);
+			if (level == -1)
+			{
+				currentBiome++;
+				biome = biomes[currentBiome];
+			}
+			door = layers[layerIndex].GetUsedCellsById(sourceId, tilesMap[DOOR][0]);
+			layers[layerIndex].SetCell(door[0], sourceId, tilesMap[DOOR][1]);
 			AssetManager.instance.playSFX("levelCompleted");
 			AssetManager.instance.playSFX("openDoor");
-			SignalBus.bus.EmitSignal(nameof(SignalBus.bus.onNotifyPlayer), $"LEVEL COMPLETED", Colors.Green);
+			SignalBus.bus.EmitSignal(nameof(SignalBus.bus.onNotifyPlayer), message, Colors.Green);
 			game.buffer.animation.Play("drop");
 			SignalBus.bus.EmitSignal(nameof(SignalBus.bus.onAutoCollectItem));
 		}
 		else
 		{
 			AssetManager.instance.playSFX("openDoor");
-			door = layers[1].GetUsedCellsById(1, tilesMap[DOOR][1]);
-			layers[1].SetCell(door[0], 1, tilesMap[DOOR][0]);
+			door = layers[layerIndex].GetUsedCellsById(sourceId, tilesMap[DOOR][1]);
+			layers[layerIndex].SetCell(door[0], sourceId, tilesMap[DOOR][0]);
 		}
 	}
 

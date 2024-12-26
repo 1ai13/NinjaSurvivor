@@ -11,18 +11,18 @@ public abstract partial class Enemy : Node2D
 	public EnemyType type;
 	public float speed;
 	public float attackRange;
-	protected int health { get; set; }
+	public int health { get; set; }
 	public int damage;
 	protected Player player;
 	public Vector2 enemyDirection { get; set; }
 	public AnimationPlayer animation;
-	private Area2D enemyArea;
+	protected Area2D enemyArea;
 	protected Sprite2D enemySprite;
 	protected Timer attackCooldown;
-	private Timer hitCooldown;
-	private ProgressBar baseHealthBar;
+	protected Timer hitCooldown;
+	protected ProgressBar baseHealthBar;
 	private ProgressBar healthBar;
-	private PackedScene healthBarLabel;
+	protected PackedScene healthBarLabel;
 	private Vector2I healthBarLabelOffset = new Vector2I(0, 6);
 	private float lerpValue = 1f;
 	private const float lerpDuration = .5f;
@@ -33,15 +33,13 @@ public abstract partial class Enemy : Node2D
 	protected abstract void performAttack();
 	protected bool randomDirection;
 	protected Vector2 distanceToPlayer;
-	private Vector2 initialHealthBarPos;
+	protected Vector2 initialHealthBarPos;
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
 		SetPhysicsProcess(false);
 		player = GetParent().GetNode<Player>("Player");
-		animation = GetNode<AnimationPlayer>("AnimationPlayer");
-		enemySprite = GetNode<Sprite2D>("EnemyArea/EnemySprite");
 		enemyArea = GetNode<Area2D>("EnemyArea");
 		attackCooldown = GetNode<Timer>("AttackCooldown");
 		hitCooldown = GetNode<Timer>("HitCooldown");
@@ -49,14 +47,19 @@ public abstract partial class Enemy : Node2D
 		initialHealthBarPos = baseHealthBar.Position;
 		healthBar = GetNode<ProgressBar>("EnemyArea/BaseHealthBar/HealthBar");
 		healthBarLabel = AssetManager.instance.enemyHealthBarLabel;
-		baseHealthBar.Value = health;
-		baseHealthBar.MaxValue = health;
-		healthBar.MaxValue = health;
-		healthBar.Value = health;
-		healthBar.SelfModulate = Colors.Green;
-		lastHealth = health;
-		animation.AnimationFinished += onAnimationFinished;
 		enemyArea.BodyEntered += onBodyCollission;
+		if (this is not EnemyBoss)
+		{
+			baseHealthBar.Value = health;
+			baseHealthBar.MaxValue = health;
+			healthBar.MaxValue = health;
+			healthBar.Value = health;
+			healthBar.SelfModulate = Colors.Green;
+			lastHealth = health;
+			enemySprite = GetNode<Sprite2D>("EnemyArea/EnemySprite");
+			animation = GetNode<AnimationPlayer>("AnimationPlayer");
+			animation.AnimationFinished += onAnimationFinished;
+		}
 	}
 
 	public override void _Process(double delta)
@@ -119,7 +122,7 @@ public abstract partial class Enemy : Node2D
 		{
 			if (!randomDirection)
 			{
-				enemyDirection = EntityHelper.getRandomDirection(enemyDirection);
+				enemyDirection = EntityHelper.getRandomDirection();
 				randomDirection = true;
 			}
 			Position += enemyDirection * speed * (float)delta;
@@ -127,7 +130,7 @@ public abstract partial class Enemy : Node2D
 		}
 	}
 
-	public void takeDamage(int damage, bool criticalHit)
+	public virtual void takeDamage(int damage, bool criticalHit)
 	{
 		if (isDead)
 		{
@@ -154,24 +157,28 @@ public abstract partial class Enemy : Node2D
 		if (health == 0)
 		{
 			//Enemy dead
-			isDead = true;
 			animation.Play("dead");
-			SignalBus.bus.EmitSignal(nameof(SignalBus.bus.onEnemyKilled));
-			playDeadSound();
-			enemyArea.SetDeferred(Area2D.PropertyName.Monitorable, false);
+			enemyDead();
 		}
 
-		//Animate the player flash hit and SFX
+		//Animate the enemy flash hit and SFX
 		var tweenSprite = CreateTween();
 		tweenSprite.TweenProperty(enemySprite, "self_modulate", new Color(4, 4, 4, 4), .2f);
 		tweenSprite.TweenProperty(enemySprite, "self_modulate", Colors.White, 0);
-		AssetManager.instance.playSFX("enemyHit", -10f);
+		AssetManager.instance.playSFX("enemyHit", -5f);
 		hitCooldown.Start();
 		animateHealthBar(damage, criticalHit);
-
 	}
 
-	private void animateHealthBar(int damage, bool criticalHit)
+	protected void enemyDead()
+	{
+		isDead = true;
+		SignalBus.bus.EmitSignal(nameof(SignalBus.bus.onEnemyKilled));
+		playDeadSound();
+		enemyArea.SetDeferred(Area2D.PropertyName.Monitorable, false);
+	}
+
+	protected void animateHealthBar(int damage, bool criticalHit)
 	{
 		//Creating labels
 		var label = healthBarLabel.Instantiate<Label>();

@@ -28,6 +28,10 @@ public partial class SignalBus : Node
 	public delegate void onSpawnEnemiesEventHandler();
 	[Signal]
 	public delegate void onAwakeBossEventHandler();
+	[Signal]
+	public delegate void onBossReadyEventHandler(bool value, int health);
+	[Signal]
+	public delegate void onBossHitEventHandler(int health);
 	//Init method
 	public override void _Ready()
 	{

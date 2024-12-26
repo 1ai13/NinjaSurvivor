@@ -227,7 +227,7 @@ animations = [{
 }],
 "loop": false,
 "name": &"charge",
-"speed": 3.0
+"speed": 5.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -244,7 +244,7 @@ animations = [{
 }],
 "loop": false,
 "name": &"hit",
-"speed": 7.0
+"speed": 5.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -308,7 +308,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"walk",
-"speed": 5.0
+"speed": 9.0
 }]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_fjjfh"]
@@ -331,18 +331,25 @@ monitorable = true
 
 [node name="BossSprite" type="AnimatedSprite2D" parent="EnemyArea" index="0"]
 sprite_frames = SubResource("SpriteFrames_32lj5")
-animation = &"walk"
+animation = &"hit"
+frame = 3
+frame_progress = 0.524407
 
 [node name="BossShape" type="CollisionShape2D" parent="EnemyArea" index="1"]
 shape = SubResource("CapsuleShape2D_fjjfh")
 
+[node name="BaseHealthBar" parent="EnemyArea" index="2"]
+visible = true
+self_modulate = Color(1, 1, 1, 0)
+offset_top = -43.0
+offset_bottom = -41.0
+
 [node name="CollidableShape" type="CharacterBody2D" parent="EnemyArea" index="4"]
-position = Vector2(0, 15)
+position = Vector2(0, 12)
 collision_layer = 2
 collision_mask = 2
 
 [node name="BossShape" type="CollisionShape2D" parent="EnemyArea/CollidableShape" index="0"]
-position = Vector2(0, -2)
 rotation = 1.57079
 shape = SubResource("CapsuleShape2D_7vgc4")
 
@@ -350,5 +357,9 @@ shape = SubResource("CapsuleShape2D_7vgc4")
 wait_time = 1.5
 one_shot = true
 
-[connection signal="body_entered" from="EnemyArea" to="." method="onBodyCollission"]
+[node name="PursueTimer" type="Timer" parent="." index="3"]
+wait_time = 3.5
+one_shot = true
+
 [connection signal="animation_finished" from="EnemyArea/BossSprite" to="." method="animationFinished"]
+[connection signal="timeout" from="PursueTimer" to="." method="pursueTimeout"]

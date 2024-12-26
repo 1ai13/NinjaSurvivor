@@ -1678,7 +1678,7 @@ _data = {
 
 [node name="Player" type="CharacterBody2D"]
 z_index = 1
-collision_mask = 6
+collision_mask = 3
 script = ExtResource("1_t7pu8")
 
 [node name="Shadow" type="Sprite2D" parent="."]
@@ -1700,6 +1700,7 @@ shape = SubResource("CapsuleShape2D_qdg2v")
 
 [node name="Area2D" type="Area2D" parent="."]
 position = Vector2(0, -6)
+collision_mask = 3
 
 [node name="MeleeWeapon" type="Sprite2D" parent="Area2D"]
 z_index = -1

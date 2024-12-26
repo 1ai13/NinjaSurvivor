@@ -1,6 +1,7 @@
 using Godot;
 using Godot.Collections;
 using System;
+using System.Data.Common;
 using System.Linq;
 public partial class HudController : Control
 {
@@ -10,6 +11,10 @@ public partial class HudController : Control
 	private VBoxContainer buffsContainer;
 	private Panel modalContainer;
 	private HBoxContainer modalBuffsContainer;
+	private VFlowContainer bossHealthBarContainer;
+	private TextureRect bossIcon;
+	private ProgressBar baseBossHealthBar;
+	private ProgressBar bossHealthBar;
 	private RichTextLabel levelCounter;
 	private RichTextLabel waveCounter;
 	private RichTextLabel goldCounter;
@@ -28,6 +33,10 @@ public partial class HudController : Control
 		buffsContainer = GetNode<VBoxContainer>("BuffsContainer");
 		modalContainer = GetNode<Panel>("BuffModal");
 		modalBuffsContainer = GetNode<HBoxContainer>("BuffModal/BuffsContainer");
+		bossHealthBarContainer = GetNode<VFlowContainer>("BossHealthBarContainer");
+		bossIcon = bossHealthBarContainer.GetNode<TextureRect>("BossIcon");
+		baseBossHealthBar = bossHealthBarContainer.GetNode<ProgressBar>("BaseBossHealthBar");
+		bossHealthBar = baseBossHealthBar.GetNode<ProgressBar>("BossHealthBar");
 		levelCounter = GetNode<RichTextLabel>("LevelInfo/LevelLabel");
 		waveCounter = GetNode<RichTextLabel>("LevelInfo/WaveLabel");
 		goldCounter = GetNode<RichTextLabel>("GoldCounter/GoldCounter");
@@ -40,6 +49,8 @@ public partial class HudController : Control
 		SignalBus.bus.onLevelCompleted += levelCompletedUpdate;
 		SignalBus.bus.onWaveCompleted += waveCompletedUpdate;
 		SignalBus.bus.onCoinCollected += coinCollected;
+		SignalBus.bus.onBossReady += setBossHealthbar;
+		SignalBus.bus.onBossHit += updateBossHealthbar;
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -218,7 +229,7 @@ public partial class HudController : Control
 
 	private void levelCompletedUpdate(int level, string icon)
 	{
-		if (level == 0)
+		if (level == -1)
 		{
 			waveCounter.Visible = false;
 			levelCounter.Text = $"[right]LEVEL\t[img=12]res://assets/textures/GUI/HUD/bossIcon.png[/img] - [img=12]{icon}[/img][/right]";
@@ -306,6 +317,35 @@ public partial class HudController : Control
 		if (maxedBuff)
 		{
 			buffer.buffs.Remove(currentRandomBuffs[index]);
+		}
+	}
+
+	private void setBossHealthbar(bool value, int health = 0)
+	{
+		baseBossHealthBar.MaxValue = health;
+		baseBossHealthBar.Value = health;
+		bossHealthBar.MaxValue = health;
+		bossHealthBar.Value = health;
+		bossHealthBar.Modulate = Colors.Red;
+		var tween = CreateTween();
+		if (value)
+		{
+			tween.TweenProperty(bossHealthBarContainer, "modulate", Colors.White, .7f);
+		}
+	}
+
+	private void updateBossHealthbar(int health)
+	{
+		bossHealthBar.Value = health;
+		var tween = CreateTween();
+		tween.TweenProperty(baseBossHealthBar, "value", health, .4f);
+		if (health == 0)
+		{
+			tween.Finished += () =>
+			{
+				var tween = CreateTween();
+				tween.TweenProperty(bossHealthBarContainer, "modulate", Color.Color8(1, 1, 1, 0), .5f);
+			};
 		}
 	}
 }

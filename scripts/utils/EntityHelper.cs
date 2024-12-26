@@ -100,17 +100,20 @@ public partial class EntityHelper : Node
 
     public static void initEnemy(Enemy e, EnemyData data)
     {
+        e.health = data.health;
         e.type = data.name;
         e.damage = data.damage;
         e.speed = data.speed;
         e.attackRange = data.range;
     }
-    public static Vector2 getRandomDirection(Vector2 direction)
+
+    public static Vector2 getRandomDirection()
     {
         var rndX = EntityHelper.rnd.RandfRange(-1, 1);
         var rndY = EntityHelper.rnd.RandfRange(-1, 1);
-        direction.X = rndX;
-        direction.Y = rndY;
-        return direction;
+        var v = Vector2.Zero;
+        v.X = rndX;
+        v.Y = rndY;
+        return v;
     }
 }
