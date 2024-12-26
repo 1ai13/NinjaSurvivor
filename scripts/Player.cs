@@ -192,7 +192,7 @@ public partial class Player : CharacterBody2D
 			//Creating Unbuffed projectile
 			if (!buffPool.ContainsKey(FRONTAL))
 			{
-				var projectile = PoolEngine.instance.pullFromPool<Projectile>();
+				var projectile = PoolEngine.pool.pullFromPool<Projectile>();
 				projectile.init(GlobalPosition, mouseDirection, mouseDirection.Angle(), this, rangedWeapon.projectileSpeed, rangedWeapon.angularSpeed, rangedWeapon.isProjectile, rangedWeapon.name, wallRicochet, hitRicochet);
 			}
 
@@ -205,10 +205,12 @@ public partial class Player : CharacterBody2D
 						//Adjusting projectile offsets based on the number of projectiles
 						for (int i = -5 * b.Value; i <= 5 * b.Value; i += 10)
 						{
-							var projectile = PoolEngine.instance.pullFromPool<Projectile>();
-							var offset = new Vector2();
+							var projectile = PoolEngine.pool.pullFromPool<Projectile>();
+							var offset = Vector2.Zero;
+							offset.X = mouseDirection.Y * i;
+							offset.Y = -mouseDirection.X * i;
 							//Perpendicular vector for offset
-							offset = new Vector2(mouseDirection.Y, -mouseDirection.X) * i;
+							// offset = new Vector2(mouseDirection.Y, -mouseDirection.X) * i;
 							projectile.init(GlobalPosition + offset, mouseDirection, mouseDirection.Angle(), this, rangedWeapon.projectileSpeed, rangedWeapon.angularSpeed, rangedWeapon.isProjectile, rangedWeapon.name, wallRicochet, hitRicochet);
 						}
 						break;
@@ -218,7 +220,7 @@ public partial class Player : CharacterBody2D
 						{
 							if (i != 0)
 							{
-								var projectile = PoolEngine.instance.pullFromPool<Projectile>();
+								var projectile = PoolEngine.pool.pullFromPool<Projectile>();
 								//Creating new offsets based on current mouse direction angle
 								var diagonal = mouseDirection.Angle() + Mathf.Pi / (i * 4 / b.Value);
 								//Using COS and SIN to convert new Offset Angle to new vector X,Y

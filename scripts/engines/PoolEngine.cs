@@ -4,13 +4,13 @@ using System;
 using System.Linq;
 public partial class PoolEngine : Node
 {
-	public static PoolEngine instance { get; private set; }
+	public static PoolEngine pool { get; private set; }
 	public Dictionary<string, Array<Area2D>> pools;
 	public Dictionary<string, PackedScene> scenes;
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
-		instance = this;
+		pool = this;
 		// Initialize pools and scenes
 		pools = new Dictionary<string, Array<Area2D>>
 	{

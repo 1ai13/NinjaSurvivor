@@ -34,7 +34,7 @@ public partial class RangedEnemy : Enemy
 		{
 			projectileDone = true;
 			enemyDirection = distanceToPlayer.Normalized();
-			var projectile = PoolEngine.instance.pullFromPool<Projectile>();
+			var projectile = PoolEngine.pool.pullFromPool<Projectile>();
 			projectile.init(GlobalPosition, enemyDirection, enemyDirection.Angle(), this, data.projectileSpeed, data.angularSpeed, data.isProjectile, type.ToString().Capitalize(), 0, 0);
 		}
 		base.onAnimationFinished(animationName);

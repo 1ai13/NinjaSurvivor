@@ -3,7 +3,7 @@ namespace Enums
     public enum AttackType
     {
         MELEE,
-        // NORMAL,
-        // SPECIAL
+        NORMAL,
+        SPECIAL_ATTACK
     }
 }

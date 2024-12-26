@@ -1678,7 +1678,7 @@ _data = {
 
 [node name="Player" type="CharacterBody2D"]
 z_index = 1
-collision_mask = 3
+collision_mask = 7
 script = ExtResource("1_t7pu8")
 
 [node name="Shadow" type="Sprite2D" parent="."]

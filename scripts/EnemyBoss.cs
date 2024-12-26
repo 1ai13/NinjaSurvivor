@@ -20,7 +20,7 @@ public partial class EnemyBoss : Enemy
 		EntityHelper.initEnemy(this, data);
 		base._Ready();
 		bossAnimation = GetNode<AnimatedSprite2D>("EnemyArea/BossSprite");
-		attackTypes = new Array<AttackType>() { MELEE };
+		attackTypes = new Array<AttackType>() { MELEE, NORMAL };
 		shape = GetNode<CharacterBody2D>("EnemyArea/CollidableShape");
 		pursueTimer = GetNode<Timer>("PursueTimer");
 		maxSpeed = speed;
@@ -103,6 +103,10 @@ public partial class EnemyBoss : Enemy
 					pursueTimer.Start();
 				}
 				break;
+			case NORMAL:
+				setAnimation(ATTACK);
+				isAttacking = true;
+				break;
 		}
 	}
 
@@ -120,7 +124,43 @@ public partial class EnemyBoss : Enemy
 				isAttacking = false;
 				attackCooldown.Start();
 				break;
+			case ATTACK:
+				Projectile projectile;
+				var playerStop = player.Velocity == Vector2.Zero;
+				isAttacking = false;
+				attackCooldown.Start();
+				generateProjectile();
+				//Stop to generate diagonal projectiles
+				if (playerStop)
+				{
+					GetTree().CreateTimer(.2f).Timeout += () =>
+					{
+						generateProjectile();
+						GetTree().CreateTimer(.2f).Timeout += () =>
+						{
+							generateProjectile();
+						};
+					};
+				}
+				else
+				{
+					for (int i = -1; i <= 1; i += 2)
+					{
+						projectile = PoolEngine.pool.pullFromPool<Projectile>();
+						var angle = enemyDirection.Angle() + Mathf.Pi / (i * 10);
+						var direction = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle));
+						projectile.init(GlobalPosition, direction, direction.Angle(), this, data.projectileSpeed, data.angularSpeed, data.isProjectile, "Bamboo", 1, 0);
+					}
+				}
+				break;
 		}
+	}
+
+	private void generateProjectile()
+	{
+		var projectile = PoolEngine.pool.pullFromPool<Projectile>();
+		enemyDirection = distanceToPlayer.Normalized();
+		projectile.init(GlobalPosition, enemyDirection, enemyDirection.Angle(), this, data.projectileSpeed, data.angularSpeed, data.isProjectile, "Bamboo", 1, 0);
 	}
 
 	private async void awakeBoss()

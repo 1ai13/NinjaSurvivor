@@ -87,8 +87,8 @@ public partial class LevelManager
 			game.GetTree().CallGroup("Enemies", "queue_free");
 			game.GetTree().CallGroup("Projectiles", "queue_free");
 			game.GetTree().CallGroup("Items", "queue_free");
-			PoolEngine.instance.pools[nameof(Projectile)].Clear();
-			PoolEngine.instance.pools[nameof(Item)].Clear();
+			PoolEngine.pool.pools[nameof(Projectile)].Clear();
+			PoolEngine.pool.pools[nameof(Item)].Clear();
 			game.buffer.animation.Stop();
 			game.buffer.resetBuffer();
 		}
@@ -170,6 +170,8 @@ public partial class LevelManager
 		var maxDistance = 9;
 		int minDistance = maxDistance - wave;
 		spawnCount = 1;
+		// spawnCount = 1 * wave + 1;
+		// spawnCount = 2 * wave + level;
 		var enemyTypes = new Array<EnemyType>();
 		switch (wave)
 		{

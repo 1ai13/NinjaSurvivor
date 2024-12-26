@@ -77,7 +77,7 @@ public abstract partial class Enemy : Node2D
 				var rnd = EntityHelper.rnd;
 				if (rnd.Randf() >= 0)
 				{
-					var item = PoolEngine.instance.pullFromPool<Item>();
+					var item = PoolEngine.pool.pullFromPool<Item>();
 					if (rnd.Randf() <= .66f)
 					{
 						item.init(GlobalPosition, COIN);

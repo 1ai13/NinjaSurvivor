@@ -21,7 +21,11 @@ public partial class Item : Area2D
 		this.type = type;
 		if (type == HEART)
 		{
-			sprite.Scale = new Vector2(.5f, .5f);
+			sprite.Scale = Vector2.One / 2;
+		}
+		else
+		{
+			sprite.Scale = Vector2.One;
 		}
 		if (!IsPhysicsProcessing())
 		{
@@ -70,7 +74,7 @@ public partial class Item : Area2D
 					AssetManager.instance.playSFX("heartHeal", -5f);
 					break;
 			}
-			PoolEngine.instance.addToPool(this);
+			PoolEngine.pool.addToPool(this);
 		}
 	}
 

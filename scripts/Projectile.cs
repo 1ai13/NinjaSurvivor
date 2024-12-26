@@ -21,10 +21,10 @@ public partial class Projectile : Area2D
 	public int hitRicochet;
 	public RayCast2D rayCast;
 
-	public void init(Vector2 position, Vector2 vel, float rotation, Node2D owner, float s, float angularS, bool isProjectile, string sprite, int wallRicochet, int hitRicochet)
+	public void init(Vector2 position, Vector2 direction, float rotation, Node2D owner, float speed, float angularS, bool isProjectile, string sprite, int wallRicochet, int hitRicochet)
 	{
 		this.owner = owner;
-		velocity = vel;
+		velocity = direction;
 		// Sets the bullet away from the entity
 		if (owner is Player)
 		{
@@ -35,9 +35,13 @@ public partial class Projectile : Area2D
 			Position = position + velocity * offset;
 		}
 		Rotation = rotation;
-		speed = s;
+		this.speed = speed;
 		angularSpeed = angularS;
 		this.isProjectile = isProjectile;
+		if (owner is EnemyBoss)
+		{
+			Scale = Vector2.One * 1.25f;
+		}
 		rayCast = GetNode<RayCast2D>("RayCast");
 		this.sprite.Animation = sprite;
 		this.wallRicochet = wallRicochet;
@@ -61,30 +65,37 @@ public partial class Projectile : Area2D
 	{
 		if (IsPhysicsProcessing())
 		{
-			//Update movement
-			Position += velocity * speed * (float)delta;
 			if (!isProjectile)
 			{
 				Rotation += angularSpeed * (float)delta;
 				rayCast.Rotation -= angularSpeed * (float)delta;
 			}
 			//Check for RayCast collisions
-			if (rayCast.IsColliding() && owner is Player)
+			if (rayCast.IsColliding() && (owner is Player || owner is EnemyBoss))
 			{
-				//Reflection formula for V and Normal (perpendicular vector against surface) Rv = 2 - (V*N)*N [Vector2.Bounce()]
+				playHitSound();
+				//Reflection formula for V and Normal (perpendicular vector against surface) Rv =V- 2 * (V*N)*N [Vector2.Bounce()]
 				if (wallRicochet > 0)
 				{
 					velocity = velocity - 2 * velocity.Dot(rayCast.GetCollisionNormal()) * rayCast.GetCollisionNormal();
 					wallRicochet--;
 					rotateProjectile();
+
 				}
 				else
 				{
-					SetPhysicsProcess(false);
+					if (owner is Player)
+					{
+						SetPhysicsProcess(false);
+					}
+					else if (rayCast.GetCollider() is not CharacterBody2D)
+					{
+						PoolEngine.pool.addToPool(this);
+					}
 				}
-				AssetManager.instance.playSFX("rangedWallHit", -5f);
 			}
-
+			//Update movement
+			Position += velocity * speed * (float)delta;
 		}
 	}
 
@@ -106,7 +117,7 @@ public partial class Projectile : Area2D
 			enemy.takeDamage(dmg, isCrit);
 			if (enemy is EnemyBoss)
 			{
-				PoolEngine.instance.addToPool(this);
+				PoolEngine.pool.addToPool(this);
 				return;
 			}
 			//Enemy hit ricochet
@@ -133,28 +144,25 @@ public partial class Projectile : Area2D
 			}
 			else
 			{
-				PoolEngine.instance.addToPool(this);
+				PoolEngine.pool.addToPool(this);
 			}
 		}
 	}
 
-	//Area Collisions
+	//Body Collisions
 	private void onBodyEntered(Node2D body)
 	{
+		playHitSound();
 		//Player collision
-		if (owner is RangedEnemy o && body is Player p)
+		if (owner is Enemy o && body is Player p)
 		{
 			p.takeDamage(o.damage);
-			playHitSound(o.type);
-			PoolEngine.instance.addToPool(this);
-
+			PoolEngine.pool.addToPool(this);
 		}
 		//Wall Collision from Enemy
-		else if (owner is RangedEnemy own)
+		else if (owner is Enemy && body is TileMapLayer)
 		{
-			playHitSound(own.type);
-			PoolEngine.instance.addToPool(this);
-
+			PoolEngine.pool.addToPool(this);
 		}
 	}
 
@@ -171,19 +179,28 @@ public partial class Projectile : Area2D
 		}
 	}
 
-	private void playHitSound(EnemyType type)
+	private void playHitSound()
 	{
-		switch (type)
+		if (owner is Player)
 		{
-			case BAT:
-				AssetManager.instance.playSFX("batAttackHit");
-				break;
-			case BAMBOO:
-				AssetManager.instance.playSFX("bambooAttackHit");
-				break;
-			default:
-				GD.PrintErr("No wall hit sound available for projectile");
-				break;
+			AssetManager.instance.playSFX("rangedWallHit");
+			return;
+		}
+		if (owner is Enemy e)
+		{
+			switch (e.type)
+			{
+				case BAT:
+					AssetManager.instance.playSFX("batAttackHit");
+					break;
+				case BAMBOO:
+				case BAMBOO_BOSS:
+					AssetManager.instance.playSFX("bambooAttackHit");
+					break;
+				default:
+					GD.PrintErr("No wall hit sound available for projectile");
+					break;
+			}
 		}
 	}
 
@@ -195,6 +212,7 @@ public partial class Projectile : Area2D
 		Rotation = 0;
 		speed = 0;
 		angularSpeed = 0;
+		Scale = Vector2.One;
 		rayCast.Rotation = 0;
 		wallRicochet = 0;
 		hitRicochet = 0;
