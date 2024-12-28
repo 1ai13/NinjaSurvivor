@@ -1,4 +1,4 @@
-[gd_scene load_steps=57 format=3 uid="uid://cg65l3alrqygr"]
+[gd_scene load_steps=59 format=3 uid="uid://cg65l3alrqygr"]
 
 [ext_resource type="PackedScene" uid="uid://copbpawgnmm4p" path="res://scenes/entities/Enemy.tscn" id="1_hhlyn"]
 [ext_resource type="Script" path="res://scripts/EnemyBoss.cs" id="2_07cpe"]
@@ -8,6 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://p1pdrdrxtwno" path="res://assets/textures/enemies/Bosses/Bamboo/Attack.png" id="5_4u86q"]
 [ext_resource type="Texture2D" uid="uid://b3ugse1au8m31" path="res://assets/textures/enemies/Bosses/Bamboo/Hit.png" id="6_fomkk"]
 [ext_resource type="Texture2D" uid="uid://demnltouj1qg8" path="res://assets/textures/enemies/Bosses/Bamboo/Walk.png" id="8_kpe7l"]
+[ext_resource type="Texture2D" uid="uid://wg0n7e3ly2wc" path="res://assets/textures/enemies/Bamboo/projectileSingle.png" id="9_mihhr"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_atdwi"]
 atlas = ExtResource("4_ps7pg")
@@ -346,7 +347,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_4d4fu")
 }],
-"loop": true,
+"loop": false,
 "name": &"special_attack",
 "speed": 6.0
 }, {
@@ -400,6 +401,10 @@ height = 52.0
 radius = 3.0
 height = 12.0
 
+[sub_resource type="Curve" id="Curve_jtqnh"]
+_data = [Vector2(0.00347222, 0.606338), 0.0, 0.0, 0, 0, Vector2(0.121528, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
 [node name="EnemyBoss" instance=ExtResource("1_hhlyn")]
 script = ExtResource("2_07cpe")
 data = ExtResource("3_1rad2")
@@ -413,8 +418,6 @@ monitorable = true
 [node name="BossSprite" type="AnimatedSprite2D" parent="EnemyArea" index="0"]
 sprite_frames = SubResource("SpriteFrames_32lj5")
 animation = &"special_attack"
-frame = 3
-frame_progress = 0.850816
 
 [node name="BossShape" type="CollisionShape2D" parent="EnemyArea" index="1"]
 shape = SubResource("CapsuleShape2D_fjjfh")
@@ -441,6 +444,25 @@ one_shot = true
 [node name="PursueTimer" type="Timer" parent="." index="3"]
 wait_time = 3.5
 one_shot = true
+
+[node name="SpecialAttackFX" type="CPUParticles2D" parent="." index="4"]
+position = Vector2(0, -31)
+emitting = false
+amount = 25
+lifetime = 1.5
+one_shot = true
+explosiveness = 0.4
+texture = ExtResource("9_mihhr")
+direction = Vector2(0, -1)
+spread = 5.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 600.0
+initial_velocity_max = 700.0
+angle_min = 90.0
+angle_max = 90.0
+scale_amount_min = 0.7
+scale_amount_max = 1.5
+scale_amount_curve = SubResource("Curve_jtqnh")
 
 [connection signal="animation_finished" from="EnemyArea/BossSprite" to="." method="animationFinished"]
 [connection signal="timeout" from="PursueTimer" to="." method="pursueTimeout"]

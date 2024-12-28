@@ -13,14 +13,22 @@ public partial class EnemyBoss : Enemy
 	private CharacterBody2D shape;
 	private bool pursuePlayer;
 	private float maxSpeed;
+	private CpuParticles2D specialAttackFX;
+	private ShapeRenderer shaper;
+	private CollisionShape2D specialAreaContainer;
+	private Rect2 specialArea;
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
 		EntityHelper.initEnemy(this, data);
 		base._Ready();
+		shaper = GetNode<ShapeRenderer>("/root/Game/Shaper");
+		specialAreaContainer = GetNode<CollisionShape2D>("/root/Game/Shaper/Area2D/CollisionShape2D");
+		specialArea = specialAreaContainer.Shape.GetRect();
 		bossAnimation = GetNode<AnimatedSprite2D>("EnemyArea/BossSprite");
-		attackTypes = new Array<AttackType>() { MELEE, NORMAL };
+		specialAttackFX = GetNode<CpuParticles2D>("SpecialAttackFX");
+		attackTypes = new Array<AttackType>() { SP_ATTACK };
 		shape = GetNode<CharacterBody2D>("EnemyArea/CollidableShape");
 		pursueTimer = GetNode<Timer>("PursueTimer");
 		maxSpeed = speed;
@@ -107,6 +115,15 @@ public partial class EnemyBoss : Enemy
 				setAnimation(ATTACK);
 				isAttacking = true;
 				break;
+			case SP_ATTACK:
+				setAnimation(SPECIAL_ATTACK);
+				isAttacking = true;
+				GD.Print("Special attack");
+				GetTree().CreateTimer(1.35f).Timeout += () =>
+				{
+					specialAttackFX.Emitting = true;
+				};
+				break;
 		}
 	}
 
@@ -115,7 +132,7 @@ public partial class EnemyBoss : Enemy
 		chooseAttack();
 	}
 
-	private void animationFinished()
+	private async void animationFinished()
 	{
 		switch (currentAnimation)
 		{
@@ -151,6 +168,27 @@ public partial class EnemyBoss : Enemy
 						var direction = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle));
 						projectile.init(GlobalPosition, direction, direction.Angle(), this, data.projectileSpeed, data.angularSpeed, data.isProjectile, "Bamboo", 1, 0);
 					}
+				}
+				break;
+			case SPECIAL_ATTACK:
+				GD.Print("Special attack finished");
+				isAttacking = false;
+				attackCooldown.Start();
+				Vector2 rndPos = player.Position;
+				for (int i = 0; i < 10; i++)
+				{
+					var offsetX = EntityHelper.rnd.RandfRange(-1, 1) * 35;
+					var offsetY = EntityHelper.rnd.RandfRange(-1, 1) * 35;
+					rndPos = new Vector2(offsetX, offsetY);
+					rndPos = player.Position + rndPos;
+					//FIXME if (!specialArea.HasPoint(player.Position))
+					// {
+					// 	GD.PrintErr("OUTSIDE RELOCATING");
+					// 	rndPos = rndPos + (ToGlobal(specialArea.GetCenter()) - rndPos).Normalized() * 10;
+					// }
+					shaper.addCircle(rndPos);
+					await ToSignal(GetTree().CreateTimer(.5), "timeout");
+					GD.Print("Painting next circle");
 				}
 				break;
 		}
@@ -233,6 +271,7 @@ namespace Enums
 		HIT,
 		WALK,
 		ATTACK,
+		SPECIAL_ATTACK,
 		CHARGE
 	}
 }

@@ -73,7 +73,11 @@ public partial class Projectile : Area2D
 			//Check for RayCast collisions
 			if (rayCast.IsColliding() && (owner is Player || owner is EnemyBoss))
 			{
-				playHitSound();
+				var collider = rayCast.GetCollider();
+				if (collider is not EnemyBoss b && owner is not EnemyBoss)
+				{
+					playHitSound();
+				}
 				//Reflection formula for V and Normal (perpendicular vector against surface) Rv =V- 2 * (V*N)*N [Vector2.Bounce()]
 				if (wallRicochet > 0)
 				{
@@ -152,16 +156,18 @@ public partial class Projectile : Area2D
 	//Body Collisions
 	private void onBodyEntered(Node2D body)
 	{
-		playHitSound();
 		//Player collision
 		if (owner is Enemy o && body is Player p)
 		{
 			p.takeDamage(o.damage);
+			playHitSound();
 			PoolEngine.pool.addToPool(this);
 		}
 		//Wall Collision from Enemy
 		else if (owner is Enemy && body is TileMapLayer)
 		{
+			if (owner is EnemyBoss && wallRicochet > 0) return;
+			playHitSound();
 			PoolEngine.pool.addToPool(this);
 		}
 	}

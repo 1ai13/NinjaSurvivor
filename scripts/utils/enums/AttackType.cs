@@ -4,6 +4,6 @@ namespace Enums
     {
         MELEE,
         NORMAL,
-        SPECIAL_ATTACK
+        SP_ATTACK
     }
 }

@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=4 uid="uid://b0w0mvnkhnene"]
+[gd_scene load_steps=14 format=4 uid="uid://b0w0mvnkhnene"]
 
 [ext_resource type="Script" path="res://scripts/controllers/GameController.cs" id="1_fmhb6"]
 [ext_resource type="PackedScene" uid="uid://by6wissqun38m" path="res://scenes/map/Arena.tscn" id="1_vwonq"]
@@ -11,6 +11,10 @@
 [ext_resource type="Resource" uid="uid://dfmocbfcrs7rp" path="res://assets/resources/maps/GrassBiome.tres" id="7_gefoh"]
 [ext_resource type="PackedScene" uid="uid://c0fa61ops184b" path="res://scenes/ui/HUD.tscn" id="7_mtukj"]
 [ext_resource type="PackedScene" uid="uid://dbaue3875uu2w" path="res://scenes/objects/Buffer.tscn" id="10_qi65a"]
+[ext_resource type="Script" path="res://scripts/managers/ShapeRenderer.cs" id="12_nisqu"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_5trka"]
+size = Vector2(219, 306)
 
 [node name="Game" type="Node2D"]
 y_sort_enabled = true
@@ -34,6 +38,20 @@ position = Vector2(190, 144)
 
 [node name="Buffer" parent="." instance=ExtResource("10_qi65a")]
 position = Vector2(607, 278)
+
+[node name="Shaper" type="Node2D" parent="."]
+script = ExtResource("12_nisqu")
+
+[node name="Area2D" type="Area2D" parent="Shaper"]
+position = Vector2(663, 429)
+collision_layer = 0
+collision_mask = 0
+monitoring = false
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Shaper/Area2D"]
+position = Vector2(0.5, -1)
+shape = SubResource("RectangleShape2D_5trka")
 
 [connection signal="onHealthChanged" from="Player" to="CanvasLayer/HUD" method="healthChanged"]
 [connection signal="onRandomBuffsGenerated" from="Buffer" to="CanvasLayer/HUD" method="randomBuffsGenerated"]
