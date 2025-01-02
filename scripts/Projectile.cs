@@ -20,6 +20,8 @@ public partial class Projectile : Area2D
 	public int wallRicochet;
 	public int hitRicochet;
 	public RayCast2D rayCast;
+	public bool specialAttack;
+	public float fallTime;
 
 	public void init(Vector2 position, Vector2 direction, float rotation, Node2D owner, float speed, float angularS, bool isProjectile, string sprite, int wallRicochet, int hitRicochet)
 	{
@@ -34,6 +36,10 @@ public partial class Projectile : Area2D
 		{
 			Position = position + velocity * offset;
 		}
+		initialPosition = Position;
+		specialAttack = false;
+		fallTime = 0;
+		Monitoring = true;
 		Rotation = rotation;
 		this.speed = speed;
 		angularSpeed = angularS;
@@ -42,7 +48,12 @@ public partial class Projectile : Area2D
 		{
 			Scale = Vector2.One * 1.25f;
 		}
+		else
+		{
+			Scale = Vector2.One;
+		}
 		rayCast = GetNode<RayCast2D>("RayCast");
+		rayCast.Enabled = true;
 		this.sprite.Animation = sprite;
 		this.wallRicochet = wallRicochet;
 		this.hitRicochet = hitRicochet;
@@ -74,17 +85,14 @@ public partial class Projectile : Area2D
 			if (rayCast.IsColliding() && (owner is Player || owner is EnemyBoss))
 			{
 				var collider = rayCast.GetCollider();
-				if (collider is not EnemyBoss b && owner is not EnemyBoss)
-				{
-					playHitSound();
-				}
+
 				//Reflection formula for V and Normal (perpendicular vector against surface) Rv =V- 2 * (V*N)*N [Vector2.Bounce()]
 				if (wallRicochet > 0)
 				{
 					velocity = velocity - 2 * velocity.Dot(rayCast.GetCollisionNormal()) * rayCast.GetCollisionNormal();
 					wallRicochet--;
 					rotateProjectile();
-
+					playHitSound();
 				}
 				else
 				{
@@ -94,9 +102,23 @@ public partial class Projectile : Area2D
 					}
 					else if (rayCast.GetCollider() is not CharacterBody2D)
 					{
+						playHitSound();
 						PoolEngine.pool.addToPool(this);
 					}
 				}
+			}
+			if (specialAttack)
+			{
+				Position = initialPosition.Lerp(initialPosition + Vector2.Down * 489, fallTime);
+				if (fallTime >= 1)
+				{
+					if (!Monitoring)
+					{
+						GetTree().CreateTimer(.025f).Timeout += deleteSpecialProjectile;
+						Monitoring = true;
+					}
+				}
+				return;
 			}
 			//Update movement
 			Position += velocity * speed * (float)delta;
@@ -161,12 +183,15 @@ public partial class Projectile : Area2D
 		{
 			p.takeDamage(o.damage);
 			playHitSound();
-			PoolEngine.pool.addToPool(this);
+			if (!specialAttack)
+			{
+				PoolEngine.pool.addToPool(this);
+			}
 		}
 		//Wall Collision from Enemy
 		else if (owner is Enemy && body is TileMapLayer)
 		{
-			if (owner is EnemyBoss && wallRicochet > 0) return;
+			if (owner is EnemyBoss && wallRicochet > 0 || owner is EnemyBoss && specialAttack) return;
 			playHitSound();
 			PoolEngine.pool.addToPool(this);
 		}
@@ -219,10 +244,19 @@ public partial class Projectile : Area2D
 		speed = 0;
 		angularSpeed = 0;
 		Scale = Vector2.One;
+		rayCast.Enabled = true;
 		rayCast.Rotation = 0;
 		wallRicochet = 0;
 		hitRicochet = 0;
 		sprite.Stop();
+		initialPosition = Vector2.Zero;
+		Monitoring = true;
+		specialAttack = false;
+		fallTime = 0;
 	}
 
+	private void deleteSpecialProjectile()
+	{
+		PoolEngine.pool.addToPool(this);
+	}
 }

@@ -15,7 +15,8 @@ public partial class EnemyBoss : Enemy
 	private float maxSpeed;
 	private CpuParticles2D specialAttackFX;
 	private ShapeRenderer shaper;
-	private CollisionShape2D specialAreaContainer;
+	private Area2D specialAreaContainer;
+	private CollisionShape2D specialAreaShape;
 	private Rect2 specialArea;
 
 	// Called when the node enters the scene tree for the first time.
@@ -24,11 +25,12 @@ public partial class EnemyBoss : Enemy
 		EntityHelper.initEnemy(this, data);
 		base._Ready();
 		shaper = GetNode<ShapeRenderer>("/root/Game/Shaper");
-		specialAreaContainer = GetNode<CollisionShape2D>("/root/Game/Shaper/Area2D/CollisionShape2D");
-		specialArea = specialAreaContainer.Shape.GetRect();
+		specialAreaContainer = GetNode<Area2D>("/root/Game/Shaper/Area2D");
+		specialAreaShape = GetNode<CollisionShape2D>("/root/Game/Shaper/Area2D/CollisionShape2D");
+		specialArea = specialAreaShape.Shape.GetRect();
 		bossAnimation = GetNode<AnimatedSprite2D>("EnemyArea/BossSprite");
 		specialAttackFX = GetNode<CpuParticles2D>("SpecialAttackFX");
-		attackTypes = new Array<AttackType>() { SP_ATTACK };
+		attackTypes = new Array<AttackType>() { MELEE, NORMAL, SP_ATTACK };
 		shape = GetNode<CharacterBody2D>("EnemyArea/CollidableShape");
 		pursueTimer = GetNode<Timer>("PursueTimer");
 		maxSpeed = speed;
@@ -171,24 +173,25 @@ public partial class EnemyBoss : Enemy
 				}
 				break;
 			case SPECIAL_ATTACK:
-				GD.Print("Special attack finished");
 				isAttacking = false;
 				attackCooldown.Start();
-				Vector2 rndPos = player.Position;
+				var rndPos = Vector2.Zero;
 				for (int i = 0; i < 10; i++)
 				{
-					var offsetX = EntityHelper.rnd.RandfRange(-1, 1) * 35;
-					var offsetY = EntityHelper.rnd.RandfRange(-1, 1) * 35;
-					rndPos = new Vector2(offsetX, offsetY);
-					rndPos = player.Position + rndPos;
-					//FIXME if (!specialArea.HasPoint(player.Position))
-					// {
-					// 	GD.PrintErr("OUTSIDE RELOCATING");
-					// 	rndPos = rndPos + (ToGlobal(specialArea.GetCenter()) - rndPos).Normalized() * 10;
-					// }
-					shaper.addCircle(rndPos);
+					var attempts = 25;
+					for (int j = attempts; j >= 1; j--)
+					{
+						var offsetX = EntityHelper.rnd.RandfRange(-1, 1) * 35;
+						var offsetY = EntityHelper.rnd.RandfRange(-1, 1) * 35;
+						rndPos = new Vector2(offsetX, offsetY);
+						rndPos = player.GlobalPosition + rndPos;
+						if (specialAreaContainer.GlobalPosition.X < rndPos.X && specialAreaContainer.GlobalPosition.Y < rndPos.Y && specialAreaContainer.GlobalPosition.X + specialArea.Size.X > rndPos.X && specialAreaContainer.GlobalPosition.Y + specialArea.Size.Y > rndPos.Y)
+						{
+							shaper.addCircle(rndPos, this);
+							break;
+						}
+					}
 					await ToSignal(GetTree().CreateTimer(.5), "timeout");
-					GD.Print("Painting next circle");
 				}
 				break;
 		}
@@ -226,7 +229,6 @@ public partial class EnemyBoss : Enemy
 
 	public override void takeDamage(int damage, bool criticalHit)
 	{
-		GD.Print("taking damage");
 		if (isDead)
 		{
 			return;

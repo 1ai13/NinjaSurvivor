@@ -446,6 +446,7 @@ wait_time = 3.5
 one_shot = true
 
 [node name="SpecialAttackFX" type="CPUParticles2D" parent="." index="4"]
+z_index = 1
 position = Vector2(0, -31)
 emitting = false
 amount = 25

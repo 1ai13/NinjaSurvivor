@@ -4,36 +4,29 @@ using Godot;
 
 public partial class ShapeRenderer : Node2D
 {
-    public List<CircleData> circles;
+    public Dictionary<Projectile, CircleData> circles;
     private const float maxCircleRadius = 17f;
     private const float speed = 10;
-
+    private EnemyBoss boss;
     public override void _Ready()
     {
-        circles = new List<CircleData>();
+        circles = new Dictionary<Projectile, CircleData>();
     }
 
     public override void _Process(double delta)
     {
-        var circlesToDelete = new List<CircleData>();
-        for (int i = 0; i < circles.Count; i++)
+        foreach (var c in circles)
         {
-            var circle = circles[i];
+            var circle = c.Value;
             circle.radius += speed * (float)delta;
-            circles[i] = circle;
+            circles[c.Key] = circle;
+            c.Key.fallTime = circle.radius / maxCircleRadius;
             if (circle.radius >= maxCircleRadius)
             {
-                circlesToDelete.Add(circle);
+                circles.Remove(c.Key);
             }
         }
-        foreach (var circle in circlesToDelete)
-        {
-            circles.Remove(circle);
-        }
-        if (circles.Count != 0)
-        {
-            QueueRedraw();
-        }
+        QueueRedraw();
     }
 
     public override void _Draw()
@@ -42,13 +35,26 @@ public partial class ShapeRenderer : Node2D
         {
             foreach (var circle in circles)
             {
-                DrawCircle(circle.position, circle.radius, Color.Color8(255, 0, 0, 255));
+                DrawCircle(circle.Value.position, circle.Value.radius, Color.Color8(200, 0, 0, 125));
             }
         }
     }
-    public void addCircle(Vector2 pos)
+    public void addCircle(Vector2 pos, EnemyBoss e)
     {
-        circles.Add(new CircleData(pos, 1));
+        if (boss == null)
+        {
+            boss = e;
+        }
+        var circle = new CircleData(pos, 1);
+        var pro = PoolEngine.pool.pullFromPool<Projectile>();
+        pro.init(circle.position + Vector2.Up * 500, Vector2.Down, Vector2.Down.Angle(), boss, 0, boss.data.angularSpeed, boss.data.isProjectile, "Bamboo", 0, 0);
+        pro.Scale = Vector2.One * 2.75f;
+        pro.ZIndex = 2;
+        pro.Monitoring = false;
+        pro.rayCast.Enabled = false;
+        pro.specialAttack = true;
+        circles.Add(pro, circle);
+        QueueRedraw();
     }
 
     public struct CircleData

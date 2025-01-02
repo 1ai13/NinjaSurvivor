@@ -7,7 +7,7 @@ using static Enums.ItemType;
 public abstract partial class Enemy : Node2D
 {
 	[Export]
-	protected EnemyData data;
+	public EnemyData data;
 	public EnemyType type;
 	public float speed;
 	public float attackRange;
