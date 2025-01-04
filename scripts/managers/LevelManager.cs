@@ -400,7 +400,10 @@ public partial class LevelManager
 			AssetManager.instance.playSFX("openDoor");
 			SignalBus.bus.EmitSignal(nameof(SignalBus.bus.onNotifyPlayer), message, Colors.Green);
 			game.buffer.animation.Play("drop");
-			SignalBus.bus.EmitSignal(nameof(SignalBus.bus.onAutoCollectItem));
+			if (level != -1)
+			{
+				SignalBus.bus.EmitSignal(nameof(SignalBus.bus.onAutoCollectItem));
+			}
 		}
 		else
 		{

@@ -12,10 +12,12 @@ public partial class Item : Area2D
 	private float initialDistance;
 	private Player player;
 	private int speed = 50;
+	private Node2D owner;
 
-	public void init(Vector2 position, ItemType type)
+	public void init(Vector2 position, ItemType type, Node2D owner)
 	{
-		Position = position;
+		this.owner = owner;
+		Position = owner.Position;
 		sprite.Animation = type.ToString().Capitalize();
 		initialDistance = -1;
 		this.type = type;
@@ -33,6 +35,17 @@ public partial class Item : Area2D
 			Show();
 		}
 		sprite.Play();
+		var tween = CreateTween();
+		tween.TweenProperty(this, "position", position, .3f);
+		if (type == PLANT_SCROLL)
+		{
+			Rotation = Mathf.Pi / 2;
+			var t = CreateTween().SetLoops();
+			t.TweenProperty(this, "skew", Mathf.Pi / 2, 1);
+			t.TweenProperty(this, "skew", -Mathf.Pi / 2, 0);
+			t.TweenProperty(this, "skew", 0, 1);
+			t.TweenInterval(0);
+		}
 		AssetManager.instance.playSFX("itemDrop");
 	}
 	// Called when the node enters the scene tree for the first time.
@@ -73,6 +86,10 @@ public partial class Item : Area2D
 					p.EmitSignal(nameof(p.onHealthChanged), 50);
 					AssetManager.instance.playSFX("heartHeal", -5f);
 					break;
+				case PLANT_SCROLL:
+					SignalBus.bus.EmitSignal(nameof(SignalBus.bus.onScrollCollected));
+					AssetManager.instance.playSFX(GD.Load<AudioStream>("res://assets/audio/items/scrollCollected.wav"));
+					break;
 			}
 			PoolEngine.pool.addToPool(this);
 		}
@@ -85,5 +102,6 @@ public partial class Item : Area2D
 		initialDistance = -1;
 		type = 0;
 		sprite.Stop();
+		Rotation = 0;
 	}
 }

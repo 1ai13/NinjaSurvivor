@@ -1,8 +1,9 @@
-[gd_scene load_steps=14 format=3 uid="uid://cwmkffonip2hc"]
+[gd_scene load_steps=15 format=3 uid="uid://cwmkffonip2hc"]
 
 [ext_resource type="Texture2D" uid="uid://07prxfd3f4vt" path="res://assets/textures/items/Coin2.png" id="1_f5kdw"]
 [ext_resource type="Script" path="res://scripts/Item.cs" id="1_mkax3"]
 [ext_resource type="Texture2D" uid="uid://3vuvxkmxaqwc" path="res://assets/textures/items/heartItem.png" id="2_qc8tx"]
+[ext_resource type="Texture2D" uid="uid://dr0e0wg7uen1n" path="res://assets/textures/items/ScrollPlant.png" id="4_ogbfx"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_dnqn7"]
 atlas = ExtResource("1_f5kdw")
@@ -71,6 +72,14 @@ animations = [{
 "loop": true,
 "name": &"Heart",
 "speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_ogbfx")
+}],
+"loop": false,
+"name": &"Plant Scroll",
+"speed": 5.0
 }]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_h2deo"]
@@ -83,9 +92,8 @@ script = ExtResource("1_mkax3")
 
 [node name="ItemSprite" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_ul73p")
-animation = &"Heart"
+animation = &"Plant Scroll"
 autoplay = "Coin"
-frame_progress = 0.513298
 
 [node name="ItemShape" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_h2deo")

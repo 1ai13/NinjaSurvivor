@@ -1,10 +1,17 @@
-[gd_scene load_steps=13 format=3 uid="uid://c0fa61ops184b"]
+[gd_scene load_steps=21 format=3 uid="uid://c0fa61ops184b"]
 
 [ext_resource type="Script" path="res://scripts/controllers/HudController.cs" id="1_icudm"]
 [ext_resource type="Texture2D" uid="uid://iey472jm1yuo" path="res://assets/textures/buffer/icons/withoutBG/goldIcon.png" id="2_56igj"]
 [ext_resource type="PackedScene" uid="uid://co541saeejs1x" path="res://scenes/ui/ModalRandomBuff.tscn" id="4_gunwc"]
 [ext_resource type="Texture2D" uid="uid://bmro4xa26i18y" path="res://assets/textures/enemies/Bosses/Bamboo/BambooFaceset.png" id="5_2t8i7"]
 [ext_resource type="FontFile" uid="uid://botklpdl5a2x1" path="res://assets/fonts/NormalFont.ttf" id="5_k1iq5"]
+[ext_resource type="Texture2D" uid="uid://dmrekqurk404y" path="res://assets/textures/items/ScrollEmpty.png" id="6_2urly"]
+[ext_resource type="Texture2D" uid="uid://dr0e0wg7uen1n" path="res://assets/textures/items/ScrollPlant.png" id="7_xs8en"]
+[ext_resource type="Texture2D" uid="uid://dx7bu82u6kp1t" path="res://assets/textures/items/ScrollEmptyDisabled.png" id="8_21qm0"]
+[ext_resource type="Texture2D" uid="uid://thlv8adnrsip" path="res://assets/textures/items/ScrollRock.png" id="8_hqvle"]
+[ext_resource type="Texture2D" uid="uid://dxa1fkyt8r827" path="res://assets/textures/items/ScrollIce.png" id="9_tymw5"]
+[ext_resource type="Texture2D" uid="uid://cq5e605ey6p0f" path="res://assets/textures/items/ScrollThunder.png" id="10_nobls"]
+[ext_resource type="Texture2D" uid="uid://xk3kdphu2u4j" path="res://assets/textures/items/ScrollFire.png" id="11_ol3kl"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_810v0"]
 font = ExtResource("5_k1iq5")
@@ -63,6 +70,12 @@ corner_radius_top_left = 1
 corner_radius_top_right = 1
 corner_radius_bottom_right = 2
 corner_radius_bottom_left = 2
+
+[sub_resource type="LabelSettings" id="LabelSettings_6xjfm"]
+font = ExtResource("5_k1iq5")
+font_size = 12
+outline_size = 3
+outline_color = Color(0, 0, 0, 1)
 
 [node name="HUD" type="Control"]
 texture_repeat = 2
@@ -268,5 +281,118 @@ value = 40.0
 allow_greater = true
 fill_mode = 3
 show_percentage = false
+
+[node name="ScrollModal" type="Panel" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -218.0
+offset_top = -141.0
+offset_right = 218.0
+offset_bottom = 141.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Title" type="Label" parent="ScrollModal"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -108.5
+offset_top = 10.0
+offset_right = 108.5
+offset_bottom = 33.0
+grow_horizontal = 2
+text = "LEAF     SCROLL    COLLECTED"
+label_settings = SubResource("LabelSettings_p1qav")
+
+[node name="TextureRect" type="TextureRect" parent="ScrollModal"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -49.0
+offset_top = -96.0
+offset_right = 49.0
+offset_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("7_xs8en")
+
+[node name="ActivationMessage" type="Label" parent="ScrollModal"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = 19.0
+offset_right = 20.0
+offset_bottom = 42.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Do   you   want  to   activate   the  scroll?"
+label_settings = SubResource("LabelSettings_6xjfm")
+
+[node name="ActiveScrollButton" type="TextureButton" parent="."]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -26.0
+offset_top = -26.0
+offset_right = -10.0
+offset_bottom = -10.0
+grow_horizontal = 0
+grow_vertical = 0
+disabled = true
+texture_normal = ExtResource("6_2urly")
+texture_disabled = ExtResource("8_21qm0")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -123.0
+offset_top = -26.0
+offset_right = -30.0
+offset_bottom = -9.0
+grow_horizontal = 0
+grow_vertical = 0
+alignment = 2
+
+[node name="ActiveScrollButton" type="TextureButton" parent="HBoxContainer"]
+layout_mode = 2
+texture_normal = ExtResource("7_xs8en")
+
+[node name="ActiveScrollButton2" type="TextureButton" parent="HBoxContainer"]
+layout_mode = 2
+texture_normal = ExtResource("8_hqvle")
+
+[node name="ActiveScrollButton3" type="TextureButton" parent="HBoxContainer"]
+layout_mode = 2
+texture_normal = ExtResource("9_tymw5")
+
+[node name="ActiveScrollButton4" type="TextureButton" parent="HBoxContainer"]
+layout_mode = 2
+texture_normal = ExtResource("10_nobls")
+
+[node name="ActiveScrollButton5" type="TextureButton" parent="HBoxContainer"]
+layout_mode = 2
+texture_normal = ExtResource("11_ol3kl")
 
 [connection signal="pressed" from="BuffModal/BuffsContainer/BuffButton" to="." method="randomBuffSelected"]

@@ -38,7 +38,6 @@ public partial class GameController : Node2D
 		trapsPosition = new Array<Rect2>();
 		new LevelManager(this, arena);
 		//TODO Add more biomes & enemies
-		//TODO Add BOSS fight
 		//TODO Add game menu & character selection
 	}
 

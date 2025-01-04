@@ -24,6 +24,7 @@ public partial class ShapeRenderer : Node2D
             if (circle.radius >= maxCircleRadius)
             {
                 circles.Remove(c.Key);
+                AssetManager.instance.playSFX("bambooBossSpecialDrop");
             }
         }
         QueueRedraw();

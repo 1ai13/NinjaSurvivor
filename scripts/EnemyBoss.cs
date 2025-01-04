@@ -65,6 +65,7 @@ public partial class EnemyBoss : Enemy
 					pursuePlayer = false;
 					setAnimation(CHARGE);
 					isAttacking = true;
+					AssetManager.instance.playSFX("bambooBossMelee");
 				}
 			}
 			Position += enemyDirection * speed * (float)delta;
@@ -106,6 +107,7 @@ public partial class EnemyBoss : Enemy
 				{
 					setAnimation(CHARGE);
 					isAttacking = true;
+					playAttackSound(attack, type);
 				}
 				else
 				{
@@ -124,6 +126,7 @@ public partial class EnemyBoss : Enemy
 				GetTree().CreateTimer(1.35f).Timeout += () =>
 				{
 					specialAttackFX.Emitting = true;
+					playAttackSound(attack, type);
 				};
 				break;
 		}
@@ -171,6 +174,7 @@ public partial class EnemyBoss : Enemy
 						projectile.init(GlobalPosition, direction, direction.Angle(), this, data.projectileSpeed, data.angularSpeed, data.isProjectile, "Bamboo", 1, 0);
 					}
 				}
+				playAttackSound();
 				break;
 			case SPECIAL_ATTACK:
 				isAttacking = false;
@@ -191,7 +195,30 @@ public partial class EnemyBoss : Enemy
 							break;
 						}
 					}
+					if (isDead)
+					{
+						break;
+					}
 					await ToSignal(GetTree().CreateTimer(.5), "timeout");
+				}
+				break;
+			case HIT:
+				var scroll = PoolEngine.pool.pullFromPool<Item>();
+				scroll.init(GlobalPosition, ItemType.PLANT_SCROLL, this);
+				var tween = CreateTween().SetParallel(true);
+				tween.TweenProperty(this, "scale", Vector2.Zero, .5f);
+				tween.TweenProperty(this, "modulate", Color.Color8(1, 1, 1, 0), .5f);
+
+				int coinCount = 15;
+				float radius = 25;
+				for (int i = 0; i < coinCount; i++)
+				{
+					// Generate a random point within a circle
+					float angle = i * Mathf.Tau / coinCount;
+					Vector2 offset = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * radius;
+					// Spawn the coin
+					var coin = PoolEngine.pool.pullFromPool<Item>();
+					coin.init(GlobalPosition + offset, ItemType.COIN, this);
 				}
 				break;
 		}
@@ -225,6 +252,7 @@ public partial class EnemyBoss : Enemy
 	{
 		bossAnimation.Play(type.ToString().ToLower());
 		currentAnimation = type;
+
 	}
 
 	public override void takeDamage(int damage, bool criticalHit)
@@ -263,6 +291,27 @@ public partial class EnemyBoss : Enemy
 		}
 	}
 
+	private void playAttackSound(AttackType type, EnemyType enemyType)
+	{
+		switch (type)
+		{
+			case MELEE:
+				GD.Print("Playing melee");
+				AssetManager.instance.playSFX("bambooBossMelee");
+				break;
+			case SP_ATTACK:
+				AssetManager.instance.playSFX("bambooBossSpecial");
+				GetTree().CreateTimer(.25f).Timeout += () =>
+				{
+					AssetManager.instance.playSFX("bambooBossSpecial");
+					GetTree().CreateTimer(.25f).Timeout += () =>
+				{
+					AssetManager.instance.playSFX("bambooBossSpecial");
+				};
+				};
+				break;
+		}
+	}
 }
 namespace Enums
 {

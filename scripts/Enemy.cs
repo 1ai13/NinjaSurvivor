@@ -77,14 +77,17 @@ public abstract partial class Enemy : Node2D
 				var rnd = EntityHelper.rnd;
 				if (rnd.Randf() >= 0)
 				{
+					float rand = EntityHelper.rnd.Randf() * Mathf.Tau;
+					var offset = new Vector2(Mathf.Cos(rand), MathF.Sin(rand) * 10);
 					var item = PoolEngine.pool.pullFromPool<Item>();
 					if (rnd.Randf() <= .66f)
 					{
-						item.init(GlobalPosition, COIN);
+
+						item.init(GlobalPosition + offset, COIN, this);
 					}
 					else
 					{
-						item.init(GlobalPosition, HEART);
+						item.init(GlobalPosition + offset, HEART, this);
 					}
 				}
 			}
@@ -252,6 +255,9 @@ public abstract partial class Enemy : Node2D
 			case BAMBOO:
 				AssetManager.instance.playSFX("deadBamboo");
 				break;
+			case BAMBOO_BOSS:
+				AssetManager.instance.playSFX(GD.Load<AudioStream>("res://assets/audio/enemies/bosses/bamboo/bambooAwake.wav"));
+				break;
 			default:
 				GD.PrintErr("No dead sound loaded for enemy");
 				break;
@@ -269,6 +275,7 @@ public abstract partial class Enemy : Node2D
 				AssetManager.instance.playSFX("batAttack");
 				break;
 			case BAMBOO:
+			case BAMBOO_BOSS:
 				AssetManager.instance.playSFX("bambooAttack", -10f);
 				break;
 			default:

@@ -6,3 +6,4 @@
 script = ExtResource("1_bjo0d")
 enemies = Array[int]([0, 1])
 name = 1
+iconPath = "res://assets/textures/GUI/HUD/desertBiomeIcon.png"
