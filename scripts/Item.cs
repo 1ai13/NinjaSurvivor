@@ -13,6 +13,7 @@ public partial class Item : Area2D
 	private Player player;
 	private int speed = 50;
 	private Node2D owner;
+	private bool isCollected;
 
 	public void init(Vector2 position, ItemType type, Node2D owner)
 	{
@@ -21,6 +22,7 @@ public partial class Item : Area2D
 		sprite.Animation = type.ToString().Capitalize();
 		initialDistance = -1;
 		this.type = type;
+		isCollected = false;
 		if (type == HEART)
 		{
 			sprite.Scale = Vector2.One / 2;
@@ -72,7 +74,7 @@ public partial class Item : Area2D
 
 	private void onBodyDetected(Node2D body)
 	{
-		if (body is Player p)
+		if (body is Player p && !isCollected)
 		{
 			switch (type)
 			{
@@ -91,12 +93,14 @@ public partial class Item : Area2D
 					AssetManager.instance.playSFX(GD.Load<AudioStream>("res://assets/audio/items/scrollCollected.wav"));
 					break;
 			}
+			isCollected = true;
 			PoolEngine.pool.addToPool(this);
 		}
 	}
 
 	public void resetItem()
 	{
+		isCollected = false;
 		Position = Vector2.Zero;
 		Scale = Vector2.One;
 		initialDistance = -1;

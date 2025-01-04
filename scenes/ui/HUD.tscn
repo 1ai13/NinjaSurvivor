@@ -308,10 +308,10 @@ offset_top = 10.0
 offset_right = 108.5
 offset_bottom = 33.0
 grow_horizontal = 2
-text = "LEAF     SCROLL    COLLECTED"
+text = "{SCROLL_NAME}     SCROLL    COLLECTED"
 label_settings = SubResource("LabelSettings_p1qav")
 
-[node name="TextureRect" type="TextureRect" parent="ScrollModal"]
+[node name="ScrollIcon" type="TextureRect" parent="ScrollModal"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -333,14 +333,15 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -20.0
-offset_top = 19.0
-offset_right = 20.0
-offset_bottom = 42.0
+offset_left = -143.0
+offset_top = 23.0
+offset_right = 142.0
+offset_bottom = 80.0
 grow_horizontal = 2
 grow_vertical = 2
-text = "Do   you   want  to   activate   the  scroll?"
+text = "The    bottom    right    Scroll    Selector    has   unlocked   the   new    Item"
 label_settings = SubResource("LabelSettings_6xjfm")
+autowrap_mode = 2
 
 [node name="ActiveScrollButton" type="TextureButton" parent="."]
 layout_mode = 1
@@ -359,7 +360,7 @@ disabled = true
 texture_normal = ExtResource("6_2urly")
 texture_disabled = ExtResource("8_21qm0")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="."]
+[node name="ScrollsContainer" type="HBoxContainer" parent="."]
 visible = false
 layout_mode = 1
 anchors_preset = 3
@@ -375,24 +376,30 @@ grow_horizontal = 0
 grow_vertical = 0
 alignment = 2
 
-[node name="ActiveScrollButton" type="TextureButton" parent="HBoxContainer"]
+[node name="LeafScroll" type="TextureButton" parent="ScrollsContainer"]
 layout_mode = 2
 texture_normal = ExtResource("7_xs8en")
 
-[node name="ActiveScrollButton2" type="TextureButton" parent="HBoxContainer"]
+[node name="RockScroll" type="TextureButton" parent="ScrollsContainer"]
 layout_mode = 2
+disabled = true
 texture_normal = ExtResource("8_hqvle")
 
-[node name="ActiveScrollButton3" type="TextureButton" parent="HBoxContainer"]
+[node name="IceScroll" type="TextureButton" parent="ScrollsContainer"]
 layout_mode = 2
+disabled = true
 texture_normal = ExtResource("9_tymw5")
 
-[node name="ActiveScrollButton4" type="TextureButton" parent="HBoxContainer"]
+[node name="LightningScroll" type="TextureButton" parent="ScrollsContainer"]
 layout_mode = 2
+disabled = true
 texture_normal = ExtResource("10_nobls")
 
-[node name="ActiveScrollButton5" type="TextureButton" parent="HBoxContainer"]
+[node name="FireScroll" type="TextureButton" parent="ScrollsContainer"]
 layout_mode = 2
+disabled = true
 texture_normal = ExtResource("11_ol3kl")
 
 [connection signal="pressed" from="BuffModal/BuffsContainer/BuffButton" to="." method="randomBuffSelected"]
+[connection signal="pressed" from="ActiveScrollButton" to="." method="scrollButtonPressed"]
+[connection signal="pressed" from="ScrollsContainer/LeafScroll" to="." method="plantScrollSelected"]

@@ -32,7 +32,7 @@ public partial class LevelManager
 	internal static int level;
 	private int wave;
 	private BiomeConfig biome;
-	private int currentBiome;
+	public static int currentBiome;
 	private Array<PackedScene> enemyScenes;
 	private int enemiesKilled;
 	private Area2D doorArea;

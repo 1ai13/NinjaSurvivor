@@ -14,6 +14,7 @@ public partial class AssetManager : Node
 	public PackedScene playerHealthBarScene;
 	public PackedScene buffStatCounter;
 	public PackedScene buffRandomBuff;
+	public Texture2D plantScroll;
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
@@ -28,6 +29,7 @@ public partial class AssetManager : Node
 		playerHealthBarScene = GD.Load<PackedScene>("res://scenes/ui/PlayerHealthBar.tscn");
 		buffStatCounter = GD.Load<PackedScene>("res://scenes/ui/BuffStatCounter.tscn");
 		buffRandomBuff = GD.Load<PackedScene>("res://scenes/ui/ModalRandomBuff.tscn");
+		plantScroll = GD.Load<Texture2D>("res://assets/textures/items/ScrollPlant.png");
 
 		//Audio Manager
 		SFXAudios = new Dictionary<string, List<AudioStream>>();

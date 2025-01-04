@@ -25,6 +25,12 @@ public partial class HudController : Control
 	private Array<Buff> currentRandomBuffs;
 	private Player player;
 	private BufferController buffer;
+	private TextureButton activeScroll;
+	private Panel scrollModal;
+	private TextureRect scrollIcon;
+	private Label scrollTitle;
+	private HBoxContainer scrollsContainer;
+	private bool escapePressed;
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
@@ -42,6 +48,11 @@ public partial class HudController : Control
 		goldCounter = GetNode<RichTextLabel>("GoldCounter/GoldCounter");
 		buffsApplied = new System.Collections.Generic.Dictionary<Buff, int>();
 		notification = GetNode<Label>("NotificationLabel");
+		activeScroll = GetNode<TextureButton>("ActiveScrollButton");
+		scrollModal = GetNode<Panel>("ScrollModal");
+		scrollIcon = GetNode<TextureRect>("ScrollModal/ScrollIcon");
+		scrollTitle = GetNode<Label>("ScrollModal/Title");
+		scrollsContainer = GetNode<HBoxContainer>("ScrollsContainer");
 		player = GetTree().CurrentScene.GetNode<Player>("Player");
 		buffer = GetTree().CurrentScene.GetNode<BufferController>("Buffer");
 		SignalBus.bus.onNotifyPlayer += showNotification;
@@ -51,11 +62,29 @@ public partial class HudController : Control
 		SignalBus.bus.onCoinCollected += coinCollected;
 		SignalBus.bus.onBossReady += setBossHealthbar;
 		SignalBus.bus.onBossHit += updateBossHealthbar;
+		SignalBus.bus.onScrollCollected += scrollCollected;
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
 	{
+		if (Input.IsKeyPressed(Key.Escape) && !escapePressed)
+		{
+			escapePressed = true;
+			if (scrollModal.Visible)
+			{
+				scrollModal.Hide();
+			}
+			else if (modalContainer.Visible)
+			{
+				modalContainer.Hide();
+				player.setPlayerProcess(true);
+			}
+		}
+		else if (!Input.IsKeyPressed(Key.Escape))
+		{
+			escapePressed = false;
+		}
 	}
 
 	private void healthChanged(int value)
@@ -302,6 +331,7 @@ public partial class HudController : Control
 
 	private void buffSelected(int index)
 	{
+		buffer.alive = false;
 		//Applying buff and hiding modal
 		buffer.bufferBubble.Play("sleep");
 		AssetManager.instance.playSFX("closeBuffer");
@@ -347,5 +377,38 @@ public partial class HudController : Control
 				tween.TweenProperty(bossHealthBarContainer, "modulate", Color.Color8(1, 1, 1, 0), .5f);
 			};
 		}
+	}
+
+	private void scrollCollected()
+	{
+		GD.Print("Current biome" + LevelManager.currentBiome);
+
+		switch (LevelManager.currentBiome)
+		{
+			case 1:
+				activeScroll.TextureNormal = AssetManager.instance.plantScroll;
+				scrollIcon.Texture = AssetManager.instance.plantScroll;
+				scrollTitle.Text = scrollTitle.Text.Replace("{SCROLL_NAME}", "LEAF");
+				break;
+		}
+		if (activeScroll.Disabled) activeScroll.Disabled = false;
+		scrollModal.Visible = true;
+	}
+
+	private void scrollButtonPressed()
+	{
+		if (scrollsContainer.Visible)
+		{
+			scrollsContainer.Hide();
+		}
+		else
+		{
+			scrollsContainer.Show();
+		}
+	}
+	private void plantScrollSelected()
+	{
+		activeScroll.TextureNormal = AssetManager.instance.plantScroll;
+		scrollsContainer.Hide();
 	}
 }

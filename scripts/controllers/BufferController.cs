@@ -14,6 +14,8 @@ public partial class BufferController : Node2D
 	private Vector2 initialPosition;
 	private Vector2 bufferInitialPos;
 	public bool areBuffsGenerated;
+	private Array<Buff> randomBuffs;
+	public bool alive;
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
@@ -23,6 +25,8 @@ public partial class BufferController : Node2D
 		bufferBubble = GetNode<AnimatedSprite2D>("BufferBody/Bubble");
 		initialPosition = bufferBody.GlobalPosition;
 		bufferInitialPos = GlobalPosition;
+		randomBuffs = new Array<Buff>();
+		alive = true;
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -32,14 +36,19 @@ public partial class BufferController : Node2D
 
 	public void onPlayerNear(Node2D body)
 	{
-		if (areBuffsGenerated) return;
-
+		if (!alive) return;
+		if (areBuffsGenerated && alive)
+		{
+			AssetManager.instance.playSFX("openBuffer");
+			EmitSignal(SignalName.onRandomBuffsGenerated, randomBuffs);
+			return;
+		}
+		randomBuffs.Clear();
 		//Generate a Random buff from Buffs Pool
 		if (body is Player p)
 		{
 			p.animation.CallDeferred("stop");
 			p.setPlayerProcess(false);
-			var randomBuffs = new Array<Buff>();
 			var currentBuffs = buffs.Duplicate();
 			var buffMinSize = 3;
 			if (buffs.Count < buffMinSize)
@@ -71,7 +80,7 @@ public partial class BufferController : Node2D
 			GlobalPosition = bufferInitialPos + Vector2.Right * 115;
 		}
 		bufferBody.GlobalPosition = initialPosition;
-		areBuffsGenerated = false;
 		bufferBubble.Play("dots");
+		alive = true;
 	}
 }
