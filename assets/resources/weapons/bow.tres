@@ -6,7 +6,7 @@
 [resource]
 script = ExtResource("1_im0os")
 name = "Bow"
-damage = 1000
+damage = 45
 texture = ExtResource("2_pk5ye")
 isProjectile = true
 projectileSpeed = 200.0

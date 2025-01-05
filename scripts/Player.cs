@@ -48,7 +48,7 @@ public partial class Player : CharacterBody2D
 		buffPool = new Godot.Collections.Dictionary<BuffType, int>();
 		criticalChance = .05f;
 		criticalDamage = 1.5f;
-		dropLuck = .75f;
+		dropLuck = .60f;
 		autoCollect = false;
 		//TODO Create Dash behaviour (maybe not)
 	}

@@ -6,7 +6,7 @@
 [resource]
 script = ExtResource("1_e1uvr")
 name = "Katana"
-damage = 5
+damage = 55
 texture = ExtResource("2_606ib")
 isProjectile = false
 projectileSpeed = 0.0

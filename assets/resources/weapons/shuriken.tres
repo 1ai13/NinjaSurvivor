@@ -6,7 +6,7 @@
 [resource]
 script = ExtResource("2_5dvri")
 name = "Shuriken"
-damage = 1000
+damage = 30
 texture = ExtResource("3_326f1")
 isProjectile = false
 projectileSpeed = 200.0

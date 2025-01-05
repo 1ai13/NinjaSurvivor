@@ -92,6 +92,7 @@ corner_radius_bottom_right = 10
 corner_radius_bottom_left = 10
 
 [node name="HUD" type="Control"]
+process_mode = 3
 texture_repeat = 2
 layout_mode = 3
 anchors_preset = 15
@@ -492,10 +493,10 @@ layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -71.5
-offset_top = 13.0
-offset_right = 71.5
-offset_bottom = 41.0
+offset_left = -47.0
+offset_top = 15.0
+offset_right = 47.0
+offset_bottom = 43.0
 grow_horizontal = 2
 text = "PAUSED"
 label_settings = SubResource("LabelSettings_p1qav")
@@ -643,14 +644,15 @@ disabled = true
 texture_normal = ExtResource("11_ol3kl")
 
 [connection signal="pressed" from="BuffModal/BuffsContainer/BuffButton" to="." method="randomBuffSelected"]
-[connection signal="hidden" from="GameOverModal" to="." method="gameOverModalHidden"]
+[connection signal="hidden" from="GameOverModal" to="." method="modalHidden"]
 [connection signal="pressed" from="GameOverModal/RestartButton" to="." method="restartPressed"]
 [connection signal="toggled" from="GameOverModal/SoundFXButton" to="." method="switchSoundFXVolume"]
 [connection signal="button_down" from="GameOverModal/MinusFX" to="." method="decreaseSoundFXVolume"]
 [connection signal="button_up" from="GameOverModal/MinusFX" to="." method="decreaseSoundFXVolume"]
 [connection signal="button_down" from="GameOverModal/PlusFX" to="." method="increaseSoundFXVolume"]
 [connection signal="button_up" from="GameOverModal/PlusFX" to="." method="increaseSoundFXVolume"]
-[connection signal="pressed" from="PauseModal/RestartButton" to="." method="restartPressed"]
+[connection signal="hidden" from="PauseModal" to="." method="modalHidden"]
+[connection signal="pressed" from="PauseModal/RestartButton" to="." method="unpauseGame"]
 [connection signal="toggled" from="PauseModal/SoundFXButton" to="." method="switchSoundFXVolume"]
 [connection signal="button_down" from="PauseModal/MinusFX" to="." method="decreaseSoundFXVolume"]
 [connection signal="button_up" from="PauseModal/MinusFX" to="." method="decreaseSoundFXVolume"]

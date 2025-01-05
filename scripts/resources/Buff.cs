@@ -74,7 +74,7 @@ public partial class Buff : Resource
                 }
                 break;
             case DROP_LUCK:
-                p.dropLuck = Math.Max(p.dropLuck - .5f, .35f);
+                p.dropLuck = Math.Max(p.dropLuck - .1f, .35f);
                 if (p.dropLuck == .35f)
                 {
                     GD.Print("Maxed");

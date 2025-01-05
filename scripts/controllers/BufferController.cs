@@ -16,6 +16,7 @@ public partial class BufferController : Node2D
 	public bool areBuffsGenerated;
 	private Array<Buff> randomBuffs;
 	public bool alive;
+	public Array<Buff> buffPool;
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
@@ -26,6 +27,7 @@ public partial class BufferController : Node2D
 		initialPosition = bufferBody.GlobalPosition;
 		bufferInitialPos = GlobalPosition;
 		randomBuffs = new Array<Buff>();
+		buffPool = buffs;
 		alive = true;
 	}
 
@@ -82,5 +84,6 @@ public partial class BufferController : Node2D
 		bufferBody.GlobalPosition = initialPosition;
 		bufferBubble.Play("dots");
 		alive = true;
+		areBuffsGenerated = false;
 	}
 }

@@ -77,7 +77,7 @@ script = ExtResource("1_n24m0")
 
 [node name="ProjectileSprite" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_ahk6n")
-animation = &"Bamboo"
+animation = &"Bow"
 
 [node name="ProjectileShape" type="CollisionShape2D" parent="."]
 shape = SubResource("CapsuleShape2D_mpsag")

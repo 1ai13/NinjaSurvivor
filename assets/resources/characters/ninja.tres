@@ -11,5 +11,5 @@ name = "Ninja"
 body = ExtResource("1_euag1")
 meleeWeapon = ExtResource("2_qwdoi")
 rangedWeapon = ExtResource("3_etng2")
-health = 500
-speed = 60.0
+health = 300
+speed = 55.0

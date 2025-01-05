@@ -36,8 +36,9 @@ public partial class HudController : Control
 	private HBoxContainer scrollsContainer;
 	private bool escapePressed;
 	private Panel gameOverModal;
-	private TextureButton soundFXSwitcher;
 	public ProgressBar soundFXSlider;
+	public Panel pausedModal;
+	public ProgressBar pausedFXSlider;
 	public float lastSoundFXVolume;
 	public int SFXBusIndex;
 	private bool minusSFX;
@@ -67,8 +68,9 @@ public partial class HudController : Control
 		scrollTitle = GetNode<Label>("ScrollModal/Title");
 		scrollsContainer = GetNode<HBoxContainer>("ScrollsContainer");
 		gameOverModal = GetNode<Panel>("GameOverModal");
-		soundFXSwitcher = GetNode<TextureButton>("GameOverModal/SoundFXButton");
 		soundFXSlider = GetNode<ProgressBar>("GameOverModal/SoundFXVolume");
+		pausedModal = GetNode<Panel>("PauseModal");
+		pausedFXSlider = GetNode<ProgressBar>("PauseModal/SoundFXVolume");
 		lastSoundFXVolume = (float)soundFXSlider.Value;
 		sliderSpeed = 10;
 		SFXBusIndex = AudioServer.GetBusIndex("SFX");
@@ -101,18 +103,28 @@ public partial class HudController : Control
 				modalContainer.Hide();
 				player.setPlayerProcess(true);
 			}
+			else if (!pausedModal.Visible && !gameOverModal.Visible)
+			{
+				pausedModal.Visible = true;
+				GetTree().Paused = true;
+			}
+			else if (pausedModal.Visible)
+			{
+				pausedModal.Visible = false;
+				GetTree().Paused = false;
+			}
 		}
 		else if (!Input.IsKeyPressed(Key.Escape))
 		{
 			escapePressed = false;
 		}
-
 		if (plusSFX)
 		{
 			sliderSpeed = Mathf.Min(40, sliderSpeed + (float)delta * 50);
 			lastSoundFXVolume += .01f * sliderSpeed * (float)delta;
 			lastSoundFXVolume = Math.Min(1, lastSoundFXVolume);
 			AudioServer.SetBusVolumeDb(SFXBusIndex, Mathf.LinearToDb(lastSoundFXVolume));
+			pausedFXSlider.Value = lastSoundFXVolume;
 			soundFXSlider.Value = lastSoundFXVolume;
 		}
 		else if (minusSFX)
@@ -121,6 +133,7 @@ public partial class HudController : Control
 			lastSoundFXVolume -= .01f * sliderSpeed * (float)delta; ;
 			lastSoundFXVolume = Math.Max(0, lastSoundFXVolume);
 			AudioServer.SetBusVolumeDb(SFXBusIndex, Mathf.LinearToDb(lastSoundFXVolume));
+			pausedFXSlider.Value = lastSoundFXVolume;
 			soundFXSlider.Value = lastSoundFXVolume;
 		}
 	}
@@ -490,12 +503,14 @@ public partial class HudController : Control
 		{
 			AudioServer.SetBusVolumeDb(SFXBusIndex, Mathf.LinearToDb(lastSoundFXVolume));
 			soundFXSlider.Value = lastSoundFXVolume;
+			pausedFXSlider.Value = lastSoundFXVolume;
 		}
 		else
 		{
 			lastSoundFXVolume = Mathf.DbToLinear(AudioServer.GetBusVolumeDb(SFXBusIndex));
 			AudioServer.SetBusVolumeDb(SFXBusIndex, -80);
 			soundFXSlider.Value = 0;
+			pausedFXSlider.Value = 0;
 		}
 	}
 
@@ -514,6 +529,7 @@ public partial class HudController : Control
 	{
 		LevelManager.level = -1;
 		LevelManager.currentBiome = 0;
+		buffer.buffs = buffer.buffPool;
 		player.loadCharacter(player.characterData, player.playerSpawn);
 		buffsContainer.Visible = false;
 		buffsContainer.GetChildren().OfType<HFlowContainer>().ToList().ForEach(x => buffsContainer.RemoveChild(x));
@@ -531,7 +547,7 @@ public partial class HudController : Control
 				break;
 		}
 	}
-	private void gameOverModalHidden()
+	private void modalHidden()
 	{
 		var statsFile = new ConfigFile();
 		Error err = statsFile.Load("user://stats.cfg");
@@ -539,12 +555,16 @@ public partial class HudController : Control
 		{
 			return;
 		}
-
 		var volume = (float)statsFile.GetValue("game", "soundFXVolume");
-		if (volume != (float)soundFXSlider.Value)
+		if (volume != (float)pausedFXSlider.Value)
 		{
-			GD.Print("volume: " + volume + " \n slider value: " + soundFXSlider.Value);
 			EmitSignal(SignalName.onSaveConfig);
 		}
+	}
+
+	private void unpauseGame()
+	{
+		pausedModal.Visible = false;
+		GetTree().Paused = false;
 	}
 }

@@ -6,7 +6,7 @@
 [resource]
 script = ExtResource("1_cfneq")
 name = "Sword"
-damage = 40
+damage = 50
 texture = ExtResource("2_oip3s")
 isProjectile = false
 projectileSpeed = 0.0

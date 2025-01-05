@@ -3,6 +3,7 @@ using Godot;
 using Godot.Collections;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using static Enums.TileType;
 
@@ -92,10 +93,9 @@ public partial class LevelManager
 			game.buffer.animation.Stop();
 			game.buffer.resetBuffer();
 		}
+
 		level++;
-		maxWaves = 4 + level;
-		//TODO REMOVE
-		wave = maxWaves;
+		wave = 0;
 		biome = biomes[currentBiome];
 		if (level == 6)
 		{
@@ -110,10 +110,12 @@ public partial class LevelManager
 				var name = e.ToString().Capitalize();
 				enemyScenes.Add(GD.Load<PackedScene>($"res://scenes/entities/{name}Enemy.tscn"));
 			}
+			maxWaves = 4 + level;
 		}
 		if (level == 0)
 		{
 			level++;
+			maxWaves++;
 			swapArenas(false);
 		}
 		generateTerrain();
@@ -124,6 +126,8 @@ public partial class LevelManager
 			SignalBus.bus.EmitSignal(nameof(SignalBus.bus.onNotifyPlayer), $"LEVEL   {level}", Colors.White);
 			//Update UI with new level
 			SignalBus.bus.EmitSignal(nameof(SignalBus.bus.onLevelCompleted), level, biome.iconPath);
+			//Update UI with new level
+			SignalBus.bus.EmitSignal(nameof(SignalBus.bus.onWaveCompleted), wave, maxWaves);
 		}
 		else
 		{//Boss notification
@@ -139,9 +143,9 @@ public partial class LevelManager
 			var boss = biome.bossScene.Instantiate<EnemyBoss>();
 			game.CallDeferred("add_child", boss);
 			boss.init(game.bossSpawn.Position);
-
 			level = -1;
 			spawnCount = 1;
+			maxWaves = 0;
 			layers[1].CollisionEnabled = false;
 			layers[1].Visible = false;
 			layers[2].CollisionEnabled = false;
@@ -169,7 +173,11 @@ public partial class LevelManager
 		wave++;
 		var maxDistance = 9;
 		int minDistance = maxDistance - wave;
-		spawnCount = 1;
+		minDistance = Math.Max(minDistance, 5);
+		if (spawnCount != 1)
+		{
+			spawnCount = wave + 1 + currentBiome;
+		}
 		// spawnCount = 1 * wave + 1;
 		// spawnCount = 2 * wave + level;
 		var enemyTypes = new Array<EnemyType>();
@@ -181,18 +189,7 @@ public partial class LevelManager
 			case 2:
 				enemyTypes.Add(biome.enemies[1]);
 				break;
-			case 3:
-				enemyTypes = biome.enemies;
-				break;
-			case 4:
-				enemyTypes = biome.enemies;
-				break;
-			case 5:
-				enemyTypes = biome.enemies;
-				break;
 			default:
-				spawnCount = 1;
-				minDistance = 4;
 				enemyTypes = biome.enemies;
 				break;
 		};

@@ -13,7 +13,7 @@ public partial class GameController : Node2D
 	private string characterSelected;
 	[Export]
 	private Character[] characters;
-	public int level = 5;
+	public int level = 0;
 	[Export]
 	public Array<BiomeConfig> biomeConfigs;
 	public Array<Rect2> trapsPosition;
@@ -56,11 +56,11 @@ public partial class GameController : Node2D
 			player.scrollsCollected = (int)statsFile.GetValue("player", "scrolls");
 			player.activeScroll = (int)statsFile.GetValue("player", "activeScroll");
 			hud.soundFXSlider.Value = (float)statsFile.GetValue("game", "soundFXVolume");
+			hud.pausedFXSlider.Value = (float)statsFile.GetValue("game", "soundFXVolume");
 			hud.lastSoundFXVolume = (float)hud.soundFXSlider.Value;
 			AudioServer.SetBusVolumeDb(hud.SFXBusIndex, (float)Mathf.LinearToDb(hud.soundFXSlider.Value));
 			SignalBus.bus.EmitSignal(nameof(SignalBus.bus.onCoinCollected));
 			SignalBus.bus.EmitSignal(nameof(SignalBus.bus.onScrollUpdate));
-			GD.Print("player gold" + player.gold);
 		}
 		new LevelManager(this, arena);
 
@@ -96,7 +96,7 @@ public partial class GameController : Node2D
 		statsFile.SetValue("player", "scrolls", player.scrollsCollected);
 		statsFile.SetValue("player", "activeScroll", player.activeScroll);
 		statsFile.Save("user://stats.cfg");
-		GD.Print("SAving file");
+		GD.Print("Saving stats");
 	}
 	private void saveConfig()
 	{
@@ -106,8 +106,7 @@ public partial class GameController : Node2D
 		{
 			return;
 		}
-		statsFile.SetValue("game", "soundFXVolume", hud.soundFXSlider.Value);
+		statsFile.SetValue("game", "soundFXVolume", hud.pausedFXSlider.Value);
 		statsFile.Save("user://stats.cfg");
-		GD.Print("Saving confgig");
 	}
 }
