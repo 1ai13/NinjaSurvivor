@@ -73,6 +73,7 @@ public partial class AssetManager : Node
 		addSFX("bambooBossMelee", "res://assets/audio/enemies/bosses/bamboo/bambooBossMelee.wav");
 		addSFX("bambooBossSpecial", "res://assets/audio/enemies/bosses/bamboo/bambooBossSpecial.wav");
 		addSFX("bambooBossSpecialDrop", "res://assets/audio/enemies/bosses/bamboo/bambooBossSpecialDrop.wav");
+		addSFX("gameOver", "res://assets/audio/ui/GameOver.wav");
 
 		//Playing it without AudioStream for PolyphonicPlayback assignment not null
 		SFXPlayer.Play();

@@ -53,5 +53,7 @@ monitorable = false
 position = Vector2(108.25, 153)
 shape = SubResource("RectangleShape2D_5trka")
 
+[connection signal="onSaveConfig" from="CanvasLayer/HUD" to="." method="saveConfig"]
+[connection signal="onSaveGame" from="CanvasLayer/HUD" to="." method="saveGame"]
 [connection signal="onHealthChanged" from="Player" to="CanvasLayer/HUD" method="healthChanged"]
 [connection signal="onRandomBuffsGenerated" from="Buffer" to="CanvasLayer/HUD" method="randomBuffsGenerated"]

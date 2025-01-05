@@ -22,7 +22,7 @@ public partial class Player : CharacterBody2D
 	public Timer attackCooldown;
 	private HashSet<Enemy> enemiesMeleeTargeted;
 	private WeaponType currentType = MELEE;
-	private Character characterData;
+	public Character characterData;
 	public Camera2D camera;
 	public Godot.Collections.Dictionary<BuffType, int> buffPool;
 	public int gold;
@@ -30,7 +30,9 @@ public partial class Player : CharacterBody2D
 	public float criticalDamage;
 	public float dropLuck;
 	public bool autoCollect;
-	private Vector2 playerSpawn;
+	public Vector2 playerSpawn;
+	public int scrollsCollected;
+	public int activeScroll;
 
 	public override void _Ready()
 	{
@@ -44,7 +46,6 @@ public partial class Player : CharacterBody2D
 		SignalBus.bus.onAutoCollectItem += autoCollectMode;
 		camera = GetNode<Camera2D>("Camera2D");
 		buffPool = new Godot.Collections.Dictionary<BuffType, int>();
-		gold = 0;
 		criticalChance = .05f;
 		criticalDamage = 1.5f;
 		dropLuck = .75f;
@@ -146,6 +147,7 @@ public partial class Player : CharacterBody2D
 		speed = c.speed;
 		characterData = c;
 		SignalBus.bus.EmitSignal(nameof(SignalBus.bus.onPlayerHealthBarUpdate), health);
+		buffPool.Clear();
 		finishedAnimation(false);
 	}
 
@@ -261,9 +263,14 @@ public partial class Player : CharacterBody2D
 
 	public void takeDamage(int damage)
 	{
+		if (health == 0) return;
 		EmitSignal(SignalName.onHealthChanged, -damage);
 		health -= damage;
 		health = Math.Max(0, health);
+		if (health == 0)
+		{
+			SignalBus.bus.EmitSignal(nameof(SignalBus.bus.onGameOver));
+		}
 		//Hurt animation
 		var tween = CreateTween();
 		tween.TweenProperty(playerSprite, "self_modulate", Colors.DarkRed, .2f);
@@ -305,7 +312,7 @@ public partial class Player : CharacterBody2D
 
 	}
 
-	private async void finishedAnimation(bool arenaBoss)
+	public async void finishedAnimation(bool arenaBoss)
 	{
 		//TODO Remove when char select avaiable
 		setPlayerProcess(false);
@@ -327,9 +334,13 @@ public partial class Player : CharacterBody2D
 			}));
 			tween.TweenProperty(camera, "offset", Vector2.Up * 200, 1f);
 		}
-
 		//After finished animation spawn enemies or wake up boss
 		await tween.ToSignal(tween, "finished");
+		if (LevelManager.currentBiome == 1)
+		{
+			SignalBus.bus.EmitSignal(nameof(SignalBus.bus.onGameOver));
+			return;
+		}
 		if (LevelManager.level > 0)
 		{
 			setPlayerProcess(true);

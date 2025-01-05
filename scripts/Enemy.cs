@@ -75,7 +75,7 @@ public abstract partial class Enemy : Node2D
 				baseHealthBar.Visible = false;
 				//Create random item
 				var rnd = EntityHelper.rnd;
-				if (rnd.Randf() >= 0)
+				if (rnd.Randf() >= player.dropLuck)
 				{
 					float rand = EntityHelper.rnd.Randf() * Mathf.Tau;
 					var offset = new Vector2(Mathf.Cos(rand), MathF.Sin(rand) * 10);
@@ -97,7 +97,7 @@ public abstract partial class Enemy : Node2D
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _PhysicsProcess(double delta)
 	{
-		if (isDead)
+		if (isDead || player.health == 0)
 		{
 			SetPhysicsProcess(false);
 			return;
@@ -284,11 +284,16 @@ public abstract partial class Enemy : Node2D
 		}
 	}
 
-	private void onBodyCollission(Node2D body)
+	protected void onBodyCollission(Node2D body)
 	{
 		if (body is TileMapLayer)
 		{
 			enemyDirection *= -1;
 		}
+	}
+
+	protected void setEnemyProcess(bool value)
+	{
+		SetPhysicsProcess(value);
 	}
 }

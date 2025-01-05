@@ -74,8 +74,10 @@ public partial class Item : Area2D
 
 	private void onBodyDetected(Node2D body)
 	{
-		if (body is Player p && !isCollected)
+		if (isCollected) return;
+		if (body is Player p)
 		{
+			isCollected = true;
 			switch (type)
 			{
 				case COIN:
@@ -93,14 +95,12 @@ public partial class Item : Area2D
 					AssetManager.instance.playSFX(GD.Load<AudioStream>("res://assets/audio/items/scrollCollected.wav"));
 					break;
 			}
-			isCollected = true;
 			PoolEngine.pool.addToPool(this);
 		}
 	}
 
 	public void resetItem()
 	{
-		isCollected = false;
 		Position = Vector2.Zero;
 		Scale = Vector2.One;
 		initialDistance = -1;

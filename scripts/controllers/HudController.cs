@@ -5,6 +5,10 @@ using System.Data.Common;
 using System.Linq;
 public partial class HudController : Control
 {
+	[Signal]
+	public delegate void onSaveGameEventHandler();
+	[Signal]
+	public delegate void onSaveConfigEventHandler();
 	private const string smallFontCounter = "[font_size=8]x[/font_size]";
 	private TextureProgressBar healthBar;
 	private HFlowContainer healthBarContainer;
@@ -31,8 +35,17 @@ public partial class HudController : Control
 	private Label scrollTitle;
 	private HBoxContainer scrollsContainer;
 	private bool escapePressed;
+	private Panel gameOverModal;
+	private TextureButton soundFXSwitcher;
+	public ProgressBar soundFXSlider;
+	public float lastSoundFXVolume;
+	public int SFXBusIndex;
+	private bool minusSFX;
+	private bool plusSFX;
+	private float sliderSpeed;
 
 	// Called when the node enters the scene tree for the first time.
+
 	public override void _Ready()
 	{
 		healthBarContainer = GetNode<HFlowContainer>("PlayerHealthBarContainer");
@@ -53,6 +66,12 @@ public partial class HudController : Control
 		scrollIcon = GetNode<TextureRect>("ScrollModal/ScrollIcon");
 		scrollTitle = GetNode<Label>("ScrollModal/Title");
 		scrollsContainer = GetNode<HBoxContainer>("ScrollsContainer");
+		gameOverModal = GetNode<Panel>("GameOverModal");
+		soundFXSwitcher = GetNode<TextureButton>("GameOverModal/SoundFXButton");
+		soundFXSlider = GetNode<ProgressBar>("GameOverModal/SoundFXVolume");
+		lastSoundFXVolume = (float)soundFXSlider.Value;
+		sliderSpeed = 10;
+		SFXBusIndex = AudioServer.GetBusIndex("SFX");
 		player = GetTree().CurrentScene.GetNode<Player>("Player");
 		buffer = GetTree().CurrentScene.GetNode<BufferController>("Buffer");
 		SignalBus.bus.onNotifyPlayer += showNotification;
@@ -63,6 +82,8 @@ public partial class HudController : Control
 		SignalBus.bus.onBossReady += setBossHealthbar;
 		SignalBus.bus.onBossHit += updateBossHealthbar;
 		SignalBus.bus.onScrollCollected += scrollCollected;
+		SignalBus.bus.onGameOver += gameOver;
+		SignalBus.bus.onScrollUpdate += updateActiveScroll;
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -84,6 +105,23 @@ public partial class HudController : Control
 		else if (!Input.IsKeyPressed(Key.Escape))
 		{
 			escapePressed = false;
+		}
+
+		if (plusSFX)
+		{
+			sliderSpeed = Mathf.Min(40, sliderSpeed + (float)delta * 50);
+			lastSoundFXVolume += .01f * sliderSpeed * (float)delta;
+			lastSoundFXVolume = Math.Min(1, lastSoundFXVolume);
+			AudioServer.SetBusVolumeDb(SFXBusIndex, Mathf.LinearToDb(lastSoundFXVolume));
+			soundFXSlider.Value = lastSoundFXVolume;
+		}
+		else if (minusSFX)
+		{
+			sliderSpeed = Mathf.Min(40, sliderSpeed + (float)delta * 50);
+			lastSoundFXVolume -= .01f * sliderSpeed * (float)delta; ;
+			lastSoundFXVolume = Math.Max(0, lastSoundFXVolume);
+			AudioServer.SetBusVolumeDb(SFXBusIndex, Mathf.LinearToDb(lastSoundFXVolume));
+			soundFXSlider.Value = lastSoundFXVolume;
 		}
 	}
 
@@ -176,17 +214,37 @@ public partial class HudController : Control
 	//Notify player and animates de message
 	private async void showNotification(string message, Color color)
 	{
+		var duration = 1;
 		if (tween != null && tween.IsRunning())
 		{
 			await ToSignal(tween, "finished");
+		}
+		if (message.StartsWith("DEMO"))
+		{
+			AssetManager.instance.playSFX(GD.Load<AudioStream>("res://assets/audio/ui/victoryFX.wav"));
+			player.setPlayerProcess(false);
+			player.animation.CallDeferred("stop");
+			duration = 3;
+		}
+		if (message.StartsWith("GAME"))
+		{
+			AssetManager.instance.playSFX("gameOver");
+			player.setPlayerProcess(false);
+			player.animation.CallDeferred("stop");
+			duration = 2;
 		}
 		tween = this.CreateTween();
 		notification.Text = message;
 		tween.TweenProperty(notification, "visible", true, .3f);
 		tween.TweenProperty(notification, "self_modulate", color, .5f);
-		tween.TweenProperty(notification, "visible", true, 1);
+		tween.TweenProperty(notification, "visible", true, duration);
 		tween.TweenProperty(notification, "self_modulate", Color.Color8(1, 1, 1, 0), .5f);
 		tween.TweenProperty(notification, "visible", true, 0);
+		if (message.StartsWith("DEMO") || message.StartsWith("GAME"))
+		{
+			await ToSignal(tween, "finished");
+			gameOverModal.Visible = true;
+		}
 	}
 
 	private void playerBuffAdded(Buff buff)
@@ -381,18 +439,19 @@ public partial class HudController : Control
 
 	private void scrollCollected()
 	{
-		GD.Print("Current biome" + LevelManager.currentBiome);
-
-		switch (LevelManager.currentBiome)
+		player.scrollsCollected++;
+		switch (LevelManager.currentBiome - 1)
 		{
-			case 1:
+			case 0:
 				activeScroll.TextureNormal = AssetManager.instance.plantScroll;
 				scrollIcon.Texture = AssetManager.instance.plantScroll;
 				scrollTitle.Text = scrollTitle.Text.Replace("{SCROLL_NAME}", "LEAF");
+				player.activeScroll = 1;
 				break;
 		}
 		if (activeScroll.Disabled) activeScroll.Disabled = false;
 		scrollModal.Visible = true;
+		EmitSignal(SignalName.onSaveGame);
 	}
 
 	private void scrollButtonPressed()
@@ -410,5 +469,82 @@ public partial class HudController : Control
 	{
 		activeScroll.TextureNormal = AssetManager.instance.plantScroll;
 		scrollsContainer.Hide();
+	}
+
+	private void gameOver()
+	{
+		EmitSignal(SignalName.onSaveGame);
+		if (player.health == 0)
+		{
+			showNotification("GAME   OVER", Colors.Red);
+		}
+		else
+		{
+			showNotification("DEMO   FINISHED\nTHANKS   FOR   PLAYING\nFEEL   FREE   TO   GIVE   FEEDBACK   :)", Colors.White);
+		}
+	}
+
+	private void switchSoundFXVolume(bool toggle)
+	{
+		if (!toggle)
+		{
+			AudioServer.SetBusVolumeDb(SFXBusIndex, Mathf.LinearToDb(lastSoundFXVolume));
+			soundFXSlider.Value = lastSoundFXVolume;
+		}
+		else
+		{
+			lastSoundFXVolume = Mathf.DbToLinear(AudioServer.GetBusVolumeDb(SFXBusIndex));
+			AudioServer.SetBusVolumeDb(SFXBusIndex, -80);
+			soundFXSlider.Value = 0;
+		}
+	}
+
+	private void decreaseSoundFXVolume()
+	{
+		sliderSpeed = 10;
+		minusSFX = !minusSFX;
+	}
+
+	private void increaseSoundFXVolume()
+	{
+		sliderSpeed = 10;
+		plusSFX = !plusSFX;
+	}
+	private void restartPressed()
+	{
+		LevelManager.level = -1;
+		LevelManager.currentBiome = 0;
+		player.loadCharacter(player.characterData, player.playerSpawn);
+		buffsContainer.Visible = false;
+		buffsContainer.GetChildren().OfType<HFlowContainer>().ToList().ForEach(x => buffsContainer.RemoveChild(x));
+		gameOverModal.Visible = false;
+		bossHealthBarContainer.Visible = false;
+	}
+
+	private void updateActiveScroll()
+	{
+		switch (player.activeScroll)
+		{
+			case 1:
+				activeScroll.TextureNormal = AssetManager.instance.plantScroll;
+				activeScroll.Disabled = false;
+				break;
+		}
+	}
+	private void gameOverModalHidden()
+	{
+		var statsFile = new ConfigFile();
+		Error err = statsFile.Load("user://stats.cfg");
+		if (err != Error.Ok)
+		{
+			return;
+		}
+
+		var volume = (float)statsFile.GetValue("game", "soundFXVolume");
+		if (volume != (float)soundFXSlider.Value)
+		{
+			GD.Print("volume: " + volume + " \n slider value: " + soundFXSlider.Value);
+			EmitSignal(SignalName.onSaveConfig);
+		}
 	}
 }

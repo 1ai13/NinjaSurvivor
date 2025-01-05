@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://c0fa61ops184b"]
+[gd_scene load_steps=27 format=3 uid="uid://c0fa61ops184b"]
 
 [ext_resource type="Script" path="res://scripts/controllers/HudController.cs" id="1_icudm"]
 [ext_resource type="Texture2D" uid="uid://iey472jm1yuo" path="res://assets/textures/buffer/icons/withoutBG/goldIcon.png" id="2_56igj"]
@@ -6,9 +6,13 @@
 [ext_resource type="Texture2D" uid="uid://bmro4xa26i18y" path="res://assets/textures/enemies/Bosses/Bamboo/BambooFaceset.png" id="5_2t8i7"]
 [ext_resource type="FontFile" uid="uid://botklpdl5a2x1" path="res://assets/fonts/NormalFont.ttf" id="5_k1iq5"]
 [ext_resource type="Texture2D" uid="uid://dmrekqurk404y" path="res://assets/textures/items/ScrollEmpty.png" id="6_2urly"]
+[ext_resource type="Texture2D" uid="uid://d3x8w1x2fbpod" path="res://assets/textures/GUI/HUD/SoundFXIcon.png" id="7_a0143"]
+[ext_resource type="Texture2D" uid="uid://bvlrschk87r8n" path="res://assets/textures/GUI/HUD/SoundFXMute.png" id="7_nm1yn"]
 [ext_resource type="Texture2D" uid="uid://dr0e0wg7uen1n" path="res://assets/textures/items/ScrollPlant.png" id="7_xs8en"]
+[ext_resource type="Texture2D" uid="uid://dbrj0jppv33i2" path="res://assets/textures/GUI/HUD/minus.png" id="8_2hlv7"]
 [ext_resource type="Texture2D" uid="uid://dx7bu82u6kp1t" path="res://assets/textures/items/ScrollEmptyDisabled.png" id="8_21qm0"]
 [ext_resource type="Texture2D" uid="uid://thlv8adnrsip" path="res://assets/textures/items/ScrollRock.png" id="8_hqvle"]
+[ext_resource type="Texture2D" uid="uid://xm0tqev54c55" path="res://assets/textures/GUI/HUD/plus.png" id="9_gvjne"]
 [ext_resource type="Texture2D" uid="uid://dxa1fkyt8r827" path="res://assets/textures/items/ScrollIce.png" id="9_tymw5"]
 [ext_resource type="Texture2D" uid="uid://cq5e605ey6p0f" path="res://assets/textures/items/ScrollThunder.png" id="10_nobls"]
 [ext_resource type="Texture2D" uid="uid://xk3kdphu2u4j" path="res://assets/textures/items/ScrollFire.png" id="11_ol3kl"]
@@ -30,6 +34,7 @@ shadow_color = Color(0, 0, 0, 0.5)
 
 [sub_resource type="LabelSettings" id="LabelSettings_p1qav"]
 font = ExtResource("5_k1iq5")
+font_size = 20
 outline_size = 4
 outline_color = Color(0, 0, 0, 1)
 shadow_size = 5
@@ -76,6 +81,15 @@ font = ExtResource("5_k1iq5")
 font_size = 12
 outline_size = 3
 outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_tek7y"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_e4b84"]
+bg_color = Color(1.44392e-06, 0.71323, 0.438818, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
 
 [node name="HUD" type="Control"]
 texture_repeat = 2
@@ -290,10 +304,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -218.0
-offset_top = -141.0
-offset_right = 218.0
-offset_bottom = 141.0
+offset_left = -198.5
+offset_top = -114.0
+offset_right = 198.5
+offset_bottom = 114.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
@@ -319,9 +333,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -49.0
-offset_top = -96.0
+offset_top = -64.0
 offset_right = 49.0
-offset_bottom = 1.0
+offset_bottom = 33.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("7_xs8en")
@@ -333,15 +347,243 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -143.0
-offset_top = 23.0
-offset_right = 142.0
-offset_bottom = 80.0
+offset_left = -142.5
+offset_top = 46.0
+offset_right = 142.5
+offset_bottom = 83.0
 grow_horizontal = 2
 grow_vertical = 2
 text = "The    bottom    right    Scroll    Selector    has   unlocked   the   new    Item"
 label_settings = SubResource("LabelSettings_6xjfm")
 autowrap_mode = 2
+
+[node name="GameOverModal" type="Panel" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -99.0
+offset_top = -114.0
+offset_right = 100.0
+offset_bottom = 83.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Title" type="Label" parent="GameOverModal"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -71.5
+offset_top = 13.0
+offset_right = 71.5
+offset_bottom = 41.0
+grow_horizontal = 2
+text = "GAME      OVER"
+label_settings = SubResource("LabelSettings_p1qav")
+horizontal_alignment = 1
+
+[node name="RestartButton" type="Button" parent="GameOverModal"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -55.5
+offset_top = -33.5
+offset_right = 55.5
+offset_bottom = -5.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/outline_size = 3
+theme_override_fonts/font = ExtResource("5_k1iq5")
+theme_override_font_sizes/font_size = 14
+text = "PLAY   AGAIN"
+
+[node name="MenuButton" type="Button" parent="GameOverModal"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -64.0
+offset_top = 11.5
+offset_right = 64.0
+offset_bottom = 39.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/outline_size = 3
+theme_override_fonts/font = ExtResource("5_k1iq5")
+theme_override_font_sizes/font_size = 14
+text = "BACK   TO   MENU"
+
+[node name="SoundFXVolume" type="ProgressBar" parent="GameOverModal"]
+layout_mode = 0
+offset_left = 74.5
+offset_top = 167.0
+offset_right = 150.5
+offset_bottom = 178.0
+theme_override_constants/outline_size = 3
+theme_override_fonts/font = ExtResource("5_k1iq5")
+theme_override_font_sizes/font_size = 8
+theme_override_styles/background = SubResource("StyleBoxEmpty_tek7y")
+theme_override_styles/fill = SubResource("StyleBoxFlat_e4b84")
+max_value = 1.0
+step = 0.001
+value = 1.0
+
+[node name="SoundFXButton" type="TextureButton" parent="GameOverModal"]
+clip_contents = true
+layout_mode = 0
+offset_left = 15.0
+offset_top = 160.0
+offset_right = 40.0
+offset_bottom = 185.0
+toggle_mode = true
+texture_normal = ExtResource("7_a0143")
+texture_pressed = ExtResource("7_nm1yn")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="MinusFX" type="TextureButton" parent="GameOverModal"]
+layout_mode = 0
+offset_left = 55.0
+offset_top = 165.0
+offset_right = 70.0
+offset_bottom = 180.0
+texture_normal = ExtResource("8_2hlv7")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="PlusFX" type="TextureButton" parent="GameOverModal"]
+layout_mode = 0
+offset_left = 157.5
+offset_top = 165.0
+offset_right = 172.5
+offset_bottom = 180.0
+texture_normal = ExtResource("9_gvjne")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="PauseModal" type="Panel" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -99.0
+offset_top = -114.0
+offset_right = 100.0
+offset_bottom = 83.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Title" type="Label" parent="PauseModal"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -71.5
+offset_top = 13.0
+offset_right = 71.5
+offset_bottom = 41.0
+grow_horizontal = 2
+text = "PAUSED"
+label_settings = SubResource("LabelSettings_p1qav")
+horizontal_alignment = 1
+
+[node name="RestartButton" type="Button" parent="PauseModal"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -37.5
+offset_top = -33.5
+offset_right = 37.5
+offset_bottom = -5.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/outline_size = 3
+theme_override_fonts/font = ExtResource("5_k1iq5")
+theme_override_font_sizes/font_size = 14
+text = "RESUME"
+
+[node name="MenuButton" type="Button" parent="PauseModal"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -64.0
+offset_top = 11.5
+offset_right = 64.0
+offset_bottom = 39.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/outline_size = 3
+theme_override_fonts/font = ExtResource("5_k1iq5")
+theme_override_font_sizes/font_size = 14
+text = "BACK   TO   MENU"
+
+[node name="SoundFXVolume" type="ProgressBar" parent="PauseModal"]
+layout_mode = 0
+offset_left = 74.5
+offset_top = 167.0
+offset_right = 150.5
+offset_bottom = 178.0
+theme_override_constants/outline_size = 3
+theme_override_fonts/font = ExtResource("5_k1iq5")
+theme_override_font_sizes/font_size = 8
+theme_override_styles/background = SubResource("StyleBoxEmpty_tek7y")
+theme_override_styles/fill = SubResource("StyleBoxFlat_e4b84")
+max_value = 1.0
+step = 0.001
+value = 1.0
+
+[node name="SoundFXButton" type="TextureButton" parent="PauseModal"]
+clip_contents = true
+layout_mode = 0
+offset_left = 15.0
+offset_top = 160.0
+offset_right = 40.0
+offset_bottom = 185.0
+toggle_mode = true
+texture_normal = ExtResource("7_a0143")
+texture_pressed = ExtResource("7_nm1yn")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="MinusFX" type="TextureButton" parent="PauseModal"]
+layout_mode = 0
+offset_left = 55.0
+offset_top = 165.0
+offset_right = 70.0
+offset_bottom = 180.0
+texture_normal = ExtResource("8_2hlv7")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="PlusFX" type="TextureButton" parent="PauseModal"]
+layout_mode = 0
+offset_left = 157.5
+offset_top = 165.0
+offset_right = 172.5
+offset_bottom = 180.0
+texture_normal = ExtResource("9_gvjne")
+ignore_texture_size = true
+stretch_mode = 0
 
 [node name="ActiveScrollButton" type="TextureButton" parent="."]
 layout_mode = 1
@@ -401,5 +643,18 @@ disabled = true
 texture_normal = ExtResource("11_ol3kl")
 
 [connection signal="pressed" from="BuffModal/BuffsContainer/BuffButton" to="." method="randomBuffSelected"]
+[connection signal="hidden" from="GameOverModal" to="." method="gameOverModalHidden"]
+[connection signal="pressed" from="GameOverModal/RestartButton" to="." method="restartPressed"]
+[connection signal="toggled" from="GameOverModal/SoundFXButton" to="." method="switchSoundFXVolume"]
+[connection signal="button_down" from="GameOverModal/MinusFX" to="." method="decreaseSoundFXVolume"]
+[connection signal="button_up" from="GameOverModal/MinusFX" to="." method="decreaseSoundFXVolume"]
+[connection signal="button_down" from="GameOverModal/PlusFX" to="." method="increaseSoundFXVolume"]
+[connection signal="button_up" from="GameOverModal/PlusFX" to="." method="increaseSoundFXVolume"]
+[connection signal="pressed" from="PauseModal/RestartButton" to="." method="restartPressed"]
+[connection signal="toggled" from="PauseModal/SoundFXButton" to="." method="switchSoundFXVolume"]
+[connection signal="button_down" from="PauseModal/MinusFX" to="." method="decreaseSoundFXVolume"]
+[connection signal="button_up" from="PauseModal/MinusFX" to="." method="decreaseSoundFXVolume"]
+[connection signal="button_down" from="PauseModal/PlusFX" to="." method="increaseSoundFXVolume"]
+[connection signal="button_up" from="PauseModal/PlusFX" to="." method="increaseSoundFXVolume"]
 [connection signal="pressed" from="ActiveScrollButton" to="." method="scrollButtonPressed"]
 [connection signal="pressed" from="ScrollsContainer/LeafScroll" to="." method="plantScrollSelected"]

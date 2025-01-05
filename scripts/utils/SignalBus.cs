@@ -34,6 +34,10 @@ public partial class SignalBus : Node
 	public delegate void onBossHitEventHandler(int health);
 	[Signal]
 	public delegate void onScrollCollectedEventHandler();
+	[Signal]
+	public delegate void onGameOverEventHandler();
+	[Signal]
+	public delegate void onScrollUpdateEventHandler();
 	//Init method
 	public override void _Ready()
 	{

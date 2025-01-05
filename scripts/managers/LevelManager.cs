@@ -96,6 +96,7 @@ public partial class LevelManager
 		maxWaves = 4 + level;
 		//TODO REMOVE
 		wave = maxWaves;
+		biome = biomes[currentBiome];
 		if (level == 6)
 		{
 			swapArenas(true);
@@ -112,6 +113,7 @@ public partial class LevelManager
 		}
 		if (level == 0)
 		{
+			level++;
 			swapArenas(false);
 		}
 		generateTerrain();
@@ -128,7 +130,6 @@ public partial class LevelManager
 			SignalBus.bus.EmitSignal(nameof(SignalBus.bus.onNotifyPlayer), $"BOSS   STAGE", Colors.White);
 			SignalBus.bus.EmitSignal(nameof(SignalBus.bus.onLevelCompleted), level, biome.iconPath);
 		}
-
 	}
 
 	private void swapArenas(bool arenaBoss)
@@ -152,7 +153,6 @@ public partial class LevelManager
 		}
 		else
 		{
-			level++;
 			layers[1].CollisionEnabled = true;
 			layers[1].Visible = true;
 			layers[2].CollisionEnabled = true;
@@ -392,7 +392,6 @@ public partial class LevelManager
 			if (level == -1)
 			{
 				currentBiome++;
-				biome = biomes[currentBiome];
 			}
 			door = layers[layerIndex].GetUsedCellsById(sourceId, tilesMap[DOOR][0]);
 			layers[layerIndex].SetCell(door[0], sourceId, tilesMap[DOOR][1]);

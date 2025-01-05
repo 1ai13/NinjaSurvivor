@@ -46,6 +46,11 @@ public partial class EnemyBoss : Enemy
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _PhysicsProcess(double delta)
 	{
+		if (isDead || player.health == 0)
+		{
+			SetPhysicsProcess(false);
+			return;
+		}
 		baseHealthBar.Position = Position + initialHealthBarPos;
 		distanceToPlayer = player.GlobalPosition - GlobalPosition;
 		//Out of range
@@ -81,7 +86,6 @@ public partial class EnemyBoss : Enemy
 		{
 			if (!randomDirection)
 			{
-				GD.Print("walk random");
 				enemyDirection = EntityHelper.getRandomDirection();
 				randomDirection = true;
 			}
@@ -98,7 +102,6 @@ public partial class EnemyBoss : Enemy
 
 	private void chooseAttack()
 	{
-		GD.Print("Chossing attack");
 		var attack = attackTypes.PickRandom();
 		switch (attack)
 		{
@@ -122,7 +125,6 @@ public partial class EnemyBoss : Enemy
 			case SP_ATTACK:
 				setAnimation(SPECIAL_ATTACK);
 				isAttacking = true;
-				GD.Print("Special attack");
 				GetTree().CreateTimer(1.35f).Timeout += () =>
 				{
 					specialAttackFX.Emitting = true;
@@ -195,7 +197,7 @@ public partial class EnemyBoss : Enemy
 							break;
 						}
 					}
-					if (isDead)
+					if (isDead || player.health == 0)
 					{
 						break;
 					}
@@ -203,8 +205,11 @@ public partial class EnemyBoss : Enemy
 				}
 				break;
 			case HIT:
-				var scroll = PoolEngine.pool.pullFromPool<Item>();
-				scroll.init(GlobalPosition, ItemType.PLANT_SCROLL, this);
+				if (LevelManager.currentBiome > player.scrollsCollected)
+				{
+					var scroll = PoolEngine.pool.pullFromPool<Item>();
+					scroll.init(GlobalPosition, ItemType.PLANT_SCROLL, this);
+				}
 				var tween = CreateTween().SetParallel(true);
 				tween.TweenProperty(this, "scale", Vector2.Zero, .5f);
 				tween.TweenProperty(this, "modulate", Color.Color8(1, 1, 1, 0), .5f);
@@ -296,7 +301,6 @@ public partial class EnemyBoss : Enemy
 		switch (type)
 		{
 			case MELEE:
-				GD.Print("Playing melee");
 				AssetManager.instance.playSFX("bambooBossMelee");
 				break;
 			case SP_ATTACK:
