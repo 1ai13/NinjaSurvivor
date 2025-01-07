@@ -12,5 +12,5 @@ damage = 50
 speed = 30.0
 range = 250.0
 isProjectile = true
-projectileSpeed = 125.0
+projectileSpeed = 145.0
 angularSpeed = 0.0

@@ -52,9 +52,20 @@ public partial class PoolEngine : Node
 		}
 		else
 		{
-			var obj = (T)pools[key].Last();
-			pools[key].Remove(obj);
-			return obj;
+			try
+			{
+				var obj = (T)pools[key].Last();
+				pools[key].Remove(obj);
+				return obj;
+			}
+			catch (InvalidCastException)
+			{
+				var obj = scenes[key].Instantiate<T>();
+				GetTree().CurrentScene.AddChild(obj);
+				addToPool(obj);
+				return obj;
+			}
+
 		}
 	}
 }

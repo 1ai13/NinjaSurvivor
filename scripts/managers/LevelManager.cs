@@ -175,9 +175,8 @@ public partial class LevelManager
 		if (spawnCount != 1)
 		{
 			spawnCount = wave + 1 + currentBiome;
+			spawnCount = Math.Min(8, spawnCount);
 		}
-		// spawnCount = 1 * wave + 1;
-		// spawnCount = 2 * wave + level;
 		var enemyTypes = new Array<EnemyType>();
 		switch (wave)
 		{
