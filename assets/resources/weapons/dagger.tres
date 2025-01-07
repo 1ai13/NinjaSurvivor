@@ -1,11 +1,15 @@
-[gd_resource type="Resource" script_class="Weapon" load_steps=3 format=3 uid="uid://bnjwgfqkdtsqb"]
+[gd_resource type="Resource" script_class="Weapon" load_steps=4 format=3 uid="uid://bnjwgfqkdtsqb"]
 
 [ext_resource type="Script" path="res://scripts/resources/Weapon.cs" id="1_8fgcc"]
+[ext_resource type="Texture2D" uid="uid://bw5hm8ipojjqd" path="res://assets/textures/weapons/Dagger/Sprite.png" id="1_db24e"]
 [ext_resource type="Texture2D" uid="uid://bavymvwhslylp" path="res://assets/textures/weapons/Dagger/SpriteInHand.png" id="2_pkxv0"]
 
 [resource]
 script = ExtResource("1_8fgcc")
-name = "dagger"
-damage = 5
-textures = Array[Texture2D]([ExtResource("2_pkxv0")])
+name = "Dagger"
+damage = 65
+texture = ExtResource("2_pkxv0")
+icon = ExtResource("1_db24e")
 isProjectile = false
+projectileSpeed = 0.0
+angularSpeed = 0.0

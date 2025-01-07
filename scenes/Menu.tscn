@@ -1,0 +1,438 @@
+[gd_scene load_steps=20 format=3 uid="uid://dvxvnd87hcr8"]
+
+[ext_resource type="FontFile" uid="uid://botklpdl5a2x1" path="res://assets/fonts/NormalFont.ttf" id="1_8yfcv"]
+[ext_resource type="Script" path="res://scripts/controllers/MenuController.cs" id="1_w32cr"]
+[ext_resource type="Texture2D" uid="uid://iey472jm1yuo" path="res://assets/textures/buffer/icons/withoutBG/goldIcon.png" id="2_2umxn"]
+[ext_resource type="Resource" uid="uid://qh7omqpi52eh" path="res://assets/resources/characters/ninja.tres" id="2_7bbuq"]
+[ext_resource type="Texture2D" uid="uid://cxblqckrnef1g" path="res://assets/textures/characters/NinjaRed/Faceset.png" id="2_gas4k"]
+[ext_resource type="Texture2D" uid="uid://bb25wy41on8" path="res://assets/textures/GUI/arrow_left.png" id="3_01eil"]
+[ext_resource type="Resource" uid="uid://ci4rfe38owy18" path="res://assets/resources/characters/masked.tres" id="3_k5xrc"]
+[ext_resource type="Texture2D" uid="uid://dg841sjaqopx8" path="res://assets/textures/GUI/arrow_right.png" id="4_atc4r"]
+[ext_resource type="Resource" uid="uid://ba458oiwrvujd" path="res://assets/resources/characters/warrior.tres" id="4_gmf7i"]
+[ext_resource type="Texture2D" uid="uid://7vau1wqjnfi1" path="res://assets/textures/GUI/HUD/HeartProgress.png" id="5_jk2xu"]
+[ext_resource type="Texture2D" uid="uid://cn76jc0qbw8gv" path="res://assets/textures/weapons/Sword/Sprite.png" id="6_rb1t6"]
+[ext_resource type="Texture2D" uid="uid://dq1prte7r0176" path="res://assets/textures/weapons/Shuriken/Projectile.png" id="7_mjej3"]
+[ext_resource type="Texture2D" uid="uid://c6rcefql1dl2j" path="res://assets/textures/buffer/icons/withoutBG/movementSpeedBuff.png" id="8_skacb"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_reeu3"]
+font = ExtResource("1_8yfcv")
+font_size = 38
+outline_size = 5
+outline_color = Color(0, 0, 0, 1)
+shadow_size = 10
+shadow_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_pq58q"]
+font = ExtResource("1_8yfcv")
+font_size = 14
+outline_size = 3
+outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_p7qug"]
+font = ExtResource("1_8yfcv")
+font_size = 14
+outline_size = 3
+outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_iym30"]
+bg_color = Color(0.099986, 0.099986, 0.099986, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_cdan7"]
+font = ExtResource("1_8yfcv")
+font_size = 14
+outline_size = 4
+outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="Theme" id="Theme_w4o53"]
+default_font = ExtResource("1_8yfcv")
+/fonts/Font = ExtResource("1_8yfcv")
+
+[node name="Menu" type="Control"]
+texture_filter = 1
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_w32cr")
+characters = Array[Object]([ExtResource("2_7bbuq"), ExtResource("3_k5xrc"), ExtResource("4_gmf7i")])
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.165656, 0.165656, 0.165656, 1)
+
+[node name="GoldCounter" type="HFlowContainer" parent="."]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 333.0
+offset_right = 103.0
+offset_bottom = 354.0
+scale = Vector2(0.8, 0.8)
+
+[node name="GoldIcon" type="TextureRect" parent="GoldCounter"]
+layout_mode = 2
+texture = ExtResource("2_2umxn")
+
+[node name="GoldCounter" type="RichTextLabel" parent="GoldCounter"]
+clip_contents = false
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+theme_override_fonts/normal_font = ExtResource("1_8yfcv")
+theme_override_font_sizes/normal_font_size = 12
+bbcode_enabled = true
+text = "0[font_size=8]  g[/font_size]"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+
+[node name="Title" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -183.0
+offset_top = 40.0
+offset_right = 183.0
+offset_bottom = 86.0
+grow_horizontal = 2
+text = "NINJA    SURVIVOR"
+label_settings = SubResource("LabelSettings_reeu3")
+horizontal_alignment = 1
+
+[node name="StartButton" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -59.5
+offset_top = -30.0
+offset_right = 59.5
+offset_bottom = 6.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 5
+theme_override_fonts/font = ExtResource("1_8yfcv")
+theme_override_font_sizes/font_size = 20
+text = "START"
+
+[node name="Controls" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -66.5
+offset_top = 20.0
+offset_right = 66.5
+offset_bottom = 56.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 5
+theme_override_fonts/font = ExtResource("1_8yfcv")
+theme_override_font_sizes/font_size = 20
+text = "CONTROLS"
+
+[node name="Quit" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -59.5
+offset_top = 70.0
+offset_right = 59.5
+offset_bottom = 106.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_hover_color = Color(3, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(3, 0, 0, 1)
+theme_override_colors/font_focus_color = Color(3, 0, 0, 1)
+theme_override_colors/font_color = Color(3, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 5
+theme_override_fonts/font = ExtResource("1_8yfcv")
+theme_override_font_sizes/font_size = 20
+text = "QUIT"
+
+[node name="CharactersTitle" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -181.0
+offset_top = -248.0
+offset_right = -72.0
+offset_bottom = -225.0
+grow_horizontal = 0
+grow_vertical = 0
+text = "CHARACTERS"
+label_settings = SubResource("LabelSettings_pq58q")
+
+[node name="CharacterName" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -171.0
+offset_top = -185.0
+offset_right = -81.0
+offset_bottom = -162.0
+grow_horizontal = 0
+grow_vertical = 0
+text = "Test"
+label_settings = SubResource("LabelSettings_pq58q")
+horizontal_alignment = 1
+
+[node name="SelectedCharacter" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -147.0
+offset_top = -226.0
+offset_right = -107.0
+offset_bottom = -186.0
+grow_horizontal = 0
+grow_vertical = 0
+texture = ExtResource("2_gas4k")
+
+[node name="LeftChar" type="TextureButton" parent="."]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -179.0
+offset_top = -215.0
+offset_right = -154.0
+offset_bottom = -190.0
+grow_horizontal = 0
+grow_vertical = 0
+texture_normal = ExtResource("3_01eil")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="RightChar" type="TextureButton" parent="."]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -101.0
+offset_top = -215.0
+offset_right = -76.0
+offset_bottom = -190.0
+grow_horizontal = 0
+grow_vertical = 0
+texture_normal = ExtResource("4_atc4r")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="CharacterStats" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -156.0
+offset_top = -163.0
+offset_right = -98.0
+offset_bottom = -75.0
+grow_horizontal = 0
+grow_vertical = 0
+
+[node name="HealthIcon" type="TextureRect" parent="CharacterStats"]
+layout_mode = 1
+offset_left = 10.0
+offset_top = 10.0
+offset_right = 24.0
+offset_bottom = 22.0
+texture = ExtResource("5_jk2xu")
+expand_mode = 1
+
+[node name="HealthStat" type="Label" parent="CharacterStats"]
+layout_mode = 0
+offset_left = 36.0
+offset_top = 5.0
+offset_right = 47.0
+offset_bottom = 25.0
+text = "1"
+label_settings = SubResource("LabelSettings_p7qug")
+
+[node name="MeleeWeapon" type="TextureRect" parent="CharacterStats"]
+layout_mode = 0
+offset_left = 11.0
+offset_top = 26.0
+offset_right = 23.0
+offset_bottom = 43.0
+texture = ExtResource("6_rb1t6")
+expand_mode = 1
+
+[node name="MeleeDamage" type="Label" parent="CharacterStats"]
+layout_mode = 0
+offset_left = 31.0
+offset_top = 23.0
+offset_right = 50.0
+offset_bottom = 43.0
+text = "20
+"
+label_settings = SubResource("LabelSettings_p7qug")
+horizontal_alignment = 1
+
+[node name="RangedWeapon" type="TextureRect" parent="CharacterStats"]
+layout_mode = 0
+offset_left = 4.0
+offset_top = 47.0
+offset_right = 28.0
+offset_bottom = 62.0
+texture = ExtResource("7_mjej3")
+stretch_mode = 5
+
+[node name="RangedDamage" type="Label" parent="CharacterStats"]
+layout_mode = 0
+offset_left = 31.0
+offset_top = 43.0
+offset_right = 50.0
+offset_bottom = 63.0
+text = "10"
+label_settings = SubResource("LabelSettings_p7qug")
+
+[node name="BootsIcon" type="TextureRect" parent="CharacterStats"]
+layout_mode = 0
+offset_left = 9.0
+offset_top = 65.0
+offset_right = 24.0
+offset_bottom = 80.0
+texture = ExtResource("8_skacb")
+expand_mode = 1
+
+[node name="SpeedStat" type="Label" parent="CharacterStats"]
+layout_mode = 0
+offset_left = 35.0
+offset_top = 62.0
+offset_right = 46.0
+offset_bottom = 82.0
+text = "5"
+label_settings = SubResource("LabelSettings_p7qug")
+
+[node name="BuyButton" type="Button" parent="."]
+self_modulate = Color(5, 1, 1, 1)
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -159.0
+offset_top = -68.0
+offset_right = -93.0
+offset_bottom = -39.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_fonts/font = ExtResource("1_8yfcv")
+theme_override_font_sizes/font_size = 14
+text = "50"
+icon = ExtResource("2_2umxn")
+
+[node name="ControlsInfo" type="Panel" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -217.5
+offset_top = -168.5
+offset_right = 217.5
+offset_bottom = 168.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_iym30")
+
+[node name="Label" type="Label" parent="ControlsInfo"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -184.0
+offset_top = -159.5
+offset_right = 184.0
+offset_bottom = 159.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "MOVEMENT:
+             A-W-S-D     Keys
+ATTACKS:
+             Aim   with   your   mouse!
+             LEFT   CLICK   -   Melee   weapon
+             RIGHT   CLICK   -   Ranged   weapon
+GOALS:
+              Survive   the   arena   and   defeat   the   BOSS
+              Collect    items   and    buffs   to   help   in   your 
+               journey.
+HELP:
+              Press   ESC   to   pause   the   game   at   any   time
+              and   to   close   Pop-ups   like   this   one. 
+                                                     Good   luck   in   your   runs   :)
+"
+label_settings = SubResource("LabelSettings_cdan7")
+autowrap_mode = 2
+
+[node name="QuitConfirm" type="ConfirmationDialog" parent="."]
+canvas_item_default_texture_filter = 0
+title = "QUITTING..."
+initial_position = 2
+size = Vector2i(294, 100)
+unresizable = true
+theme = SubResource("Theme_w4o53")
+ok_button_text = "Yes"
+dialog_text = "Are   you   sure   you   want   to   exit?"
+cancel_button_text = "No"
+
+[connection signal="mouse_entered" from="StartButton" to="." method="mouseHoveringButton"]
+[connection signal="pressed" from="StartButton" to="." method="startPressed"]
+[connection signal="mouse_entered" from="Controls" to="." method="mouseHoveringButton"]
+[connection signal="pressed" from="Controls" to="." method="controlsPressed"]
+[connection signal="mouse_entered" from="Quit" to="." method="mouseHoveringButton"]
+[connection signal="pressed" from="Quit" to="." method="quitPressed"]
+[connection signal="mouse_entered" from="LeftChar" to="." method="mouseHoveringButton"]
+[connection signal="pressed" from="LeftChar" to="." method="switchLeftCharacter"]
+[connection signal="mouse_entered" from="RightChar" to="." method="mouseHoveringButton"]
+[connection signal="pressed" from="RightChar" to="." method="switchRightCharacter"]
+[connection signal="pressed" from="BuyButton" to="." method="onBuyCharacter"]
+[connection signal="confirmed" from="QuitConfirm" to="." method="exitGame"]

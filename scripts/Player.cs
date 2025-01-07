@@ -135,7 +135,7 @@ public partial class Player : CharacterBody2D
 		//Player Data
 		playerSprite.Texture = c.body;
 		playerSpawn = position;
-		Position = position;
+		GlobalPosition = position;
 		//Weapon Data
 		var melee = c.meleeWeapon;
 		var ranged = c.rangedWeapon;
@@ -314,12 +314,9 @@ public partial class Player : CharacterBody2D
 
 	public async void finishedAnimation(bool arenaBoss)
 	{
-		//TODO Remove when char select avaiable
 		setPlayerProcess(false);
-		//Generating new level
 		SignalBus.bus.EmitSignal(nameof(SignalBus.bus.onGenerateLevel));
 		AssetManager.instance.playSFX("doorTp");
-
 		Show();
 		GlobalPosition = playerSpawn;
 		//Animating entry on new level

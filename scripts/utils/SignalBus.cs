@@ -38,6 +38,7 @@ public partial class SignalBus : Node
 	public delegate void onGameOverEventHandler();
 	[Signal]
 	public delegate void onScrollUpdateEventHandler();
+
 	//Init method
 	public override void _Ready()
 	{

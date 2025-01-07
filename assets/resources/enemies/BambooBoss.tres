@@ -7,7 +7,7 @@
 script = ExtResource("2_olqqv")
 name = 3
 icon = ExtResource("1_q6pse")
-health = 5000
+health = 3500
 damage = 100
 speed = 45.0
 range = 400.0

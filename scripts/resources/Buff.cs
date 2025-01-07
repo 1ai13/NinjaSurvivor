@@ -33,7 +33,6 @@ public partial class Buff : Resource
                 p.health = p.maxHealth;
                 if (p.maxHealth == 4400)
                 {
-                    GD.Print("Maxed");
                     maxed = true;
                 }
                 SignalBus.bus.EmitSignal(nameof(SignalBus.bus.onPlayerHealthBarUpdate), p.health);
@@ -45,7 +44,6 @@ public partial class Buff : Resource
                 p.attackCooldown.WaitTime = Math.Max(p.attackCooldown.WaitTime - .1f, .2f);
                 if (p.attackCooldown.WaitTime == .2f)
                 {
-                    GD.Print("Maxed");
                     maxed = true;
                 }
                 break;
@@ -53,7 +51,6 @@ public partial class Buff : Resource
                 p.speed = Math.Min(p.speed + 5, 100);
                 if (p.speed == 100)
                 {
-                    GD.Print("Maxed");
                     maxed = true;
                 }
                 break;
@@ -61,7 +58,6 @@ public partial class Buff : Resource
                 p.criticalChance = Mathf.Min(p.criticalChance + .05f, .35f);
                 if (p.criticalChance == .35f)
                 {
-                    GD.Print("Maxed");
                     maxed = true;
                 }
                 break;
@@ -69,7 +65,6 @@ public partial class Buff : Resource
                 p.criticalDamage = Mathf.Min(p.criticalDamage + .1f, 2f);
                 if (p.criticalDamage == 2f)
                 {
-                    GD.Print("Maxed");
                     maxed = true;
                 }
                 break;
@@ -77,35 +72,30 @@ public partial class Buff : Resource
                 p.dropLuck = Math.Max(p.dropLuck - .1f, .35f);
                 if (p.dropLuck == .35f)
                 {
-                    GD.Print("Maxed");
                     maxed = true;
                 }
                 break;
             case FRONTAL:
                 if (p.buffPool[type] == 2)
                 {
-                    GD.Print("Maxed");
                     maxed = true;
                 }
                 break;
             case WALL_RICHOCHET:
                 if (p.buffPool[type] == 3)
                 {
-                    GD.Print("Maxed");
                     maxed = true;
                 }
                 break;
             case DIAGONAL:
                 if (p.buffPool[type] == 2)
                 {
-                    GD.Print("Maxed");
                     maxed = true;
                 }
                 break;
             case HIT_RICOCHET:
                 if (p.buffPool[type] == 3)
                 {
-                    GD.Print("Maxed");
                     maxed = true;
                 }
                 break;

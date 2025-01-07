@@ -80,9 +80,7 @@ public partial class LevelManager
 
 	public void generateLevel()
 	{
-		//TODO Balance trap numbers and spawns based on level/waves
 		//TODO Biome obstacles?
-		//Clear dead and unused entities and objects
 		if (spawnCount != 0)
 		{
 			game.GetTree().CallGroup("Enemies", "queue_free");
@@ -440,5 +438,13 @@ public partial class LevelManager
 			}
 			p.newLevelAnimation(false);
 		}
+	}
+
+	public void clearArena()
+	{
+		SignalBus.bus.onEnemyKilled -= enemyKilled;
+		SignalBus.bus.onGenerateLevel -= generateLevel;
+		SignalBus.bus.onSpawnEnemies -= generateSpawns;
+		doorArea.BodyEntered -= onDoorCrossed;
 	}
 }

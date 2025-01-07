@@ -7,6 +7,8 @@ public partial class Character : Resource
     [Export]
     public string name { get; set; }
     [Export]
+    public Texture2D icon;
+    [Export]
     public Texture2D body;
     [Export]
     public Weapon meleeWeapon;

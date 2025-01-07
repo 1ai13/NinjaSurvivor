@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="Weapon" load_steps=3 format=3 uid="uid://dnf70u8gyv3hv"]
+
+[ext_resource type="Texture2D" uid="uid://danylumxdctcl" path="res://assets/textures/weapons/Kunai/Projectile.png" id="1_1k718"]
+[ext_resource type="Script" path="res://scripts/resources/Weapon.cs" id="2_6jr54"]
+
+[resource]
+script = ExtResource("2_6jr54")
+name = "Kunai"
+damage = 55
+texture = ExtResource("1_1k718")
+icon = ExtResource("1_1k718")
+isProjectile = true
+projectileSpeed = 200.0
+angularSpeed = 0.0

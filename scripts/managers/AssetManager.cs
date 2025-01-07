@@ -15,6 +15,9 @@ public partial class AssetManager : Node
 	public PackedScene buffStatCounter;
 	public PackedScene buffRandomBuff;
 	public Texture2D plantScroll;
+	public Character charSelected;
+	public PackedScene gameScene;
+	public PackedScene menuScene;
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
@@ -30,6 +33,8 @@ public partial class AssetManager : Node
 		buffStatCounter = GD.Load<PackedScene>("res://scenes/ui/BuffStatCounter.tscn");
 		buffRandomBuff = GD.Load<PackedScene>("res://scenes/ui/ModalRandomBuff.tscn");
 		plantScroll = GD.Load<Texture2D>("res://assets/textures/items/ScrollPlant.png");
+		gameScene = GD.Load<PackedScene>("res://scenes/Game.tscn");
+		menuScene = GD.Load<PackedScene>("res://scenes/Menu.tscn");
 
 		//Audio Manager
 		SFXAudios = new Dictionary<string, List<AudioStream>>();

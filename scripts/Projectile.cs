@@ -99,6 +99,7 @@ public partial class Projectile : Area2D
 					if (owner is Player)
 					{
 						SetPhysicsProcess(false);
+						playHitSound();
 					}
 					else if (rayCast.GetCollider() is not CharacterBody2D)
 					{
@@ -128,6 +129,7 @@ public partial class Projectile : Area2D
 	//Hitting enemy
 	private void onAreaDetected(Area2D area)
 	{
+		if (!IsPhysicsProcessing()) return;
 		if (owner is Player player && area.GetParent() is Enemy enemy)
 		{
 			var isCrit = EntityHelper.isCriticalHit(player.criticalChance);

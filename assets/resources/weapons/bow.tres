@@ -1,5 +1,6 @@
-[gd_resource type="Resource" script_class="Weapon" load_steps=3 format=3 uid="uid://dqg05nw7wi8th"]
+[gd_resource type="Resource" script_class="Weapon" load_steps=4 format=3 uid="uid://dqg05nw7wi8th"]
 
+[ext_resource type="Texture2D" uid="uid://bndsrbo0t6wxi" path="res://assets/textures/weapons/Bow2/Projectile.png" id="1_aif0u"]
 [ext_resource type="Script" path="res://scripts/resources/Weapon.cs" id="1_im0os"]
 [ext_resource type="Texture2D" uid="uid://c17ltn1lri0do" path="res://assets/textures/weapons/Bow2/SpriteInHand.png" id="2_pk5ye"]
 
@@ -8,6 +9,7 @@ script = ExtResource("1_im0os")
 name = "Bow"
 damage = 45
 texture = ExtResource("2_pk5ye")
+icon = ExtResource("1_aif0u")
 isProjectile = true
 projectileSpeed = 200.0
 angularSpeed = 0.0

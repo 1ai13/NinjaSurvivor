@@ -1,6 +1,7 @@
-[gd_resource type="Resource" script_class="Weapon" load_steps=3 format=3 uid="uid://cl4dkajyyx7uv"]
+[gd_resource type="Resource" script_class="Weapon" load_steps=4 format=3 uid="uid://cl4dkajyyx7uv"]
 
 [ext_resource type="Script" path="res://scripts/resources/Weapon.cs" id="1_cfneq"]
+[ext_resource type="Texture2D" uid="uid://cn76jc0qbw8gv" path="res://assets/textures/weapons/Sword/Sprite.png" id="1_paqkg"]
 [ext_resource type="Texture2D" uid="uid://b566t108c24u0" path="res://assets/textures/weapons/Sword/SpriteInHand.png" id="2_oip3s"]
 
 [resource]
@@ -8,6 +9,7 @@ script = ExtResource("1_cfneq")
 name = "Sword"
 damage = 50
 texture = ExtResource("2_oip3s")
+icon = ExtResource("1_paqkg")
 isProjectile = false
 projectileSpeed = 0.0
 angularSpeed = 0.0

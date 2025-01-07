@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="Character" load_steps=6 format=3 uid="uid://ba458oiwrvujd"]
+
+[ext_resource type="Texture2D" uid="uid://fwu10n5aojl0" path="res://assets/textures/characters/RedNinja3/SpriteSheet.png" id="1_auq30"]
+[ext_resource type="Texture2D" uid="uid://cg4kicnb1q7vs" path="res://assets/textures/characters/RedNinja3/Faceset.png" id="2_ebon5"]
+[ext_resource type="Resource" uid="uid://bnjwgfqkdtsqb" path="res://assets/resources/weapons/dagger.tres" id="2_ka4pt"]
+[ext_resource type="Resource" uid="uid://dnf70u8gyv3hv" path="res://assets/resources/weapons/kunai.tres" id="3_dqdyy"]
+[ext_resource type="Script" path="res://scripts/resources/Character.cs" id="4_j5p3h"]
+
+[resource]
+script = ExtResource("4_j5p3h")
+name = "Warrior"
+icon = ExtResource("2_ebon5")
+body = ExtResource("1_auq30")
+meleeWeapon = ExtResource("2_ka4pt")
+rangedWeapon = ExtResource("3_dqdyy")
+health = 600
+speed = 70.0

@@ -44,11 +44,13 @@ public partial class HudController : Control
 	private bool minusSFX;
 	private bool plusSFX;
 	private float sliderSpeed;
+	private GameController game;
 
 	// Called when the node enters the scene tree for the first time.
 
 	public override void _Ready()
 	{
+		game = GetNode<GameController>("/root/Game");
 		healthBarContainer = GetNode<HFlowContainer>("PlayerHealthBarContainer");
 		buffsContainer = GetNode<VBoxContainer>("BuffsContainer");
 		modalContainer = GetNode<Panel>("BuffModal");
@@ -74,8 +76,8 @@ public partial class HudController : Control
 		lastSoundFXVolume = (float)soundFXSlider.Value;
 		sliderSpeed = 10;
 		SFXBusIndex = AudioServer.GetBusIndex("SFX");
-		player = GetTree().CurrentScene.GetNode<Player>("Player");
-		buffer = GetTree().CurrentScene.GetNode<BufferController>("Buffer");
+		player = GetNode<Player>("/root/Game/Player");
+		buffer = GetNode<BufferController>("/root/Game/Buffer");
 		SignalBus.bus.onNotifyPlayer += showNotification;
 		SignalBus.bus.onPlayerHealthBarUpdate += playerHealthBarUpdate;
 		SignalBus.bus.onLevelCompleted += levelCompletedUpdate;
@@ -566,5 +568,23 @@ public partial class HudController : Control
 	{
 		pausedModal.Visible = false;
 		GetTree().Paused = false;
+	}
+
+	private void backToMenu()
+	{
+		GetTree().Paused = false;
+		game.levelManager.clearArena();
+		EmitSignal(SignalName.onSaveGame);
+		SignalBus.bus.onNotifyPlayer -= showNotification;
+		SignalBus.bus.onPlayerHealthBarUpdate -= playerHealthBarUpdate;
+		SignalBus.bus.onLevelCompleted -= levelCompletedUpdate;
+		SignalBus.bus.onWaveCompleted -= waveCompletedUpdate;
+		SignalBus.bus.onCoinCollected -= coinCollected;
+		SignalBus.bus.onBossReady -= setBossHealthbar;
+		SignalBus.bus.onBossHit -= updateBossHealthbar;
+		SignalBus.bus.onScrollCollected -= scrollCollected;
+		SignalBus.bus.onGameOver -= gameOver;
+		SignalBus.bus.onScrollUpdate -= updateActiveScroll;
+		GetTree().ChangeSceneToPacked(AssetManager.instance.menuScene);
 	}
 }

@@ -1,6 +1,7 @@
-[gd_resource type="Resource" script_class="Weapon" load_steps=3 format=3 uid="uid://q2xn1rw6cgce"]
+[gd_resource type="Resource" script_class="Weapon" load_steps=4 format=3 uid="uid://q2xn1rw6cgce"]
 
 [ext_resource type="Script" path="res://scripts/resources/Weapon.cs" id="1_e1uvr"]
+[ext_resource type="Texture2D" uid="uid://6f2rf2kbxeoh" path="res://assets/textures/weapons/Katana/Sprite.png" id="2_34cyr"]
 [ext_resource type="Texture2D" uid="uid://dmwurw7dgswfq" path="res://assets/textures/weapons/Katana/SpriteInHand2.png" id="2_606ib"]
 
 [resource]
@@ -8,6 +9,7 @@ script = ExtResource("1_e1uvr")
 name = "Katana"
 damage = 55
 texture = ExtResource("2_606ib")
+icon = ExtResource("2_34cyr")
 isProjectile = false
 projectileSpeed = 0.0
 angularSpeed = 0.0
