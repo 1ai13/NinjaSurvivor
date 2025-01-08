@@ -1,7 +1,7 @@
 # Ninja Survivor
 ### First project using Godot/C#
 
-TOP-DOWN Arena Survival
+TOP-DOWN Shooter Arena Survival
 
 Goals: 
 - Survive the waves of enemies and defeat the final boss.
