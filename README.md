@@ -3,6 +3,8 @@
 
 TOP-DOWN Shooter Arena Survival
 
+You can download the game from [Itch.io](https://1ai-13.itch.io/ninja-survivor) or accessing the [releases](https://github.com/1ai13/NinjaSurvivor/releases) of this repo
+
 Goals: 
 - Survive the waves of enemies and defeat the final boss.
 - Collect items and buffs to help in your journey.
