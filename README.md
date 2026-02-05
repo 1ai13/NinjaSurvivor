@@ -1,23 +1,40 @@
 # Ninja Survivor
-### First project using Godot/C#
 
-TOP-DOWN Shooter Arena Survival
+**Built with** [![Godot](https://img.shields.io/badge/Godot-478CBF?logo=godot-engine&logoColor=white)](https://godotengine.org/) 
+[![C#](https://img.shields.io/badge/C%23-239120?logo=c-sharp&logoColor=white)](https://learn.microsoft.com/en-us/dotnet/csharp/)
 
-You can download the game from [Itch.io](https://1ai-13.itch.io/ninja-survivor) or accessing the [releases](https://github.com/1ai13/NinjaSurvivor/releases) of this repo
+### Top-Down Shooter Arena Survival
 
-Goals: 
-- Survive the waves of enemies and defeat the final boss.
-- Collect items and buffs to help in your journey.
-- Unlock new characters.
+---
 
-Controls:
-- Movement
-  - A - W - S - D Keys
-- Attack
-  - Aim with your mouse!
-  - Left click for melee attack
-  - Right click for ranged attack.
-- Pause
-  - Use the ESCAPE Key to Pause the game at any time or to close Info Pop-ups
+## Play / Download
 
-Feel free to contact in case of any bugs or feedback :)
+- Play on [Itch.io](https://1ai-13.itch.io/ninja-survivor)  
+- Download from [releases](https://github.com/1ai13/NinjaSurvivor/releases)  
+
+---
+
+## Goals
+
+- Survive waves of enemies and defeat the final boss  
+- Collect items and buffs to help in your adventure  
+- Unlock new characters  
+
+---
+
+## Controls
+
+| Action   | Keys / Input |
+|----------|--------------|
+| Movement | `W` `A` `S` `D` |
+| Attack (Melee) | Left click |
+| Attack (Ranged) | Right click |
+| Aim | Mouse |
+| Pause / Close Info | `ESC` |
+
+---
+
+## Feedback
+
+Feel free to contact me for **bugs or suggestions**!  
+
